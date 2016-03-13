@@ -1,5 +1,6 @@
 package tetris;
 
+import tetris.View.TheGame;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import javax.swing.ImageIcon;

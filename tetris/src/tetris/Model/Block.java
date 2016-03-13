@@ -1,4 +1,4 @@
-package tetris;
+package tetris.Model;
 
 import java.awt.Image;
 import javax.swing.ImageIcon;
@@ -12,6 +12,12 @@ public class Block {
     
     private ImageIcon blockImage;
     boolean Empty;
+    
+     public Block(int x, int y){
+        ImageIcon ii = new ImageIcon("images/Blocks/default/default_"+y+"-"+x+".png");
+        blockImage = ii;
+        Empty = true;
+     }
     
     public Block(String path, boolean empt){        
         ImageIcon ii = new ImageIcon("images/Blocks/"+path);

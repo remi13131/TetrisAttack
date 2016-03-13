@@ -1,4 +1,4 @@
-package tetris;
+package tetris.Model;
 
 import java.util.ArrayList;
 
@@ -10,13 +10,15 @@ import java.util.ArrayList;
 public class Line {
 
     ArrayList<Block> blocks;
+    boolean Empty;
     
     public Line(int nbCell, int numLigne){
         blocks = new ArrayList<Block>();
         int i;
         for(i=0; i<nbCell; i++) {
-            blocks.add(new Block("default/default_"+numLigne+"-"+i+".png", true));
+            blocks.add(new Block(i, numLigne));
         }
+        Empty = true;
     }
     
     public ArrayList<Block> getBlocks() {
@@ -29,5 +31,11 @@ public class Line {
     
     public void setBlockAtPos(int pos, Block b) {
         blocks.set(pos, b);
+        if(!b.isEmpty()) Empty = false;
     }
+
+    public boolean isEmpty() {
+        return Empty;
+    }
+    
 }
