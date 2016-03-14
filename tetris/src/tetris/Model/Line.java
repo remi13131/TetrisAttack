@@ -15,9 +15,10 @@ public class Line {
     public Line(int nbCell, int numLigne){
         blocks = new ArrayList<Block>();
         int i;
-        for(i=0; i<nbCell; i++) {
+        for(i=0; i<=nbCell; i++) {
             blocks.add(new Block(i, numLigne));
         }
+        System.out.println(""+blocks.size());
         Empty = true;
     }
     

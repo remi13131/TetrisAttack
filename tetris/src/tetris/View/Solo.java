@@ -12,6 +12,7 @@ import java.awt.Image;
 import static java.awt.PageAttributes.MediaType.A;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.ImageObserver;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -24,19 +25,22 @@ import javax.swing.Timer;
  * @author Remi
  */
 
-public class TheGame 
-        extends JPanel 
-        implements ActionListener { 
-    
+public class Solo extends JPanel implements ActionListener {  
     private final int DELAY = 25;
     
     private Image background;
+
+    public int XStartBoard = 389;
+    public int YStartBoard = 942;
+
+    private int XTime = 82;
+    private int YTime = 122;
     
     private Timer timer;
     
     private Game ga;
     
-    public TheGame(){
+    public Solo(){
         ga = new Game();
         
         timer = new Timer(DELAY, this);
@@ -62,8 +66,8 @@ public class TheGame
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(background, 0, 0, null);
-        ga.drawBoard(g, this);
-        ga.drawTime(g);
+        drawBoard(g);
+        drawTime(g);
     } 
     
     @Override
@@ -72,6 +76,26 @@ public class TheGame
         repaint();
     }
     
+    public void drawBoard(Graphics g){
+        Line l;
+        int i, j, coordX, coordY;
+        coordY = YStartBoard;
+        for(i=0; i<=ga.board.nbLin; i++){
+            coordY -= 69;
+            coordX = XStartBoard;
+            for(j=0; j<=ga.board.nbCol; j++){
+                g.drawImage(ga.board.getLineN(i).getBlockAtPos(j).getBlockImage().getImage(), coordX, coordY, this);
+                coordX += 70;
+            }
+        }
+    }
+    
+    public void drawTime(Graphics g){
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Monospaced", Font.BOLD, 26));
+        g.drawString("Time", XTime, YTime);
+        g.drawString(ga.numSec+" Sec. Playing.", XTime, YTime+50);
+    }
 }
 
 

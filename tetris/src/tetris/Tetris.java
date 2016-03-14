@@ -1,6 +1,6 @@
 package tetris;
 
-import tetris.View.TheGame;
+import tetris.View.Solo;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import javax.swing.ImageIcon;
@@ -27,19 +27,14 @@ public class Tetris extends JFrame {
         this.setSize(1125,981);
         this.setResizable(false);
         
-        TheGame tg = new TheGame();
+        Solo tg = new Solo();
         this.add(tg, BorderLayout.CENTER);
         
         setLocationRelativeTo(null); 
     }
 
-    public static void main(String[] args) throws InterruptedException {
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                Tetris t = new Tetris("Tetris Attack");
-                t.setVisible(true);
-            }
-        });
+    public static void main(String[] args) {
+        Tetris t = new Tetris("Tetris Attack");
+        t.setVisible(true);
     }
 }
