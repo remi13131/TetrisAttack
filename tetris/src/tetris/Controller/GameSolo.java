@@ -19,7 +19,7 @@ public class GameSolo {
     public final int DELAY = 25;
     
     public int numActions = 0;
-    public int numSec = 0;
+    public int numSec = -4;
     
     public int xCursor = 2;
     public int yCursor = 2;
@@ -40,10 +40,12 @@ public class GameSolo {
         int nbActionParSeconde = 1000/DELAY;
         if(numActions%nbActionParSeconde == 0) { // Toutes les secondes (1 action = 25ms, donc 40*25 = 1000ms = 1sec)
             numSec += 1;
-            System.out.println("SECS : "+(numActions/nbActionParSeconde));
-            nextSec();
-            //if(numSec == 10) board.getLineN(0).setBlockAtPos(0, new Block(0,0));
-            //if(numSec == 10) board.getLineN(1).setBlockAtPos(0, new Block("coeur.png", false));
+            if(numSec>=0){
+                System.out.println("SECS : "+(numActions/nbActionParSeconde));
+                nextSec();
+                //if(numSec == 10) board.getLineN(0).setBlockAtPos(0, new Block(0,0));
+                //if(numSec == 10) board.getLineN(1).setBlockAtPos(0, new Block("coeur.png", false));
+            }
         }
         board.spotMatches();
         board.updateMatchedTime();

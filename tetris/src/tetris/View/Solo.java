@@ -33,6 +33,9 @@ public class Solo extends JPanel implements ActionListener {
     private boolean debug = false;
     
     private Image background;
+    private Image ready;
+    private Image set;
+    private Image go;
     private Image cursor;
     private Image pauseBg;
     private Image nxtLineHover;
@@ -76,6 +79,14 @@ public class Solo extends JPanel implements ActionListener {
     private void loadImage() { 
         ImageIcon ii = new ImageIcon(getClass().getResource("/images/Backgrounds/1.png"));
         background = ii.getImage();
+        
+        ii = new ImageIcon(getClass().getResource("/images/Backgrounds/ready.png"));
+        ready = ii.getImage();
+        ii = new ImageIcon(getClass().getResource("/images/Backgrounds/set.png"));
+        set = ii.getImage();
+        ii = new ImageIcon(getClass().getResource("/images/Backgrounds/go.png"));
+        go = ii.getImage();
+        
         ImageIcon ii2 = new ImageIcon(getClass().getResource("/images/Backgrounds/cursor.png"));
         cursor = ii2.getImage();
         ImageIcon ii3 = new ImageIcon(getClass().getResource("/images/Backgrounds/Pause.png"));
@@ -89,12 +100,31 @@ public class Solo extends JPanel implements ActionListener {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(background, 0, 0, null);
-        drawBoard(g);
-        drawTime(g);
-        drawCursor(g);
-        drawNextLine(g);
-        if(isPaused) g.drawImage(pauseBg, 0,0, this);
+        if(ga.numSec < 0){
+            switch(ga.numSec){
+                case -4:
+                    g.drawImage(background, 0, 0, null);
+                break;
+                case -3:
+                    g.drawImage(ready, 0, 0, null);
+                break;
+                case -2: 
+                    g.drawImage(set, 0, 0, null);
+                break;
+                case -1: 
+                    g.drawImage(go, 0, 0, null);
+                break;
+                default: g.drawImage(background, 0, 0, null); break;
+            }
+        }
+        else{
+            g.drawImage(background, 0, 0, null);
+            drawBoard(g);
+            drawTime(g);
+            drawCursor(g);
+            drawNextLine(g);
+            if(isPaused) g.drawImage(pauseBg, 0,0, this);
+        }
     } 
     
 
