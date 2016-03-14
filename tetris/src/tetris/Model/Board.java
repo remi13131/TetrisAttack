@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class Board {
 
     ArrayList<Line> board;
+    public Line nextLine;
     
     private BlockHelper bl = new BlockHelper();
     
@@ -26,6 +27,7 @@ public class Board {
         int i;
         for(i=0; i<=nbLin; i++) board.add(new Line(nbCol, i));
         for(i=0; i<6; i++) setLigneN(i, makeNewRandomLine(i));
+        nextLine = makeNewRandomLine(i);
     }
     
     public Line getLineN(int nLine){

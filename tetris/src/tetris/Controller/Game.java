@@ -19,11 +19,8 @@ public class Game {
     public int numActions = 0;
     public int numSec = 0;
     
-    public int XStartBoard = 389;
-    public int YStartBoard = 942;
-    
-    private int XTime = 82;
-    private int YTime = 122;
+    public int xCursor = 2;
+    public int yCursor = 2;
     
     public Board board;
     
@@ -47,10 +44,32 @@ public class Game {
         }
     }
     
+    public void blockExchange(){
+        Block b1 = board.getLineN(yCursor).getBlockAtPos(xCursor);
+        Block b2 = board.getLineN(yCursor).getBlockAtPos(xCursor+1);
+        board.getLineN(yCursor).setBlockAtPos(xCursor, b2);
+        board.getLineN(yCursor).setBlockAtPos(xCursor+1, b1);
+    }
+    
     public void nextSec(){
         
     }
-    
+
+    public int getxCursor() {
+        return xCursor;
+    }
+
+    public int getyCursor() {
+        return yCursor;
+    }
+
+    public void setxCursor(int xCursor) {
+        this.xCursor = xCursor;
+    }
+
+    public void setyCursor(int yCursor) {
+        this.yCursor = yCursor;
+    }
 }
 
 
