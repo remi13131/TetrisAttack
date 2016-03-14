@@ -36,7 +36,8 @@ public class Solo extends JPanel implements ActionListener {
     private Image cursor;
     private Image pauseBg;
     private Image nxtLineHover;
-
+    private Image bgBlackCell;
+    
     public int XStartBoard = 389;
     public int YStartBoard = 942;
 
@@ -78,6 +79,8 @@ public class Solo extends JPanel implements ActionListener {
         pauseBg = ii3.getImage();
         ImageIcon ii4 = new ImageIcon("images/Backgrounds/nextLineBlack.png");
         nxtLineHover = ii4.getImage();
+        ImageIcon ii5 = new ImageIcon("images/Backgrounds/bgBlackCell.png");
+        bgBlackCell = ii5.getImage();
     }
 
     @Override
@@ -100,8 +103,13 @@ public class Solo extends JPanel implements ActionListener {
         for(i=0; i<=ga.board.nbLin; i++){
             coordY -= 69;
             coordX = XStartBoard;
+            if(debug){
+                String s4 = "- EL : "+ga.board.getLineN(i).isEmpty();
+                g.drawString(s4, coordX - 100, coordY+20);
+            }
             for(j=0; j<=ga.board.nbCol; j++){
                 g.drawImage(ga.board.getLineN(i).getBlockAtPos(j).getBlockImage().getImage(), coordX, coordY, this);
+                if(ga.board.getLineN(i).getBlockAtPos(j).isMatched()) g.drawImage(bgBlackCell, coordX, coordY, this);
                 if(debug){
                     g.setColor(Color.WHITE);
                     g.setFont(new Font("Monospaced", Font.BOLD, 10));
@@ -109,10 +117,14 @@ public class Solo extends JPanel implements ActionListener {
                     String s1 = "- Y : "+ga.board.getLineN(i).getBlockAtPos(j).getY();
                     String s2 = "- E : "+ga.board.getLineN(i).getBlockAtPos(j).isEmpty();
                     String s3 = "- C : "+ga.board.getLineN(i).getBlockAtPos(j).getColor();
+                    String s5 = "- M : "+ga.board.getLineN(i).getBlockAtPos(j).isMatched();
+                    String s6 = "- TM : "+ga.board.getLineN(i).getBlockAtPos(j).getTimeMatched();
                     g.drawString(s, coordX + 10, coordY+10);
                     g.drawString(s1, coordX + 10, coordY+20);
                     g.drawString(s2, coordX + 10, coordY+30);
                     g.drawString(s3, coordX + 10, coordY+40);
+                    g.drawString(s5, coordX + 10, coordY+50);
+                    g.drawString(s6, coordX + 10, coordY+60);
                 }
                 coordX += 70;
             }

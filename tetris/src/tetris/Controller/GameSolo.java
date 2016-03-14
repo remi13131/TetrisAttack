@@ -45,7 +45,11 @@ public class GameSolo {
             //if(numSec == 10) board.getLineN(0).setBlockAtPos(0, new Block(0,0));
             //if(numSec == 10) board.getLineN(1).setBlockAtPos(0, new Block("coeur.png", false));
         }
-        
+        board.spotMatches();
+        board.updateMatchedTime();
+        board.killOldMatched();
+        board.defineEmptyLines();
+        board.getGridDown();
     }
     
     public void nextSec(){
@@ -55,7 +59,6 @@ public class GameSolo {
             board.nextLine = board.makeNewRandomLine(0);
             board.timeNxtLine = board.DEFAULT_NEXT_LINE_TIME;
         }
-        board.spotMatches();
     }
     
     public void blockExchange(){

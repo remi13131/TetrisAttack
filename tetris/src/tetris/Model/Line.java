@@ -50,5 +50,9 @@ public class Line {
     public boolean isEmpty() {
         return Empty;
     }
+
+    public void setEmpty(boolean Empty) {
+        this.Empty = Empty;
+    }
     
 }

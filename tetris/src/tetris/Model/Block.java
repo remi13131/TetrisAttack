@@ -18,6 +18,7 @@ public class Block {
     int color;
     boolean Empty;
     boolean Matched=false;
+    double TimeMatched=0;
     
      public Block(int x, int y){
         ImageIcon ii = new ImageIcon("images/Blocks/defaultTransparent.png");
@@ -71,6 +72,18 @@ public class Block {
 
     public boolean isMatched() {
         return Matched;
+    }
+
+    public void setMatched(boolean Matched) {
+        this.Matched = Matched;
+    }
+
+    public double getTimeMatched() {
+        return TimeMatched;
+    }
+
+    public void setTimeMatched(double TimeMatched) {
+        this.TimeMatched = TimeMatched;
     }
     
     
