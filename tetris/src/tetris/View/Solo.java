@@ -30,7 +30,7 @@ import javax.swing.Timer;
 
 public class Solo extends JPanel implements ActionListener {  
     
-    private boolean debug = true;
+    private boolean debug = false;
     
     private Image background;
     private Image cursor;
