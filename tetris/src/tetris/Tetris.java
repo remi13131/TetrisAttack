@@ -1,7 +1,8 @@
 package tetris;
 
-import tetris.View.Solo;
+import tetris.View.*;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.EventQueue;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -27,9 +28,13 @@ public class Tetris extends JFrame {
         this.setSize(1831,851);
         this.setResizable(false);
         
+        Component newGameDesign;
+        
+        Menu m = new Menu();
+        
+        
         Solo tg = new Solo();
         this.add(tg, BorderLayout.CENTER);
-        
         setLocationRelativeTo(null); 
     }
 

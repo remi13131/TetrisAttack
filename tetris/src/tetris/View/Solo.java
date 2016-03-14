@@ -73,10 +73,7 @@ public class Solo extends JPanel implements ActionListener {
     
     private void initGraphics(){
         loadImage();
-        int w = background.getWidth(this);
-        int h =  background.getHeight(this);
         setDoubleBuffered(true);
-        setPreferredSize(new Dimension(w, h));
     }
     
     private void loadImage() { 
@@ -104,10 +101,14 @@ public class Solo extends JPanel implements ActionListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         if(ga.numSec < 0){
+            g.drawImage(background, 0, 0, null);
+            drawBoard(g);
+            drawTime(g);
+            drawScore(g);
+            drawCursor(g);
+            drawNextLine(g);
+            if(isPaused) g.drawImage(pauseBg, 0,0, this);
             switch(ga.numSec){
-                case -4:
-                    g.drawImage(background, 0, 0, null);
-                break;
                 case -3:
                     g.drawImage(ready, 0, 0, null);
                 break;
@@ -117,7 +118,7 @@ public class Solo extends JPanel implements ActionListener {
                 case -1: 
                     g.drawImage(go, 0, 0, null);
                 break;
-                default: g.drawImage(background, 0, 0, null); break;
+                default: break;
             }
         }
         else{
