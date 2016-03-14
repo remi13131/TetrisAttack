@@ -14,7 +14,7 @@ import java.util.List;
  * @author Remi
  */
 
-public class Game { 
+public class GameSolo { 
     
     public final int DELAY = 25;
     
@@ -26,7 +26,7 @@ public class Game {
     
     public Board board;
     
-    public Game(){
+    public GameSolo(){
         initGame();
     }
     
@@ -45,13 +45,7 @@ public class Game {
             //if(numSec == 10) board.getLineN(0).setBlockAtPos(0, new Block(0,0));
             //if(numSec == 10) board.getLineN(1).setBlockAtPos(0, new Block("coeur.png", false));
         }
-    }
-    
-    public void blockExchange(){
-        Block b1 = board.getLineN(yCursor).getBlockAtPos(xCursor);
-        Block b2 = board.getLineN(yCursor).getBlockAtPos(xCursor+1);
-        board.getLineN(yCursor).setBlockAtPos(xCursor, b2);
-        board.getLineN(yCursor).setBlockAtPos(xCursor+1, b1);
+        
     }
     
     public void nextSec(){
@@ -61,8 +55,20 @@ public class Game {
             board.nextLine = board.makeNewRandomLine(0);
             board.timeNxtLine = board.DEFAULT_NEXT_LINE_TIME;
         }
-        
+        board.spotMatches();
     }
+    
+    public void blockExchange(){
+        Block b1 = board.getLineN(yCursor).getBlockAtPos(xCursor);
+        Block b2 = board.getLineN(yCursor).getBlockAtPos(xCursor+1);
+        board.getLineN(yCursor).setBlockAtPos(xCursor, b2);
+        board.getLineN(yCursor).setBlockAtPos(xCursor+1, b1);
+        
+        board.getBlockDown(b1);
+        board.getBlockDown(b2);
+    }
+    
+
 
     public void insertNewLine(){
         int i;
@@ -78,6 +84,7 @@ public class Game {
         if(trouve && indexLigne != -1) {
             for(i=indexLigne; i>0; i--){
                 board.setLigneN(i, board.getLineN(i-1));
+                board.getLineN(i);
             }
             board.setLigneN(0, board.getNextLine());
         }

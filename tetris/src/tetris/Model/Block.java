@@ -15,7 +15,9 @@ public class Block {
     private ImageIcon blockImage;
     int x;
     int y;
+    int color;
     boolean Empty;
+    boolean Matched=false;
     
      public Block(int x, int y){
         ImageIcon ii = new ImageIcon("images/Blocks/defaultTransparent.png");
@@ -23,14 +25,16 @@ public class Block {
         this.y=y;
         blockImage = ii;
         Empty = true;
+        color = -1;
      }
     
-    public Block(String path, boolean empt, int x, int y){        
+    public Block(String path, boolean empt, int Color, int x, int y){        
         ImageIcon ii = new ImageIcon("images/Blocks/"+path);
         blockImage = ii;
         this.x=x;
         this.y=y;
         Empty = empt;
+        this.color = Color;
     }
 
     public ImageIcon getBlockImage() {
@@ -59,6 +63,14 @@ public class Block {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public boolean isMatched() {
+        return Matched;
     }
     
     

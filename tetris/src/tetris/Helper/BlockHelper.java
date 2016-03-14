@@ -16,19 +16,25 @@ public class BlockHelper {
     
     public List<String> defaultBlocks = new ArrayList<String>() {
         {
-            add("coeur.png");
-            add("triangle.png");
-            add("rond.png");
-            add("etoile.png");
-            add("triangleinverse.png");
-            add("losange.png");
+            add("coeur");
+            add("triangle");
+            add("rond");
+            add("etoile");
+            add("triangleinverse");
+            add("losange");
         }
     };
     
     public Block newRandomBlock(int lin, int col){
         int index = randomGenerator.nextInt(defaultBlocks.size());
         System.out.println(defaultBlocks.size()+" "+index);
-        return new Block(defaultBlocks.get(index), false, col, lin);
+        return new Block(defaultBlocks.get(index)+".png", false, index, col, lin);
+    }
+    
+    public Block newRandomBlockWithEmpty(int lin, int col){
+        int index = randomGenerator.nextInt(defaultBlocks.size()+2);
+        if(index >= defaultBlocks.size()) return new Block(col, lin);
+        else return new Block(defaultBlocks.get(index)+".png", false, index,col, lin);
     }
     
 }

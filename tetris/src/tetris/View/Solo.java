@@ -30,6 +30,8 @@ import javax.swing.Timer;
 
 public class Solo extends JPanel implements ActionListener {  
     
+    private boolean debug = true;
+    
     private Image background;
     private Image cursor;
     private Image pauseBg;
@@ -43,12 +45,12 @@ public class Solo extends JPanel implements ActionListener {
     
     private Timer timer;
     
-    private Game ga;
+    private GameSolo ga;
     
     boolean isPaused;
     
     public Solo(){
-        ga = new Game();
+        ga = new GameSolo();
         
         timer = new Timer(ga.DELAY, this);
         timer.start();
@@ -100,6 +102,18 @@ public class Solo extends JPanel implements ActionListener {
             coordX = XStartBoard;
             for(j=0; j<=ga.board.nbCol; j++){
                 g.drawImage(ga.board.getLineN(i).getBlockAtPos(j).getBlockImage().getImage(), coordX, coordY, this);
+                if(debug){
+                    g.setColor(Color.WHITE);
+                    g.setFont(new Font("Monospaced", Font.BOLD, 10));
+                    String s = "- X : "+ga.board.getLineN(i).getBlockAtPos(j).getX();
+                    String s1 = "- Y : "+ga.board.getLineN(i).getBlockAtPos(j).getY();
+                    String s2 = "- E : "+ga.board.getLineN(i).getBlockAtPos(j).isEmpty();
+                    String s3 = "- C : "+ga.board.getLineN(i).getBlockAtPos(j).getColor();
+                    g.drawString(s, coordX + 10, coordY+10);
+                    g.drawString(s1, coordX + 10, coordY+20);
+                    g.drawString(s2, coordX + 10, coordY+30);
+                    g.drawString(s3, coordX + 10, coordY+40);
+                }
                 coordX += 70;
             }
         }
