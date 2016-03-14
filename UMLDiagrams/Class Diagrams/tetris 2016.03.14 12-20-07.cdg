@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="tetris">
+  <ClassDiagramComponents>
+    <Class name="GameSolo" package="tetris.Controller" visibility="public" xPosition="1492.0" yPosition="101.0">
+      <Fields>
+        <Field name="DELAY" type="int" visibility="public" isFinal="true"/>
+        <Field name="numActions" type="int" visibility="public"/>
+        <Field name="numSec" type="int" visibility="public"/>
+        <Field name="xCursor" type="int" visibility="public"/>
+        <Field name="yCursor" type="int" visibility="public"/>
+        <Field name="board" type="Board" visibility="public"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="initGame" returnType="void" visibility="private"/>
+        <Method name="nextUpdate" returnType="void" visibility="public"/>
+        <Method name="nextSec" returnType="void" visibility="public"/>
+        <Method name="blockExchange" returnType="void" visibility="public"/>
+        <Method name="insertNewLine" returnType="void" visibility="public"/>
+        <Method name="GameOver" returnType="void" visibility="public"/>
+        <Method name="getxCursor" returnType="int" visibility="public"/>
+        <Method name="getyCursor" returnType="int" visibility="public"/>
+        <Method name="setxCursor" returnType="void" visibility="public">
+          <Argument type="int" name="xCursor"/>
+        </Method>
+        <Method name="setyCursor" returnType="void" visibility="public">
+          <Argument type="int" name="yCursor"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="BlockHelper" package="tetris.Helper" visibility="public" xPosition="243.0" yPosition="25.0">
+      <Fields>
+        <Field name="randomGenerator" type="Random" visibility="private"/>
+        <Field name="defaultBlocks" type="List&lt;String&gt;" visibility="public"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="newRandomBlock" returnType="Block" visibility="public">
+          <Argument type="int" name="lin"/>
+          <Argument type="int" name="col"/>
+        </Method>
+        <Method name="newRandomBlockWithEmpty" returnType="Block" visibility="public">
+          <Argument type="int" name="lin"/>
+          <Argument type="int" name="col"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Block" package="tetris.Model" visibility="public" xPosition="234.0" yPosition="245.0">
+      <Fields>
+        <Field name="blockImage" type="ImageIcon" visibility="private"/>
+        <Field name="x" type="int" visibility="package"/>
+        <Field name="y" type="int" visibility="package"/>
+        <Field name="color" type="int" visibility="package"/>
+        <Field name="Empty" type="boolean" visibility="package"/>
+        <Field name="Matched" type="boolean" visibility="package"/>
+        <Field name="TimeMatched" type="double" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="int" name="x"/>
+          <Argument type="int" name="y"/>
+        </Constructor>
+        <Constructor visibility="public">
+          <Argument type="String" name="path"/>
+          <Argument type="boolean" name="empt"/>
+          <Argument type="int" name="Color"/>
+          <Argument type="int" name="x"/>
+          <Argument type="int" name="y"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getBlockImage" returnType="ImageIcon" visibility="public"/>
+        <Method name="isEmpty" returnType="boolean" visibility="public"/>
+        <Method name="setEmpty" returnType="void" visibility="public">
+          <Argument type="boolean" name="isEmpty"/>
+        </Method>
+        <Method name="getX" returnType="int" visibility="public"/>
+        <Method name="setX" returnType="void" visibility="public">
+          <Argument type="int" name="x"/>
+        </Method>
+        <Method name="getY" returnType="int" visibility="public"/>
+        <Method name="setY" returnType="void" visibility="public">
+          <Argument type="int" name="y"/>
+        </Method>
+        <Method name="getColor" returnType="int" visibility="public"/>
+        <Method name="isMatched" returnType="boolean" visibility="public"/>
+        <Method name="setMatched" returnType="void" visibility="public">
+          <Argument type="boolean" name="Matched"/>
+        </Method>
+        <Method name="getTimeMatched" returnType="double" visibility="public"/>
+        <Method name="setTimeMatched" returnType="void" visibility="public">
+          <Argument type="double" name="TimeMatched"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Board" package="tetris.Model" visibility="public" xPosition="1010.0" yPosition="44.0">
+      <Fields>
+        <Field name="thinking" type="boolean" visibility="public"/>
+        <Field name="DEFAULT_NEXT_LINE_TIME" type="int" visibility="public" isFinal="true"/>
+        <Field name="board" type="ArrayList&lt;Line&gt;" visibility="package"/>
+        <Field name="MatchedCells" type="ArrayList&lt;Block&gt;" visibility="package"/>
+        <Field name="nextLine" type="Line" visibility="public"/>
+        <Field name="timeNxtLine" type="int" visibility="public"/>
+        <Field name="bl" type="BlockHelper" visibility="private"/>
+        <Field name="nbCol" type="int" visibility="public"/>
+        <Field name="nbLin" type="int" visibility="public"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="initGrid" returnType="void" visibility="public"/>
+        <Method name="makeNewRandomLineWithEmptyBlocks" returnType="Line" visibility="public">
+          <Argument type="int" name="numLigne"/>
+        </Method>
+        <Method name="makeNewRandomLine" returnType="Line" visibility="public">
+          <Argument type="int" name="numLigne"/>
+        </Method>
+        <Method name="getBlockDown" returnType="void" visibility="public">
+          <Argument type="Block" name="b"/>
+        </Method>
+        <Method name="getGridDown" returnType="void" visibility="public"/>
+        <Method name="defineEmptyLines" returnType="void" visibility="public"/>
+        <Method name="spotMatches" returnType="void" visibility="public"/>
+        <Method name="updateMatchedTime" returnType="void" visibility="public"/>
+        <Method name="killOldMatched" returnType="void" visibility="public"/>
+        <Method name="getNextLine" returnType="Line" visibility="public"/>
+        <Method name="getLineN" returnType="Line" visibility="public">
+          <Argument type="int" name="nLine"/>
+        </Method>
+        <Method name="setLigneN" returnType="void" visibility="public">
+          <Argument type="int" name="index"/>
+          <Argument type="Line" name="l"/>
+        </Method>
+        <Method name="isThinking" returnType="boolean" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Line" package="tetris.Model" visibility="public" xPosition="633.0" yPosition="435.0">
+      <Fields>
+        <Field name="blocks" type="ArrayList&lt;Block&gt;" visibility="package"/>
+        <Field name="Empty" type="boolean" visibility="package"/>
+        <Field name="y" type="int" visibility="package"/>
+        <Field name="nbCells" type="int" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="int" name="nbCell"/>
+          <Argument type="int" name="numLigne"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getBlocks" returnType="ArrayList&lt;Block&gt;" visibility="public"/>
+        <Method name="getBlockAtPos" returnType="Block" visibility="public">
+          <Argument type="int" name="pos"/>
+        </Method>
+        <Method name="setBlockAtPos" returnType="void" visibility="public">
+          <Argument type="int" name="pos"/>
+          <Argument type="Block" name="b"/>
+        </Method>
+        <Method name="updateLineNumber" returnType="void" visibility="public">
+          <Argument type="int" name="newNumLigne"/>
+        </Method>
+        <Method name="isEmpty" returnType="boolean" visibility="public"/>
+        <Method name="setEmpty" returnType="void" visibility="public">
+          <Argument type="boolean" name="Empty"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Tetris" package="tetris" visibility="public" xPosition="21.0" yPosition="9.0">
+      <Fields>
+        <Field name="serialVersionUID" type="long" visibility="private" isStatic="true" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="titre"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="initUI" returnType="void" visibility="private"/>
+        <Method name="main" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String[]" name="args"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Solo" package="tetris.View" visibility="public" xPosition="1757.0" yPosition="-3.0">
+      <Fields>
+        <Field name="debug" type="boolean" visibility="private"/>
+        <Field name="background" type="Image" visibility="private"/>
+        <Field name="ready" type="Image" visibility="private"/>
+        <Field name="set" type="Image" visibility="private"/>
+        <Field name="go" type="Image" visibility="private"/>
+        <Field name="cursor" type="Image" visibility="private"/>
+        <Field name="pauseBg" type="Image" visibility="private"/>
+        <Field name="nxtLineHover" type="Image" visibility="private"/>
+        <Field name="bgBlackCell" type="Image" visibility="private"/>
+        <Field name="XStartBoard" type="int" visibility="public"/>
+        <Field name="YStartBoard" type="int" visibility="public"/>
+        <Field name="XTime" type="int" visibility="private"/>
+        <Field name="YTime" type="int" visibility="private"/>
+        <Field name="CellSizeX" type="int" visibility="private"/>
+        <Field name="CellSizeY" type="int" visibility="private"/>
+        <Field name="timer" type="Timer" visibility="private"/>
+        <Field name="ga" type="GameSolo" visibility="private"/>
+        <Field name="isPaused" type="boolean" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="initGraphics" returnType="void" visibility="private"/>
+        <Method name="loadImage" returnType="void" visibility="private"/>
+        <Method name="paintComponent" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="drawBoard" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="drawTime" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="drawCursor" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="drawNextLine" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="pause" returnType="void" visibility="private"/>
+        <Method name="actionPerformed" returnType="void" visibility="public">
+          <Argument type="ActionEvent" name="e"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations>
+    <UseRelation source="tetris.Helper.BlockHelper" target="tetris.Model.Block" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="tetris.Model.Board" target="tetris.Model.Line" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="blocks" source="tetris.Model.Line" target="tetris.Model.Block" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;Block&gt;"/>
+    <UseRelation source="tetris.Model.Board" target="tetris.Model.Block" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="MatchedCells" source="tetris.Model.Board" target="tetris.Model.Block" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;Block&gt;"/>
+    <HasRelation name="ga" source="tetris.View.Solo" target="tetris.Controller.GameSolo" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="tetris.Model.Line" target="tetris.Model.Block" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="nextLine" source="tetris.Model.Board" target="tetris.Model.Line" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="bl" source="tetris.Model.Board" target="tetris.Helper.BlockHelper" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="board" source="tetris.Model.Board" target="tetris.Model.Line" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;Line&gt;"/>
+    <HasRelation name="board" source="tetris.Controller.GameSolo" target="tetris.Model.Board" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+  </ClassDiagramRelations>
+</ClassDiagram>
