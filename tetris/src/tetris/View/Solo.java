@@ -30,7 +30,7 @@ import javax.swing.Timer;
 
 public class Solo extends JPanel implements ActionListener {  
     
-    private boolean debug = false;
+    private boolean debug = true;
     
     private Image background;
     private Image ready;
@@ -46,6 +46,9 @@ public class Solo extends JPanel implements ActionListener {
 
     private int XTime = 82;
     private int YTime = 100;
+    
+    private int XScore = 690;
+    private int YScore = 120;
     
     private int CellSizeX = 57;
     private int CellSizeY = 57;
@@ -121,6 +124,7 @@ public class Solo extends JPanel implements ActionListener {
             g.drawImage(background, 0, 0, null);
             drawBoard(g);
             drawTime(g);
+            drawScore(g);
             drawCursor(g);
             drawNextLine(g);
             if(isPaused) g.drawImage(pauseBg, 0,0, this);
@@ -170,6 +174,13 @@ public class Solo extends JPanel implements ActionListener {
         g.drawString("Time :", XTime, YTime);
         g.drawString(ga.numSec+"s Playing.", XTime, YTime+20);
         g.drawString(ga.numActions*5+"ms Playing.", XTime, YTime+40);
+    }
+    
+    public void drawScore(Graphics g){
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Monospaced", Font.BOLD, 16));
+        g.drawString("Score :", XScore, YScore);
+        g.drawString(ga.board.getScore()+" Points", XScore, YScore+20);
     }
     
     public void drawCursor(Graphics g){

@@ -13,7 +13,7 @@ public class Board {
 
     public boolean thinking = false;
     
-    public final int DEFAULT_NEXT_LINE_TIME = 20;
+    public final int DEFAULT_NEXT_LINE_TIME = 4;
     
     ArrayList<Line> board;
     
@@ -27,9 +27,14 @@ public class Board {
     public int nbCol = 5;
     public int nbLin = 11;
     
+    public int Score;
+    public int ScoreToAdd;
+    public int Combo;
+    
     public Board(){
         board = new ArrayList<Line>();
         MatchedCells = new ArrayList<Block>();
+        Score = 0;
     }
     
     public void initGrid(){
@@ -93,7 +98,10 @@ public class Board {
         }
     }
     
-    public void spotMatches(){
+    public boolean spotMatches(){
+        
+        boolean hadMatches = false;
+        
         int i, j;
         int x=0, y;
         
@@ -147,6 +155,8 @@ public class Board {
                     if(countHorizontalMatch>=3) {
                         
                         System.out.println(i+" "+j+" CH "+ countHorizontalMatch);
+                        hadMatches = true;
+                        Score += (10*(countHorizontalMatch-2));
                         
                         y=i;
                         x=j;
@@ -174,6 +184,11 @@ public class Board {
                     
                     if(countVerticalMatch>=3) {
                         System.out.println(i+" "+j+" CV "+ countVerticalMatch);
+                        
+                        hadMatches = true;
+                        
+                        Score += (10*(countVerticalMatch-2));
+                        
                         y=i;
                         x=j;
                         
@@ -198,7 +213,9 @@ public class Board {
                     }
                 }
             }
-        }
+        }        
+
+        return hadMatches;
     }
     
     public void updateMatchedTime(){
@@ -231,6 +248,16 @@ public class Board {
         l.updateLineNumber(index);
     }
 
+    public int getScore() {
+        return Score;
+    }
+
+    public void setScore(int Score) {
+        this.Score = Score;
+    }
+
+    
+    
     public boolean isThinking() {
         return thinking;
     }

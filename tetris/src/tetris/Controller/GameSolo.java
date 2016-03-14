@@ -48,6 +48,7 @@ public class GameSolo {
             }
         }
         board.spotMatches();
+        board.Combo+=1;
         board.updateMatchedTime();
         board.killOldMatched();
         board.defineEmptyLines();
