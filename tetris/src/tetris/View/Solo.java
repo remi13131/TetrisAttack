@@ -38,11 +38,14 @@ public class Solo extends JPanel implements ActionListener {
     private Image nxtLineHover;
     private Image bgBlackCell;
     
-    public int XStartBoard = 389;
-    public int YStartBoard = 942;
+    public int XStartBoard = 314;
+    public int YStartBoard = 763;
 
     private int XTime = 82;
-    private int YTime = 122;
+    private int YTime = 100;
+    
+    private int CellSizeX = 57;
+    private int CellSizeY = 57;
     
     private Timer timer;
     
@@ -71,15 +74,15 @@ public class Solo extends JPanel implements ActionListener {
     }
     
     private void loadImage() { 
-        ImageIcon ii = new ImageIcon("images/Backgrounds/1.png");
+        ImageIcon ii = new ImageIcon(getClass().getResource("/images/Backgrounds/1.png"));
         background = ii.getImage();
-        ImageIcon ii2 = new ImageIcon("images/Backgrounds/cursor.png");
+        ImageIcon ii2 = new ImageIcon(getClass().getResource("/images/Backgrounds/cursor.png"));
         cursor = ii2.getImage();
-        ImageIcon ii3 = new ImageIcon("images/Backgrounds/Pause.png");
+        ImageIcon ii3 = new ImageIcon(getClass().getResource("/images/Backgrounds/Pause.png"));
         pauseBg = ii3.getImage();
-        ImageIcon ii4 = new ImageIcon("images/Backgrounds/nextLineBlack.png");
+        ImageIcon ii4 = new ImageIcon(getClass().getResource("/images/Backgrounds/nextLineBlack.png"));
         nxtLineHover = ii4.getImage();
-        ImageIcon ii5 = new ImageIcon("images/Backgrounds/bgBlackCell.png");
+        ImageIcon ii5 = new ImageIcon(getClass().getResource("/images/Backgrounds/bgBlackCell.png"));
         bgBlackCell = ii5.getImage();
     }
 
@@ -101,9 +104,11 @@ public class Solo extends JPanel implements ActionListener {
         int i, j, coordX, coordY;
         coordY = YStartBoard;
         for(i=0; i<=ga.board.nbLin; i++){
-            coordY -= 69;
+            coordY -= CellSizeY;
             coordX = XStartBoard;
             if(debug){
+                g.setColor(Color.WHITE);
+                g.setFont(new Font("Monospaced", Font.BOLD, 8));
                 String s4 = "- EL : "+ga.board.getLineN(i).isEmpty();
                 g.drawString(s4, coordX - 100, coordY+20);
             }
@@ -111,40 +116,38 @@ public class Solo extends JPanel implements ActionListener {
                 g.drawImage(ga.board.getLineN(i).getBlockAtPos(j).getBlockImage().getImage(), coordX, coordY, this);
                 if(ga.board.getLineN(i).getBlockAtPos(j).isMatched()) g.drawImage(bgBlackCell, coordX, coordY, this);
                 if(debug){
-                    g.setColor(Color.WHITE);
-                    g.setFont(new Font("Monospaced", Font.BOLD, 10));
                     String s = "- X : "+ga.board.getLineN(i).getBlockAtPos(j).getX();
                     String s1 = "- Y : "+ga.board.getLineN(i).getBlockAtPos(j).getY();
                     String s2 = "- E : "+ga.board.getLineN(i).getBlockAtPos(j).isEmpty();
                     String s3 = "- C : "+ga.board.getLineN(i).getBlockAtPos(j).getColor();
                     String s5 = "- M : "+ga.board.getLineN(i).getBlockAtPos(j).isMatched();
                     String s6 = "- TM : "+ga.board.getLineN(i).getBlockAtPos(j).getTimeMatched();
-                    g.drawString(s, coordX + 10, coordY+10);
-                    g.drawString(s1, coordX + 10, coordY+20);
-                    g.drawString(s2, coordX + 10, coordY+30);
-                    g.drawString(s3, coordX + 10, coordY+40);
-                    g.drawString(s5, coordX + 10, coordY+50);
-                    g.drawString(s6, coordX + 10, coordY+60);
+                    g.drawString(s, coordX + 10, coordY+8);
+                    g.drawString(s1, coordX + 10, coordY+16);
+                    g.drawString(s2, coordX + 10, coordY+24);
+                    g.drawString(s3, coordX + 10, coordY+32);
+                    g.drawString(s5, coordX + 10, coordY+40);
+                    g.drawString(s6, coordX + 10, coordY+48);
                 }
-                coordX += 70;
+                coordX += CellSizeX;
             }
         }
     }
     
     public void drawTime(Graphics g){
         g.setColor(Color.WHITE);
-        g.setFont(new Font("Monospaced", Font.BOLD, 26));
-        g.drawString("Time", XTime, YTime);
-        g.drawString(ga.numSec+"s Playing.", XTime, YTime+50);
-        g.drawString(ga.numActions*5+"ms Playing.", XTime, YTime+80);
+        g.setFont(new Font("Monospaced", Font.BOLD, 16));
+        g.drawString("Time :", XTime, YTime);
+        g.drawString(ga.numSec+"s Playing.", XTime, YTime+20);
+        g.drawString(ga.numActions*5+"ms Playing.", XTime, YTime+40);
     }
     
     public void drawCursor(Graphics g){
         int coordX = XStartBoard;
-        int coordY = YStartBoard-69;
+        int coordY = YStartBoard-CellSizeY;
         int i;
-        for(i=0; i<ga.getyCursor(); i++) coordY -= 69;
-        for(i=0; i<ga.getxCursor(); i++) coordX += 70;
+        for(i=0; i<ga.getyCursor(); i++) coordY -= CellSizeY;
+        for(i=0; i<ga.getxCursor(); i++) coordX += CellSizeX;
         g.drawImage(cursor, coordX, coordY, this);
     }
     
@@ -154,7 +157,7 @@ public class Solo extends JPanel implements ActionListener {
         int coordY = YStartBoard;
         for(j=0; j<=ga.board.nbCol; j++){
             g.drawImage(ga.board.getNextLine().getBlockAtPos(j).getBlockImage().getImage(), coordX, coordY, this);
-            coordX += 70;
+            coordX += CellSizeX;
         }
         coordX = XStartBoard;
         g.drawImage(nxtLineHover, coordX, coordY, this);

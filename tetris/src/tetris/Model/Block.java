@@ -21,7 +21,7 @@ public class Block {
     double TimeMatched=0;
     
      public Block(int x, int y){
-        ImageIcon ii = new ImageIcon("images/Blocks/defaultTransparent.png");
+        ImageIcon ii = new ImageIcon(getClass().getResource("/images/Blocks/defaultTransparent.png"));
         this.x=x;
         this.y=y;
         blockImage = ii;
@@ -30,7 +30,7 @@ public class Block {
      }
     
     public Block(String path, boolean empt, int Color, int x, int y){        
-        ImageIcon ii = new ImageIcon("images/Blocks/"+path);
+        ImageIcon ii = new ImageIcon(getClass().getResource("/images/Blocks/"+path));
         blockImage = ii;
         this.x=x;
         this.y=y;
