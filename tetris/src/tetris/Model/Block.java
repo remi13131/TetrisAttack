@@ -13,17 +13,23 @@ import javax.swing.ImageIcon;
 public class Block {
     
     private ImageIcon blockImage;
+    int x;
+    int y;
     boolean Empty;
     
      public Block(int x, int y){
-        ImageIcon ii = new ImageIcon("images/Blocks/default/default_"+y+"-"+x+".png");
+        ImageIcon ii = new ImageIcon("images/Blocks/defaultTransparent.png");
+        this.x=x;
+        this.y=y;
         blockImage = ii;
         Empty = true;
      }
     
-    public Block(String path, boolean empt){        
+    public Block(String path, boolean empt, int x, int y){        
         ImageIcon ii = new ImageIcon("images/Blocks/"+path);
         blockImage = ii;
+        this.x=x;
+        this.y=y;
         Empty = empt;
     }
 
@@ -38,5 +44,23 @@ public class Block {
     public void setEmpty(boolean isEmpty) {
         this.Empty = isEmpty;
     }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+    
+    
     
 }

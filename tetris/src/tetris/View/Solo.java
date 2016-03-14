@@ -29,11 +29,11 @@ import javax.swing.Timer;
  */
 
 public class Solo extends JPanel implements ActionListener {  
-    private final int DELAY = 25;
     
     private Image background;
     private Image cursor;
     private Image pauseBg;
+    private Image nxtLineHover;
 
     public int XStartBoard = 389;
     public int YStartBoard = 942;
@@ -50,7 +50,7 @@ public class Solo extends JPanel implements ActionListener {
     public Solo(){
         ga = new Game();
         
-        timer = new Timer(DELAY, this);
+        timer = new Timer(ga.DELAY, this);
         timer.start();
         
         this.setFocusable(true);
@@ -64,7 +64,7 @@ public class Solo extends JPanel implements ActionListener {
         int w = background.getWidth(this);
         int h =  background.getHeight(this);
         setDoubleBuffered(true);
-        setPreferredSize(new Dimension(w, h));     
+        setPreferredSize(new Dimension(w, h));
     }
     
     private void loadImage() { 
@@ -74,6 +74,8 @@ public class Solo extends JPanel implements ActionListener {
         cursor = ii2.getImage();
         ImageIcon ii3 = new ImageIcon("images/Backgrounds/Pause.png");
         pauseBg = ii3.getImage();
+        ImageIcon ii4 = new ImageIcon("images/Backgrounds/nextLineBlack.png");
+        nxtLineHover = ii4.getImage();
     }
 
     @Override
@@ -83,14 +85,11 @@ public class Solo extends JPanel implements ActionListener {
         drawBoard(g);
         drawTime(g);
         drawCursor(g);
+        drawNextLine(g);
         if(isPaused) g.drawImage(pauseBg, 0,0, this);
     } 
     
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        ga.nextUpdate();
-        repaint();
-    }
+
     
     public void drawBoard(Graphics g){
         Line l;
@@ -110,7 +109,8 @@ public class Solo extends JPanel implements ActionListener {
         g.setColor(Color.WHITE);
         g.setFont(new Font("Monospaced", Font.BOLD, 26));
         g.drawString("Time", XTime, YTime);
-        g.drawString(ga.numSec+" Sec. Playing.", XTime, YTime+50);
+        g.drawString(ga.numSec+"s Playing.", XTime, YTime+50);
+        g.drawString(ga.numActions*5+"ms Playing.", XTime, YTime+80);
     }
     
     public void drawCursor(Graphics g){
@@ -122,11 +122,32 @@ public class Solo extends JPanel implements ActionListener {
         g.drawImage(cursor, coordX, coordY, this);
     }
     
+    public void drawNextLine(Graphics g){
+        int j;
+        int coordX = XStartBoard;
+        int coordY = YStartBoard;
+        for(j=0; j<=ga.board.nbCol; j++){
+            g.drawImage(ga.board.getNextLine().getBlockAtPos(j).getBlockImage().getImage(), coordX, coordY, this);
+            coordX += 70;
+        }
+        coordX = XStartBoard;
+        g.drawImage(nxtLineHover, coordX, coordY, this);
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Monospaced", Font.BOLD, 16));
+        g.drawString("New Line in "+ga.board.timeNxtLine+" Seconds", coordX+50, coordY+50);
+    }
+    
     private void pause()
     {
         isPaused = !isPaused;
         if (isPaused) timer.stop();
         else timer.start();
+        repaint();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        ga.nextUpdate();
         repaint();
     }
     

@@ -24,7 +24,7 @@ public class Tetris extends JFrame {
     private void initUI()
     {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(1125,981);
+        this.setSize(1125,1050);
         this.setResizable(false);
         
         Solo tg = new Solo();

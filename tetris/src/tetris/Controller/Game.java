@@ -16,6 +16,8 @@ import java.util.List;
 
 public class Game { 
     
+    public final int DELAY = 25;
+    
     public int numActions = 0;
     public int numSec = 0;
     
@@ -34,11 +36,12 @@ public class Game {
     }
 
     public void nextUpdate(){
-        board.getLineN(0).setBlockAtPos(1, new Block("triangleinverse.png", false));
         numActions += 1;
-        if(numActions%40 == 0) { // Toutes les secondes (1 action = 25ms, donc 40*25 = 1000ms = 1sec)
+        int nbActionParSeconde = 1000/DELAY;
+        if(numActions%nbActionParSeconde == 0) { // Toutes les secondes (1 action = 25ms, donc 40*25 = 1000ms = 1sec)
             numSec += 1;
-            System.out.println("SECS : "+(numActions/40));
+            System.out.println("SECS : "+(numActions/nbActionParSeconde));
+            nextSec();
             //if(numSec == 10) board.getLineN(0).setBlockAtPos(0, new Block(0,0));
             //if(numSec == 10) board.getLineN(1).setBlockAtPos(0, new Block("coeur.png", false));
         }
@@ -52,9 +55,40 @@ public class Game {
     }
     
     public void nextSec(){
+        board.timeNxtLine--;
+        if(board.timeNxtLine == 0) {
+            insertNewLine();
+            board.nextLine = board.makeNewRandomLine(0);
+            board.timeNxtLine = board.DEFAULT_NEXT_LINE_TIME;
+        }
         
     }
 
+    public void insertNewLine(){
+        int i;
+        boolean trouve=false;
+        int indexLigne=-1;
+        for(i=0; i<=board.nbLin; i++){
+            if(board.getLineN(i).isEmpty()) {
+                trouve=true;
+                indexLigne = i;
+                break;
+            }
+        }
+        if(trouve && indexLigne != -1) {
+            for(i=indexLigne; i>0; i--){
+                board.setLigneN(i, board.getLineN(i-1));
+            }
+            board.setLigneN(0, board.getNextLine());
+        }
+        else GameOver();
+    }
+    
+    public void GameOver(){
+        System.out.println("Game Over. Exiting Game.");
+        System.exit(0);
+    }
+    
     public int getxCursor() {
         return xCursor;
     }

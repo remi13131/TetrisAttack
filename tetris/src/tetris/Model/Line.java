@@ -11,6 +11,8 @@ public class Line {
 
     ArrayList<Block> blocks;
     boolean Empty;
+    int y;
+    int nbCells;
     
     public Line(int nbCell, int numLigne){
         blocks = new ArrayList<Block>();
@@ -20,6 +22,8 @@ public class Line {
         }
         System.out.println(""+blocks.size());
         Empty = true;
+        y=numLigne;
+        nbCells = nbCell;
     }
     
     public ArrayList<Block> getBlocks() {
@@ -32,9 +36,17 @@ public class Line {
     
     public void setBlockAtPos(int pos, Block b) {
         blocks.set(pos, b);
+        b.setY(this.y);
+        b.setX(pos);
         if(!b.isEmpty()) Empty = false;
     }
 
+    public void updateLineNumber(int newNumLigne){
+        this.y=newNumLigne;
+        int i;
+        for(i=0; i<=nbCells; i++) getBlockAtPos(i).setY(newNumLigne);
+    }
+    
     public boolean isEmpty() {
         return Empty;
     }

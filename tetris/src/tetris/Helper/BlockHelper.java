@@ -25,10 +25,10 @@ public class BlockHelper {
         }
     };
     
-    public Block newRandomBlock(){
+    public Block newRandomBlock(int lin, int col){
         int index = randomGenerator.nextInt(defaultBlocks.size());
         System.out.println(defaultBlocks.size()+" "+index);
-        return new Block(defaultBlocks.get(index), false);
+        return new Block(defaultBlocks.get(index), false, col, lin);
     }
     
 }
