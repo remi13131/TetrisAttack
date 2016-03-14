@@ -2,7 +2,7 @@
 
 <ClassDiagram name="tetris">
   <ClassDiagramComponents>
-    <Class name="GameSolo" package="tetris.Controller" visibility="public" xPosition="1504.0" yPosition="175.0">
+    <Class name="GameSolo" package="tetris.Controller" visibility="public" xPosition="20.0" yPosition="20.0">
       <Fields>
         <Field name="DELAY" type="int" visibility="public" isFinal="true"/>
         <Field name="numActions" type="int" visibility="public"/>
@@ -31,7 +31,7 @@
         </Method>
       </Methods>
     </Class>
-    <Class name="BlockHelper" package="tetris.Helper" visibility="public" xPosition="234.0" yPosition="25.0">
+    <Class name="BlockHelper" package="tetris.Helper" visibility="public" xPosition="320.0" yPosition="20.0">
       <Fields>
         <Field name="randomGenerator" type="Random" visibility="private"/>
         <Field name="defaultBlocks" type="List&lt;String&gt;" visibility="public"/>
@@ -48,7 +48,7 @@
         </Method>
       </Methods>
     </Class>
-    <Class name="Block" package="tetris.Model" visibility="public" xPosition="225.0" yPosition="309.0">
+    <Class name="Block" package="tetris.Model" visibility="public" xPosition="620.0" yPosition="20.0">
       <Fields>
         <Field name="blockImage" type="ImageIcon" visibility="private"/>
         <Field name="x" type="int" visibility="package"/>
@@ -96,7 +96,7 @@
         </Method>
       </Methods>
     </Class>
-    <Class name="Board" package="tetris.Model" visibility="public" xPosition="1038.0" yPosition="118.0">
+    <Class name="Board" package="tetris.Model" visibility="public" xPosition="920.0" yPosition="20.0">
       <Fields>
         <Field name="thinking" type="boolean" visibility="public"/>
         <Field name="DEFAULT_NEXT_LINE_TIME" type="int" visibility="public" isFinal="true"/>
@@ -138,7 +138,7 @@
         <Method name="isThinking" returnType="boolean" visibility="public"/>
       </Methods>
     </Class>
-    <Class name="Line" package="tetris.Model" visibility="public" xPosition="647.0" yPosition="499.0">
+    <Class name="Line" package="tetris.Model" visibility="public" xPosition="1220.0" yPosition="20.0">
       <Fields>
         <Field name="blocks" type="ArrayList&lt;Block&gt;" visibility="package"/>
         <Field name="Empty" type="boolean" visibility="package"/>
@@ -169,7 +169,7 @@
         </Method>
       </Methods>
     </Class>
-    <Class name="Tetris" package="tetris" visibility="public" xPosition="12.0" yPosition="9.0">
+    <Class name="Tetris" package="tetris" visibility="public" xPosition="1520.0" yPosition="20.0">
       <Fields>
         <Field name="serialVersionUID" type="long" visibility="private" isStatic="true" isFinal="true"/>
       </Fields>
@@ -185,7 +185,7 @@
         </Method>
       </Methods>
     </Class>
-    <Class name="Solo" package="tetris.View" visibility="public" xPosition="1878.0" yPosition="71.0">
+    <Class name="Solo" package="tetris.View" visibility="public" xPosition="1820.0" yPosition="20.0">
       <Fields>
         <Field name="debug" type="boolean" visibility="private"/>
         <Field name="background" type="Image" visibility="private"/>
@@ -235,16 +235,16 @@
     </Class>
   </ClassDiagramComponents>
   <ClassDiagramRelations>
-    <UseRelation source="tetris.Helper.BlockHelper" target="tetris.Model.Block" sourceCardinality="1..1" targetCardinality="1..1"/>
     <UseRelation source="tetris.Model.Board" target="tetris.Model.Line" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="ga" source="tetris.View.Solo" target="tetris.Controller.GameSolo" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
     <HasRelation name="blocks" source="tetris.Model.Line" target="tetris.Model.Block" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;Block&gt;"/>
+    <HasRelation name="nextLine" source="tetris.Model.Board" target="tetris.Model.Line" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="board" source="tetris.Controller.GameSolo" target="tetris.Model.Board" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
     <UseRelation source="tetris.Model.Board" target="tetris.Model.Block" sourceCardinality="1..1" targetCardinality="1..1"/>
     <HasRelation name="MatchedCells" source="tetris.Model.Board" target="tetris.Model.Block" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;Block&gt;"/>
-    <HasRelation name="ga" source="tetris.View.Solo" target="tetris.Controller.GameSolo" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <UseRelation source="tetris.Model.Line" target="tetris.Model.Block" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <HasRelation name="nextLine" source="tetris.Model.Board" target="tetris.Model.Line" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
     <HasRelation name="bl" source="tetris.Model.Board" target="tetris.Helper.BlockHelper" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="tetris.Model.Line" target="tetris.Model.Block" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="tetris.Helper.BlockHelper" target="tetris.Model.Block" sourceCardinality="1..1" targetCardinality="1..1"/>
     <HasRelation name="board" source="tetris.Model.Board" target="tetris.Model.Line" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;Line&gt;"/>
-    <HasRelation name="board" source="tetris.Controller.GameSolo" target="tetris.Model.Board" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
   </ClassDiagramRelations>
 </ClassDiagram>
