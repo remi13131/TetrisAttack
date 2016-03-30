@@ -34,6 +34,7 @@ public class Solo extends JPanel implements ActionListener {
     public JPanel cards;
     
     private Image background;
+    private Image backgroundBlack;
     private Image ready;
     private Image set;
     private Image go;
@@ -68,6 +69,8 @@ public class Solo extends JPanel implements ActionListener {
     int blinkGameOverTime = 250;
     int countBlinkTime = 0;
     
+    boolean black2p = false;
+    
     public Tetris tetris;
     
     public Solo(Tetris t){
@@ -100,6 +103,9 @@ public class Solo extends JPanel implements ActionListener {
         ImageIcon ii = new ImageIcon(getClass().getResource("/images/Backgrounds/1.png"));
         background = ii.getImage();
         
+        ImageIcon ii7 = new ImageIcon(getClass().getResource("/images/Backgrounds/1bis.png"));
+        backgroundBlack = ii7.getImage();
+        
         ii = new ImageIcon(getClass().getResource("/images/Backgrounds/ready.png"));
         ready = ii.getImage();
         ii = new ImageIcon(getClass().getResource("/images/Backgrounds/set.png"));
@@ -124,7 +130,8 @@ public class Solo extends JPanel implements ActionListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         if(ga.numSec < 0){
-            g.drawImage(background, 0, 0, null);
+            if(black2p) g.drawImage(backgroundBlack, 0, 0, null);
+            else g.drawImage(background, 0, 0, null);
             drawBoard(g);
             drawTime(g);
             drawScore(g);
@@ -147,7 +154,8 @@ public class Solo extends JPanel implements ActionListener {
         }
         else if(!ga.GO){
             ga.setStarted(true);
-            g.drawImage(background, 0, 0, null);
+            if(black2p) g.drawImage(backgroundBlack, 0, 0, null);
+            else g.drawImage(background, 0, 0, null);
             drawBoard(g);
             drawTime(g);
             drawScore(g);
@@ -158,7 +166,8 @@ public class Solo extends JPanel implements ActionListener {
         }
         else {
             ga.setStarted(false);
-            g.drawImage(background, 0, 0, null);
+            if(black2p) g.drawImage(backgroundBlack, 0, 0, null);
+            else g.drawImage(background, 0, 0, null);
             drawBoard(g);
             drawTime(g);
             drawScore(g);
@@ -277,12 +286,11 @@ public class Solo extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(ga.GO){
-            countBlinkTime += ga.DELAY;
-            if(countBlinkTime >= blinkGameOverTime){
+        countBlinkTime += ga.DELAY;
+        if(countBlinkTime >= blinkGameOverTime){
                     countBlinkTime = 0;
+                    black2p = ! black2p;
                     blinkGameOver = !blinkGameOver;
-            }
         }
         else {
            Solo.this.requestFocusInWindow();
