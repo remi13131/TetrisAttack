@@ -159,7 +159,7 @@ public class Menu  extends JPanel implements ActionListener {
                         break;
                             
                         case 2 : 
-                            tetris.newSolo();
+                            tetris.newTwoPlayer();
                         break;
                             
                         case 3 :

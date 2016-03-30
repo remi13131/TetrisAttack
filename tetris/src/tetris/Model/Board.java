@@ -45,10 +45,12 @@ public class Board {
         xCursor=2;
         yCursor=2;
         for(i=0; i<=nbLin; i++) board.add(new Line(nbCol, i));
-        for(i=0; i<5; i++) setLigneN(i, makeNewRandomLineWithEmptyBlocks(i));
-        setLigneN(5, makeNewRandomLine(i));
-        nextLine = makeNewRandomLine(0);
-        getGridDown();
+        do{
+            for(i=0; i<5; i++) setLigneN(i, makeNewRandomLineWithEmptyBlocks(i));
+            setLigneN(5, makeNewRandomLine(i));
+            nextLine = makeNewRandomLine(0);
+            getGridDown();
+        } while(hasMatches());
     }              
     
     public Line makeNewRandomLineWithEmptyBlocks(int numLigne){
@@ -131,6 +133,68 @@ public class Board {
             }
             if(empty) getLineN(i).setEmpty(true);
         }
+    }
+
+    public boolean hasMatches(){
+        
+        boolean hasMatches = false;
+        
+        int i, j;
+        int x=0, y;
+        
+        int color;
+        
+        int countHorizontalMatch = 0;
+        int countVerticalMatch = 0;
+        
+        for(i=0; i<= nbLin; i++){
+            y=i;
+            for(j=0; j<=nbCol; j++){
+                countHorizontalMatch = 1;
+                countVerticalMatch = 1;
+                
+                y=i;
+                x=j;
+                color = getLineN(y).getBlockAtPos(x).getColor();
+                
+                if(color>-1){
+                    //* regarder à droite de la cellule courante si la couleur est la même
+                    x--;
+                    while((x>=0) && (getLineN(y).getBlockAtPos(x).getColor()==color) && (!getLineN(y).getBlockAtPos(x).isMatched())) {
+                        countHorizontalMatch++;
+                        x--;
+                    }
+
+                    //* regarder à gauche de la cellule courante si la couleur est la même
+                    x=j;
+                    x++;
+                    while((x<=nbCol) && (getLineN(y).getBlockAtPos(x).getColor()==color) && (!getLineN(y).getBlockAtPos(x).isMatched())) {
+                        countHorizontalMatch++;
+                        x++;
+                    }
+                    
+                    x=j;
+                    //* regarder en bas de la cellule courante si la couleur est la même
+                    y--;
+                    while((y>=0) && (getLineN(y).getBlockAtPos(x).getColor()==color) && (!getLineN(y).getBlockAtPos(x).isMatched())) {
+                        countVerticalMatch++;
+                        y--;
+                    }
+
+                    //* regarder en haut de la cellule courante si la couleur est la même
+                    y=i;
+                    y++;
+                    while((y<=nbLin) && (getLineN(y).getBlockAtPos(x).getColor()==color) && (!getLineN(y).getBlockAtPos(x).isMatched())) {
+                        countVerticalMatch++;
+                        y++;
+                    }
+                    
+                    if((countHorizontalMatch>=3) || (countVerticalMatch>=3)) hasMatches = true;
+                }
+            }
+        }        
+
+        return hasMatches;
     }
     
     public boolean spotMatches(){

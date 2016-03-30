@@ -242,7 +242,6 @@ public class Solo extends JPanel implements ActionListener {
         g.setFont(new Font("Monospaced", Font.BOLD, 16));
         g.drawString("Time :", XTime, YTime);
         g.drawString(ga.numSec+"s Playing.", XTime, YTime+20);
-        g.drawString(ga.numActions*5+"ms Playing.", XTime, YTime+40);
     }
     
     public void drawScore(Graphics g){
@@ -294,7 +293,7 @@ public class Solo extends JPanel implements ActionListener {
         }
         else {
            Solo.this.requestFocusInWindow();
-           ga.nextUpdate();
+           if(!ga.GO) ga.nextUpdate();
         }
         repaint();
     }
@@ -317,7 +316,7 @@ public class Solo extends JPanel implements ActionListener {
             
             System.out.println(""+keycode);
             
-            if (keycode == 'p' || keycode == 'P' || keycode == KeyEvent.VK_ESCAPE) {
+            if (keycode == 'p' || keycode == 'P' || (keycode == KeyEvent.VK_ESCAPE && !isPaused)) {
                 pause();
                 return;
             }

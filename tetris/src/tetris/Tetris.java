@@ -22,12 +22,14 @@ public class Tetris extends JFrame {
 
     public final static String MENUPANEL = "Game Menu.";
     public final static String SOLOPANEL = "Solo Game";
+    public final static String TWOPLAYERPANEL = "Solo Game";
     
     CardLayout cardLayout;   
     JPanel cards; //a panel that uses CardLayout
     Container pane;
     
     Solo solo;
+    TwoPlayer twoP;
     Menu menu;
     
     public Tetris(){  
@@ -67,8 +69,22 @@ public class Tetris extends JFrame {
         cardLayout.show(cards, Tetris.SOLOPANEL);
     }
     
-    public void goMenu(Solo s){
-        cards.remove(s);
+    public void newTwoPlayer(){
+        
+        twoP = null;   
+        twoP = new TwoPlayer(this);
+        
+        cards.add(twoP, Tetris.TWOPLAYERPANEL);
+        cardLayout.show(cards, Tetris.TWOPLAYERPANEL);
+    }
+    
+    public void goMenu(Solo j){
+        cards.remove(j);
+        cardLayout.show(cards, MENUPANEL);
+    }
+    
+    public void goMenu(TwoPlayer j){
+        cards.remove(j);
         cardLayout.show(cards, MENUPANEL);
     }
     
