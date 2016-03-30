@@ -2,44 +2,79 @@ package tetris;
 
 import tetris.View.*;
 import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.EventQueue;
-import javax.swing.ImageIcon;
+import java.awt.CardLayout;
+import tetris.Helper.RXCardLayout;
+import java.awt.Container;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 /**
  *
  * @author Remi
  */
 
+
+
 public class Tetris extends JFrame {
     
     private static final long serialVersionUID = 1L;
+
+    public final static String MENUPANEL = "Game Menu.";
+    public final static String SOLOPANEL = "Solo Game";
     
-    public Tetris(String titre){  
-        super(titre);
+    CardLayout cardLayout;   
+    JPanel cards; //a panel that uses CardLayout
+    Container pane;
+    
+    Solo solo;
+    Menu menu;
+    
+    public Tetris(){  
+        super("Tetris Attack");
+        pane = this.getContentPane();
         this.initUI();
     }
 
     private void initUI()
-    {
+    {        
+        //Create the panel that contains the "cards".
+        cards = new JPanel(new RXCardLayout());
+        cards.setSize(1831,851);
+        
+        cardLayout = (CardLayout)(cards.getLayout());
+        
+        Menu m = new Menu(this);
+        
+        cards.add(m, MENUPANEL);
+        menu = m;
+        
+        pane.add(cards, BorderLayout.CENTER);
+        
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(1831,851);
         this.setResizable(false);
-        
-        Component newGameDesign;
-        
-        Menu m = new Menu();
-        
-        
-        Solo tg = new Solo();
-        this.add(tg, BorderLayout.CENTER);
+
         setLocationRelativeTo(null); 
     }
 
-    public static void main(String[] args) {
-        Tetris t = new Tetris("Tetris Attack");
+    public void newSolo(){
+        
+        solo = null;   
+        solo = new Solo(this);
+        
+        cards.add(solo, Tetris.SOLOPANEL);
+        cardLayout.show(cards, Tetris.SOLOPANEL);
+    }
+    
+    public void goMenu(Solo s){
+        cards.remove(s);
+        cardLayout.show(cards, MENUPANEL);
+    }
+    
+    public static void main(String... args)
+    {
+        Tetris t = new Tetris();
         t.setVisible(true);
     }
 }

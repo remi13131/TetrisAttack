@@ -31,6 +31,9 @@ public class Board {
     public int ScoreToAdd;
     public int Combo;
     
+    public int xCursor;
+    public int yCursor;
+    
     public Board(){
         board = new ArrayList<Line>();
         MatchedCells = new ArrayList<Block>();
@@ -39,12 +42,14 @@ public class Board {
     
     public void initGrid(){
         int i, j;
+        xCursor=2;
+        yCursor=2;
         for(i=0; i<=nbLin; i++) board.add(new Line(nbCol, i));
         for(i=0; i<5; i++) setLigneN(i, makeNewRandomLineWithEmptyBlocks(i));
         setLigneN(5, makeNewRandomLine(i));
         nextLine = makeNewRandomLine(0);
         getGridDown();
-    }
+    }              
     
     public Line makeNewRandomLineWithEmptyBlocks(int numLigne){
         Line l = new Line(nbCol, numLigne);
@@ -59,19 +64,49 @@ public class Board {
         for(i=0; i<=nbCol; i++) l.setBlockAtPos(i, bl.newRandomBlock(i, numLigne));
         return l;
     }
-
-    public void getBlockDown(Block b){
+    
+    public void blockExchange(Block b1, Block b2){
+        int b1x=b1.getX();
+        int b1y=b1.getY();
+        int b2x=b2.getX();
+        int b2y=b2.getY();
+        getLineN(b1y).setBlockAtPos(b1x, b2);
+        getLineN(b2y).setBlockAtPos(b2x, b1);
+    }
+    
+    //#######################
+    //### ANCIENNE METHODE 
+    //#######################
+    public void getBlockDownIterative(Block b){
         if(b.isEmpty()) return;
         int pos = b.getX();
         int origY = b.getY();
         int y = b.getY();
-        System.out.println("ppppp----"+y);
+        //System.out.println("ppppp----"+y);
         while((y-1>=0) && getLineN(y-1).getBlockAtPos(pos).isEmpty()){ 
             y--;
             if(y != b.getY() && getLineN(y).getBlockAtPos(pos).isEmpty()) {
                 getLineN(y).setBlockAtPos(pos, b);
                 getLineN(y+1).setBlockAtPos(pos, new Block(pos, y+1));
             }
+        }
+    }
+    
+    public void getBlockDown(Block b){
+        if(b.isEmpty()) return;
+        if(b.isMatched()) return;
+        int pos = b.getX();
+        int origY = b.getY();
+        int y = b.getY();
+        //System.out.println("ppppp----"+y);
+        if((y-1>=0) && getLineN(y-1).getBlockAtPos(pos).isEmpty()){ 
+            y--;
+            if(y != b.getY() && getLineN(y).getBlockAtPos(pos).isEmpty()) {
+                getLineN(y).setBlockAtPos(pos, b);
+                getLineN(y+1).setBlockAtPos(pos, new Block(pos, y+1));
+            }
+            
+            getBlockDown(b);
         }
     }
     
@@ -235,6 +270,22 @@ public class Board {
         }
     }
     
+    public int getxCursor() {
+        return xCursor;
+    }
+
+    public int getyCursor() {
+        return yCursor;
+    }
+
+    public void setxCursor(int xCursor) {
+        this.xCursor = xCursor;
+    }
+
+    public void setyCursor(int yCursor) {
+        this.yCursor = yCursor;
+    }
+    
     public Line getNextLine() {
         return nextLine;
     }
@@ -256,8 +307,6 @@ public class Board {
         this.Score = Score;
     }
 
-    
-    
     public boolean isThinking() {
         return thinking;
     }

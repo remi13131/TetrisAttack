@@ -8,7 +8,6 @@ import java.awt.Graphics;
 import java.awt.image.ImageObserver;
 import java.util.List;
 
-
 /**
  *
  * @author Remi
@@ -21,8 +20,9 @@ public class GameSolo {
     public int numActions = 0;
     public int numSec = -4;
     
-    public int xCursor = 2;
-    public int yCursor = 2;
+    public boolean GO = false;
+    
+    public boolean started = false;
     
     public Board board;
     
@@ -47,12 +47,14 @@ public class GameSolo {
                 //if(numSec == 10) board.getLineN(1).setBlockAtPos(0, new Block("coeur.png", false));
             }
         }
-        board.spotMatches();
-        board.Combo+=1;
-        board.updateMatchedTime();
-        board.killOldMatched();
-        board.defineEmptyLines();
-        board.getGridDown();
+        if(isStarted()){
+            board.spotMatches();
+            board.Combo+=1;
+            board.updateMatchedTime();
+            board.killOldMatched();
+            board.defineEmptyLines();
+            board.getGridDown();
+        }
     }
     
     public void nextSec(){
@@ -65,17 +67,28 @@ public class GameSolo {
     }
     
     public void blockExchange(){
-        Block b1 = board.getLineN(yCursor).getBlockAtPos(xCursor);
-        Block b2 = board.getLineN(yCursor).getBlockAtPos(xCursor+1);
-        board.getLineN(yCursor).setBlockAtPos(xCursor, b2);
-        board.getLineN(yCursor).setBlockAtPos(xCursor+1, b1);
-        
-        board.getBlockDown(b1);
-        board.getBlockDown(b2);
+        Block b1 = board.getLineN(board.yCursor).getBlockAtPos(board.xCursor);
+        Block b2 = board.getLineN(board.yCursor).getBlockAtPos(board.xCursor+1);
+        if(b1.isMatched() || b2.isMatched()) return;
+        board.blockExchange(b1, b2);
     }
     
-
-
+    public void goLeft(){
+        if(board.getxCursor()>0) board.setxCursor(board.getxCursor() - 1);
+    }
+    
+    public void goRight(){
+        if(board.getxCursor() < board.nbCol - 1) board.setxCursor(board.getxCursor() + 1);
+    }
+    
+    public void goUp(){
+         if(board.getyCursor() < board.nbLin) board.setyCursor(board.getyCursor() + 1);
+    }
+    
+    public void goDown(){
+        if(board.getyCursor()>0) board.setyCursor(board.getyCursor() - 1);
+    }    
+    
     public void insertNewLine(){
         int i;
         boolean trouve=false;
@@ -98,25 +111,18 @@ public class GameSolo {
     }
     
     public void GameOver(){
-        System.out.println("Game Over. Exiting Game.");
-        System.exit(0);
+        System.out.println("Game Over.");
+        GO = true;
+    }
+
+    public boolean isStarted() {
+        return started;
+    }
+
+    public void setStarted(boolean started) {
+        this.started = started;
     }
     
-    public int getxCursor() {
-        return xCursor;
-    }
-
-    public int getyCursor() {
-        return yCursor;
-    }
-
-    public void setxCursor(int xCursor) {
-        this.xCursor = xCursor;
-    }
-
-    public void setyCursor(int yCursor) {
-        this.yCursor = yCursor;
-    }
 }
 
 

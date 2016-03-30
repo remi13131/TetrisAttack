@@ -1,27 +1,26 @@
 package tetris.View;
 
+import java.awt.CardLayout;
 import tetris.Controller.*;
 import tetris.Model.*;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
-import static java.awt.PageAttributes.MediaType.A;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.image.ImageObserver;
-import java.util.ArrayList;
+
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import tetris.Tetris;
 
 /**
  *
@@ -30,7 +29,9 @@ import javax.swing.Timer;
 
 public class Solo extends JPanel implements ActionListener {  
     
-    private boolean debug = true;
+    private boolean debug = false;
+    
+    public JPanel cards;
     
     private Image background;
     private Image ready;
@@ -40,6 +41,7 @@ public class Solo extends JPanel implements ActionListener {
     private Image pauseBg;
     private Image nxtLineHover;
     private Image bgBlackCell;
+    private Image GameOverImage;
     
     public int XStartBoard = 314;
     public int YStartBoard = 763;
@@ -50,6 +52,9 @@ public class Solo extends JPanel implements ActionListener {
     private int XScore = 690;
     private int YScore = 120;
     
+    private int XPressEnter = 660; 
+    private int YPressEnter = 800;
+    
     private int CellSizeX = 57;
     private int CellSizeY = 57;
     
@@ -59,7 +64,15 @@ public class Solo extends JPanel implements ActionListener {
     
     boolean isPaused;
     
-    public Solo(){
+    boolean blinkGameOver = false;
+    int blinkGameOverTime = 250;
+    int countBlinkTime = 0;
+    
+    public Tetris tetris;
+    
+    public Solo(Tetris t){
+        tetris = t;
+        
         ga = new GameSolo();
         
         timer = new Timer(ga.DELAY, this);
@@ -67,6 +80,13 @@ public class Solo extends JPanel implements ActionListener {
         
         this.setFocusable(true);
         addKeyListener(new TAdapter());
+    
+        this.addComponentListener( new ComponentAdapter() {
+            @Override
+            public void componentShown( ComponentEvent e ) {
+                Solo.this.requestFocusInWindow();
+            }
+        });
         
         initGraphics();
     }
@@ -95,6 +115,9 @@ public class Solo extends JPanel implements ActionListener {
         nxtLineHover = ii4.getImage();
         ImageIcon ii5 = new ImageIcon(getClass().getResource("/images/Backgrounds/bgBlackCell.png"));
         bgBlackCell = ii5.getImage();
+        
+        ImageIcon ii6 = new ImageIcon(getClass().getResource("/images/Backgrounds/GameOverP1.png"));
+        GameOverImage = ii6.getImage();
     }
 
     @Override
@@ -107,7 +130,8 @@ public class Solo extends JPanel implements ActionListener {
             drawScore(g);
             drawCursor(g);
             drawNextLine(g);
-            if(isPaused) g.drawImage(pauseBg, 0,0, this);
+            if(isPaused) drawPause(g);
+            else drawKeyPause(g);
             switch(ga.numSec){
                 case -3:
                     g.drawImage(ready, 0, 0, null);
@@ -121,14 +145,29 @@ public class Solo extends JPanel implements ActionListener {
                 default: break;
             }
         }
-        else{
+        else if(!ga.GO){
+            ga.setStarted(true);
             g.drawImage(background, 0, 0, null);
             drawBoard(g);
             drawTime(g);
             drawScore(g);
             drawCursor(g);
             drawNextLine(g);
-            if(isPaused) g.drawImage(pauseBg, 0,0, this);
+            if(isPaused) drawPause(g);
+            else drawKeyPause(g);
+        }
+        else {
+            ga.setStarted(false);
+            g.drawImage(background, 0, 0, null);
+            drawBoard(g);
+            drawTime(g);
+            drawScore(g);
+            drawCursor(g);
+            drawNextLine(g);
+            if(blinkGameOver){
+                g.drawImage(GameOverImage, 0,0, this);
+            }
+            drawPressEnter(g);
         }
     } 
     
@@ -168,6 +207,26 @@ public class Solo extends JPanel implements ActionListener {
             }
         }
     }
+  
+    public void drawPause(Graphics g){
+        g.drawImage(pauseBg, 0,0, this);
+        g.setColor(Color.RED);
+        g.setFont(new Font("Monospaced", Font.BOLD, 24));
+        g.drawString("PRESS P TO RESUME GAME", (XPressEnter+100), (YPressEnter-30));
+        g.drawString("PRESS ESCAPE TO GO BACK TO MENU SCREEN", XPressEnter, YPressEnter);
+    }
+    
+    public void drawKeyPause(Graphics g){
+        g.setColor(Color.RED);
+        g.setFont(new Font("Monospaced", Font.BOLD, 24));
+        g.drawString("PRESS P TO PAUSE THE GAME", (XPressEnter+100), YPressEnter);
+    }
+    
+    public void drawPressEnter(Graphics g){
+        g.setColor(Color.RED);
+        g.setFont(new Font("Monospaced", Font.BOLD, 24));
+        g.drawString("PRESS ENTER TO GO BACK TO MENU SCREEN", XPressEnter, YPressEnter);
+    }
     
     public void drawTime(Graphics g){
         g.setColor(Color.WHITE);
@@ -188,8 +247,8 @@ public class Solo extends JPanel implements ActionListener {
         int coordX = XStartBoard;
         int coordY = YStartBoard-CellSizeY;
         int i;
-        for(i=0; i<ga.getyCursor(); i++) coordY -= CellSizeY;
-        for(i=0; i<ga.getxCursor(); i++) coordX += CellSizeX;
+        for(i=0; i<ga.board.getyCursor(); i++) coordY -= CellSizeY;
+        for(i=0; i<ga.board.getxCursor(); i++) coordX += CellSizeX;
         g.drawImage(cursor, coordX, coordY, this);
     }
     
@@ -218,8 +277,22 @@ public class Solo extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        ga.nextUpdate();
+        if(ga.GO){
+            countBlinkTime += ga.DELAY;
+            if(countBlinkTime >= blinkGameOverTime){
+                    countBlinkTime = 0;
+                    blinkGameOver = !blinkGameOver;
+            }
+        }
+        else {
+           Solo.this.requestFocusInWindow();
+           ga.nextUpdate();
+        }
         repaint();
+    }
+    
+    public void goMenu(){
+         tetris.goMenu(this);
     }
     
     class TAdapter extends KeyAdapter {
@@ -228,36 +301,50 @@ public class Solo extends JPanel implements ActionListener {
         public void keyPressed(KeyEvent e) {
 
             int keycode = e.getKeyCode();
-
+            
+            if(ga.GO && (keycode == KeyEvent.VK_ENTER)) {
+                timer.stop();
+                goMenu();
+            }
+            
             System.out.println(""+keycode);
             
-            if (keycode == 'p' || keycode == 'P') {
+            if (keycode == 'p' || keycode == 'P' || keycode == KeyEvent.VK_ESCAPE) {
                 pause();
                 return;
             }
 
-            if (isPaused) return;
+            if (isPaused) {
+                if((keycode == KeyEvent.VK_ESCAPE)) {
+                    timer.stop();
+                    goMenu();
+                } else {
+                    return;    
+                }
+            }
+            
+            if(ga.isStarted() && !ga.GO){
+                switch (keycode) {
+                    case KeyEvent.VK_LEFT:
+                        ga.goLeft();
+                    break;
 
-            switch (keycode) {
-                case KeyEvent.VK_LEFT:
-                    if(ga.getxCursor()>0) ga.setxCursor(ga.getxCursor() - 1);
-                break;
-                    
-                case KeyEvent.VK_RIGHT:
-                    if(ga.getxCursor() < ga.board.nbCol - 1) ga.setxCursor(ga.getxCursor() + 1);
-                break;
-                    
-                case KeyEvent.VK_DOWN:
-                    if(ga.getyCursor()>0) ga.setyCursor(ga.getyCursor() - 1);
-                break;
-                    
-                case KeyEvent.VK_UP:
-                    if(ga.getyCursor() < ga.board.nbLin) ga.setyCursor(ga.getyCursor() + 1);
-                break;
-                    
-                case KeyEvent.VK_SPACE:
-                    ga.blockExchange();
-                break;
+                    case KeyEvent.VK_RIGHT:
+                        ga.goRight();
+                    break;
+
+                    case KeyEvent.VK_DOWN:
+                        ga.goDown();
+                    break;
+
+                    case KeyEvent.VK_UP:
+                        ga.goUp();
+                    break;
+
+                    case KeyEvent.VK_SPACE:
+                        ga.blockExchange();
+                    break;
+                }
             }
         }
     }
