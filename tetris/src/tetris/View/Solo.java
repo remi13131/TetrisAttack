@@ -79,6 +79,7 @@ public class Solo extends JPanel implements ActionListener {
     public Tetris tetris;
     
     public Solo(Tetris t){
+        
         tetris = t;
         
         ga = new GameSolo();

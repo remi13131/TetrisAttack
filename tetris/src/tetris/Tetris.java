@@ -46,6 +46,10 @@ public class Tetris extends JFrame {
 
     private void initUI()
     {        
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(1831,851);
+        this.setResizable(false);
+        
         //Create the panel that contains the "cards".
         cards = new JPanel(new RXCardLayout());
         cards.setSize(1831,851);
@@ -58,10 +62,6 @@ public class Tetris extends JFrame {
         menu = m;
         
         pane.add(cards, BorderLayout.CENTER);
-        
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(1831,851);
-        this.setResizable(false);
 
         setLocationRelativeTo(null); 
     }
@@ -101,11 +101,6 @@ public class Tetris extends JFrame {
         
         Sound.values();
         
-        try{
-            Sound.LASALADE.play();
-        }
-        catch(Exception e){
-            System.out.println(e.getMessage());
-        }
+        Sound.LASALADE.play();
     }
 }

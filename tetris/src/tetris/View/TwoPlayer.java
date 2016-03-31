@@ -14,6 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import tetris.Controller.Game2Player;
+import tetris.Helper.Sound;
 import tetris.Helper.TetrisHelper;
 import tetris.Model.Line;
 import tetris.Tetris;
@@ -74,6 +75,7 @@ public class TwoPlayer extends JPanel implements ActionListener {
     public Tetris tetris;
     
     public TwoPlayer(Tetris t){
+        
         tetris = t;
         
         ga = new Game2Player();
@@ -401,42 +403,52 @@ public class TwoPlayer extends JPanel implements ActionListener {
                     
                     case KeyEvent.VK_Q:
                         ga.goLeft(ga.boardP1);
+                        Sound.MOVE.play();
                     break;
 
                     case KeyEvent.VK_D:
                         ga.goRight(ga.boardP1);
+                        Sound.MOVE.play();
                     break;
 
                     case KeyEvent.VK_S:
                         ga.goDown(ga.boardP1);
+                        Sound.MOVE.play();
                     break;
 
                     case KeyEvent.VK_Z:
                         ga.goUp(ga.boardP1);
+                        Sound.MOVE.play();
                     break;
 
                     case KeyEvent.VK_SPACE:
                         ga.blockExchange(ga.boardP1);
+                        Sound.CHANGE_BLOCK.play();
                     break;
                     
                     case KeyEvent.VK_LEFT:
                         ga.goLeft(ga.boardP2);
+                        Sound.MOVE.play();
                     break;
 
                     case KeyEvent.VK_RIGHT:
                         ga.goRight(ga.boardP2);
+                        Sound.MOVE.play();
                     break;
 
                     case KeyEvent.VK_DOWN:
                         ga.goDown(ga.boardP2);
+                        Sound.MOVE.play();
                     break;
 
                     case KeyEvent.VK_UP:
                         ga.goUp(ga.boardP2);
+                        Sound.MOVE.play();
                     break;
 
                     case KeyEvent.VK_ENTER:
                         ga.blockExchange(ga.boardP2);
+                        Sound.CHANGE_BLOCK.play();
                     break;
                         
                     default: break;

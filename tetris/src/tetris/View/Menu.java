@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import tetris.Controller.MenuController;
+import tetris.Helper.Sound;
 import tetris.Tetris;
 
 /**
@@ -42,6 +43,7 @@ public class Menu  extends JPanel implements ActionListener {
     Tetris tetris;
     
     public Menu(Tetris t){
+        
         tetris = t;
         
         ga = new MenuController();
@@ -130,28 +132,19 @@ public class Menu  extends JPanel implements ActionListener {
 
             int keycode = e.getKeyCode();
 
-            switch (keycode) {
-                case KeyEvent.VK_LEFT:
-                    //ga.goLeft();
-                break;
-                    
-                case KeyEvent.VK_RIGHT:
-                    //ga.goRight();
-                break;
-                    
+            switch (keycode) {                   
                 case KeyEvent.VK_DOWN:
                     ga.setChoix(ga.getChoix() + 1);
+                    Sound.MOVE.play();
                 break;
                     
                 case KeyEvent.VK_UP:
                     ga.setChoix(ga.getChoix() - 1);
-                break;
-                    
-                case KeyEvent.VK_SPACE:
-                    //ga.blockExchange();
+                    Sound.MOVE.play();
                 break;
                     
                 case KeyEvent.VK_ENTER:
+                    Sound.CHANGE_BLOCK.play();
                     switch(ga.getChoix()){
                         case 1 : 
                             tetris.newSolo();
@@ -169,6 +162,7 @@ public class Menu  extends JPanel implements ActionListener {
                 break;
                     
                 case KeyEvent.VK_ESCAPE :
+                    Sound.CHANGE_BLOCK.play();
                     System.exit(0);
                 break;
                     

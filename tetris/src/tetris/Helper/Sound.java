@@ -3,6 +3,7 @@ package tetris.Helper;
 /**
  *
  * @author https://www3.ntu.edu.sg/home/ehchua/programming/java/J8c_PlayingSound.html
+ * EDITED By Remi
  */
 
 import java.io.*;
@@ -40,10 +41,16 @@ public enum Sound {
          URL url = this.getClass().getClassLoader().getResource(soundFileName);
          // Set up an audio input stream piped from the sound file.
          AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(url);
+         
+        AudioFormat format = audioInputStream.getFormat();
+        DataLine.Info info = new DataLine.Info(Clip.class, format);
+         
          // Get a clip resource.
-         clip = AudioSystem.getClip();
+         clip = (Clip)AudioSystem.getLine(info);
+         
          // Open audio clip and load samples from the audio input stream.
          clip.open(audioInputStream);
+         
       } catch (UnsupportedAudioFileException e) {
          e.printStackTrace();
       } catch (IOException e) {
@@ -56,8 +63,7 @@ public enum Sound {
    // Play or Re-play the sound effect from the beginning, by rewinding.
    public void play() {
       if (volume != Volume.MUTE) {
-         if (clip.isRunning())
-            clip.stop();   // Stop the player if it is still running
+         clip.stop();   // Stop the player if it is still running
          clip.setFramePosition(0); // rewind to the beginning
          clip.start();     // Start playing
       }
