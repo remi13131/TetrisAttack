@@ -19,6 +19,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import tetris.Helper.Sound;
 import tetris.Helper.TetrisHelper;
 
 import tetris.Tetris;
@@ -46,7 +47,7 @@ public class Solo extends JPanel implements ActionListener {
     private Image GameOverImage;
     
     public int XStartBoard = 314;
-    public int YStartBoard = 763;
+    public int YStartBoard = 820;
 
     private int XTime = 82;
     private int YTime = 100;
@@ -59,6 +60,9 @@ public class Solo extends JPanel implements ActionListener {
     
     private int CellSizeX = 57;
     private int CellSizeY = 57;
+    
+    private int offsetY = 0;
+    private double offsetYD = 0;
     
     private Timer timer;
     
@@ -187,7 +191,7 @@ public class Solo extends JPanel implements ActionListener {
     public void drawBoard(Graphics g){
         Line l;
         int i, j, coordX, coordY;
-        coordY = YStartBoard;
+        coordY = YStartBoard-offsetY;
         for(i=0; i<=ga.board.nbLin; i++){
             coordY -= CellSizeY;
             coordX = XStartBoard;
@@ -198,7 +202,9 @@ public class Solo extends JPanel implements ActionListener {
                 g.drawString(s4, coordX - 100, coordY+20);
             }
             for(j=0; j<=ga.board.nbCol; j++){
-                g.drawImage(ga.board.getLineN(i).getBlockAtPos(j).getBlockImage().getImage(), coordX, coordY, this);
+                if(!ga.GO && !ga.board.getLineN(i).getBlockAtPos(j).isMatched())
+                    g.drawImage(ga.board.getLineN(i).getBlockAtPos(j).getBlockImage().getImage(), coordX, coordY, this);
+                else g.drawImage(ga.board.getLineN(i).getBlockAtPos(j).getBlockImageDead().getImage(), coordX, coordY, this);
                 if(ga.board.getLineN(i).getBlockAtPos(j).isMatched()) g.drawImage(bgBlackCell, coordX, coordY, this);
                 if(debug){
                     try{
@@ -259,7 +265,7 @@ public class Solo extends JPanel implements ActionListener {
     
     public void drawCursor(Graphics g){
         int coordX = XStartBoard;
-        int coordY = YStartBoard-CellSizeY;
+        int coordY = YStartBoard-CellSizeY-offsetY;
         int i;
         for(i=0; i<ga.board.getyCursor(); i++) coordY -= CellSizeY;
         for(i=0; i<ga.board.getxCursor(); i++) coordX += CellSizeX;
@@ -269,7 +275,7 @@ public class Solo extends JPanel implements ActionListener {
     public void drawNextLine(Graphics g){
         int j;
         int coordX = XStartBoard;
-        int coordY = YStartBoard;
+        int coordY = YStartBoard-offsetY;
         for(j=0; j<=ga.board.nbCol; j++){
             g.drawImage(ga.board.getNextLine().getBlockAtPos(j).getBlockImage().getImage(), coordX, coordY, this);
             coordX += CellSizeX;
@@ -278,7 +284,6 @@ public class Solo extends JPanel implements ActionListener {
         g.drawImage(nxtLineHover, coordX, coordY, this);
         g.setColor(Color.WHITE);
         g.setFont(new Font("Monospaced", Font.BOLD, 16));
-        g.drawString("New Line in "+ga.board.timeNxtLine+" Seconds", coordX+50, coordY+50);
     }
     
     private void pause()
@@ -299,7 +304,20 @@ public class Solo extends JPanel implements ActionListener {
         }
         
         Solo.this.requestFocusInWindow();
-        if(!ga.GO) ga.nextUpdate();
+        if(!ga.GO) {          
+            ga.nextUpdate();
+            if(ga.isStarted()){
+                double percentNextLine = (TetrisHelper.DEFAULT_NEXT_LINE_TIME - ga.board.timeNxtLine);
+                percentNextLine = percentNextLine / TetrisHelper.DEFAULT_NEXT_LINE_TIME;
+                double value = percentNextLine * 57;
+                int valueRounded = (int)Math.round(value);
+                offsetY = valueRounded+1; 
+                
+                System.out.println(""+percentNextLine+" "+value+" "+valueRounded);
+            }
+            
+
+        }
         
         repaint();
     }
@@ -338,22 +356,27 @@ public class Solo extends JPanel implements ActionListener {
                 switch (keycode) {
                     case KeyEvent.VK_LEFT:
                         ga.goLeft();
+                        Sound.MOVE.play();
                     break;
 
                     case KeyEvent.VK_RIGHT:
                         ga.goRight();
+                        Sound.MOVE.play();
                     break;
 
                     case KeyEvent.VK_DOWN:
                         ga.goDown();
+                        Sound.MOVE.play();
                     break;
 
                     case KeyEvent.VK_UP:
                         ga.goUp();
+                        Sound.MOVE.play();
                     break;
 
                     case KeyEvent.VK_SPACE:
                         ga.blockExchange();
+                        Sound.CHANGE_BLOCK.play();
                     break;
                 }
             }

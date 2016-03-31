@@ -11,7 +11,7 @@ import tetris.Helper.TetrisHelper;
 public class GameSolo { 
     
     public int numActions = 0;
-    public int numSec = -4;
+    public int numSec = -3;
     
     public boolean GO = false;
     
@@ -30,31 +30,30 @@ public class GameSolo {
 
     public void nextUpdate(){
         numActions += 1;
-        System.out.println("----------- SECS : "+numSec+" "+numActions+" "+(System.currentTimeMillis()%1000));
         if((numActions >= TetrisHelper.FPS) && !GO) {
             numSec += 1;
             numActions=0;
-            if(numSec>=0){
-                System.out.println("SECS : "+numSec+" "+numActions);
-                nextSec();
-            }
+            System.out.println("SECS : "+numSec+" "+numActions);
         }
         if(isStarted()){
+            if(board.MatchedCells.size() == 0) {
+                
+                board.timeNxtLine -= (1000/TetrisHelper.FPS);
+                
+                if(board.timeNxtLine <= 0) {
+                    insertNewLine();
+                    board.nextLine = board.makeNewRandomLine(0);
+                    board.timeNxtLine = TetrisHelper.DEFAULT_NEXT_LINE_TIME;
+                    board.yCursor += 1;
+                }
+            }
+            
             board.getGridDown();
             board.spotMatches();
             board.Combo+=1;
             board.updateMatchedTime();
             board.killOldMatched();
             board.defineEmptyLines();
-        }
-    }
-    
-    public void nextSec(){
-        board.timeNxtLine--;
-        if(board.timeNxtLine == 0) {
-            insertNewLine();
-            board.nextLine = board.makeNewRandomLine(0);
-            board.timeNxtLine = board.DEFAULT_NEXT_LINE_TIME;
         }
     }
     

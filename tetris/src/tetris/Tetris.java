@@ -8,6 +8,7 @@ import java.awt.Container;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import tetris.Helper.Sound;
 
 /**
  *
@@ -97,5 +98,14 @@ public class Tetris extends JFrame {
     {       
         Tetris t = new Tetris();
         t.setVisible(true);
+        
+        Sound.values();
+        
+        try{
+            Sound.LASALADE.play();
+        }
+        catch(Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 }

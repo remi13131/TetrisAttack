@@ -13,14 +13,12 @@ public class Board {
 
     public boolean thinking = false;
     
-    public final int DEFAULT_NEXT_LINE_TIME = 4;
-    
     ArrayList<Line> board;
     
-    ArrayList<Block>MatchedCells;
+    public ArrayList<Block> MatchedCells;
     
     public Line nextLine;
-    public int timeNxtLine = DEFAULT_NEXT_LINE_TIME;
+    public int timeNxtLine = TetrisHelper.DEFAULT_NEXT_LINE_TIME;
     
     private BlockHelper bl = new BlockHelper();
     
@@ -99,7 +97,7 @@ public class Board {
         int pos = b.getX();
         int origY = b.getY();
         int y = b.getY();
-        //System.out.println("ppppp----"+y);
+
         if((y-1>=0) && getLineN(y-1).getBlockAtPos(pos).isEmpty()){ 
             y--;
             if(y != b.getY() && getLineN(y).getBlockAtPos(pos).isEmpty()) {
@@ -321,7 +319,6 @@ public class Board {
         for(i=0; i<MatchedCells.size(); i++){
             int tm = MatchedCells.get(i).getTimeMatched();
             tm += (1000/TetrisHelper.FPS);
-            System.out.println("lalalalalalala "+tm);
             MatchedCells.get(i).setTimeMatched(tm);
         }
     }

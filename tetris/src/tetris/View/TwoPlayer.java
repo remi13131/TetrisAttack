@@ -40,7 +40,7 @@ public class TwoPlayer extends JPanel implements ActionListener {
     private Image GameOverImage;
     
     public int XStartBoardP1 = 314;
-    public int YStartBoard = 763;
+    public int YStartBoard = 820;
     
     public int XStartBoardP2 = 1175;
 
@@ -57,6 +57,9 @@ public class TwoPlayer extends JPanel implements ActionListener {
     
     private int CellSizeX = 57;
     private int CellSizeY = 57;
+    
+    private int offsetYP1 = 0;
+    private int offsetYP2 = 0;
     
     private Timer timer;
     
@@ -179,30 +182,32 @@ public class TwoPlayer extends JPanel implements ActionListener {
     
     public void drawBoardP1(Graphics g){
         Line l;
-        int i, j, coordXP1, coordY;
-        coordY = YStartBoard;
+        int i, j, coordX, coordY;
+        coordY = YStartBoard-offsetYP1;
         for(i=0; i<=ga.boardP1.nbLin; i++){
             coordY -= CellSizeY;
-            coordXP1 = XStartBoardP1;
+            coordX = XStartBoardP1;
             for(j=0; j<=ga.boardP1.nbCol; j++){
-                g.drawImage(ga.boardP1.getLineN(i).getBlockAtPos(j).getBlockImage().getImage(), coordXP1, coordY, this);
-                if(ga.boardP1.getLineN(i).getBlockAtPos(j).isMatched()) g.drawImage(bgBlackCell, coordXP1, coordY, this);
-                coordXP1 += CellSizeX;
+                if(!ga.GO) g.drawImage(ga.boardP1.getLineN(i).getBlockAtPos(j).getBlockImage().getImage(), coordX, coordY, this);
+                else g.drawImage(ga.boardP1.getLineN(i).getBlockAtPos(j).getBlockImageDead().getImage(), coordX, coordY, this);
+                if(ga.boardP1.getLineN(i).getBlockAtPos(j).isMatched()) g.drawImage(bgBlackCell, coordX, coordY, this);
+                coordX += CellSizeX;
             }
         }
     }
     
     public void drawBoardP2(Graphics g){
         Line l;
-        int i, j, coordXP1, coordY;
-        coordY = YStartBoard;
+        int i, j, coordX, coordY;
+        coordY = YStartBoard-offsetYP2;
         for(i=0; i<=ga.boardP2.nbLin; i++){
             coordY -= CellSizeY;
-            coordXP1 = XStartBoardP2;
+            coordX = XStartBoardP2;
             for(j=0; j<=ga.boardP2.nbCol; j++){
-                g.drawImage(ga.boardP2.getLineN(i).getBlockAtPos(j).getBlockImage().getImage(), coordXP1, coordY, this);
-                if(ga.boardP2.getLineN(i).getBlockAtPos(j).isMatched()) g.drawImage(bgBlackCell, coordXP1, coordY, this);
-                coordXP1 += CellSizeX;
+                if(!ga.GO) g.drawImage(ga.boardP2.getLineN(i).getBlockAtPos(j).getBlockImage().getImage(), coordX, coordY, this);
+                else g.drawImage(ga.boardP2.getLineN(i).getBlockAtPos(j).getBlockImageDead().getImage(), coordX, coordY, this);
+                if(ga.boardP2.getLineN(i).getBlockAtPos(j).isMatched()) g.drawImage(bgBlackCell, coordX, coordY, this);
+                coordX += CellSizeX;
             }
         }
     }
@@ -273,7 +278,7 @@ public class TwoPlayer extends JPanel implements ActionListener {
     
     public void drawCursorP1(Graphics g){
         int coordX = XStartBoardP1;
-        int coordY = YStartBoard-CellSizeY;
+        int coordY = YStartBoard-CellSizeY-offsetYP1;
         int i;
         for(i=0; i<ga.boardP1.getyCursor(); i++) coordY -= CellSizeY;
         for(i=0; i<ga.boardP1.getxCursor(); i++) coordX += CellSizeX;
@@ -282,7 +287,7 @@ public class TwoPlayer extends JPanel implements ActionListener {
         
     public void drawCursorP2(Graphics g){
         int coordX = XStartBoardP2;
-        int coordY = YStartBoard-CellSizeY;
+        int coordY = YStartBoard-CellSizeY-offsetYP2;
         int i;
         for(i=0; i<ga.boardP2.getyCursor(); i++) coordY -= CellSizeY;
         for(i=0; i<ga.boardP2.getxCursor(); i++) coordX += CellSizeX;
@@ -297,7 +302,7 @@ public class TwoPlayer extends JPanel implements ActionListener {
     public void drawNextLineP1(Graphics g){
         int j;
         int coordX = XStartBoardP1;
-        int coordY = YStartBoard;
+        int coordY = YStartBoard-offsetYP1;
         for(j=0; j<=ga.boardP1.nbCol; j++){
             g.drawImage(ga.boardP1.getNextLine().getBlockAtPos(j).getBlockImage().getImage(), coordX, coordY, this);
             coordX += CellSizeX;
@@ -306,13 +311,12 @@ public class TwoPlayer extends JPanel implements ActionListener {
         g.drawImage(nxtLineHover, coordX, coordY, this);
         g.setColor(Color.WHITE);
         g.setFont(new Font("Monospaced", Font.BOLD, 16));
-        g.drawString("New Line in "+ga.boardP1.timeNxtLine+" Seconds", coordX+50, coordY+50);
     }
 
     public void drawNextLineP2(Graphics g){
         int j;
         int coordX = XStartBoardP2;
-        int coordY = YStartBoard;
+        int coordY = YStartBoard-offsetYP2;
         for(j=0; j<=ga.boardP2.nbCol; j++){
             g.drawImage(ga.boardP2.getNextLine().getBlockAtPos(j).getBlockImage().getImage(), coordX, coordY, this);
             coordX += CellSizeX;
@@ -321,7 +325,6 @@ public class TwoPlayer extends JPanel implements ActionListener {
         g.drawImage(nxtLineHover, coordX, coordY, this);
         g.setColor(Color.WHITE);
         g.setFont(new Font("Monospaced", Font.BOLD, 16));
-        g.drawString("New Line in "+ga.boardP2.timeNxtLine+" Seconds", coordX+50, coordY+50);
     }
     
     private void pause()
@@ -340,7 +343,25 @@ public class TwoPlayer extends JPanel implements ActionListener {
                     blinkGameOver = !blinkGameOver;
         }
         TwoPlayer.this.requestFocusInWindow();
-        if(!ga.GO) ga.nextUpdate();
+        
+        if(!ga.GO) {                      
+            ga.nextUpdate();
+            if(ga.isStarted()){
+                double percentNextLine = (TetrisHelper.DEFAULT_NEXT_LINE_TIME - ga.boardP1.timeNxtLine);
+                percentNextLine = percentNextLine / TetrisHelper.DEFAULT_NEXT_LINE_TIME;
+                double value = percentNextLine * 57;
+                int valueRounded = (int)Math.round(value);
+                offsetYP1 = valueRounded-1;
+                
+                percentNextLine = (TetrisHelper.DEFAULT_NEXT_LINE_TIME - ga.boardP2.timeNxtLine);
+                percentNextLine = percentNextLine / TetrisHelper.DEFAULT_NEXT_LINE_TIME;
+                value = percentNextLine * 57;
+                valueRounded = (int)Math.round(value);
+                offsetYP2 = valueRounded-1; 
+                
+                System.out.println(""+percentNextLine+" "+value+" "+valueRounded);
+            }
+        }
 
         repaint();
     }

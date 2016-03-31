@@ -11,7 +11,7 @@ import tetris.Model.*;
 public class Game2Player { 
     
     public int numActions = 0;
-    public int numSec = -4;
+    public int numSec = -3;
     
     public boolean GO = false;
     
@@ -43,6 +43,29 @@ public class Game2Player {
             }
         }
         if(isStarted()){
+            
+            if(boardP1.MatchedCells.size() == 0) {
+                
+                boardP1.timeNxtLine -= (1000/TetrisHelper.FPS);
+                
+                if(boardP1.timeNxtLine <= 0) {
+                    insertNewLine(boardP1);
+                    boardP1.nextLine = boardP1.makeNewRandomLine(0);
+                    boardP1.timeNxtLine = TetrisHelper.DEFAULT_NEXT_LINE_TIME;
+                }
+            }
+            
+            if(boardP2.MatchedCells.size() == 0) {
+                
+                boardP2.timeNxtLine -= (1000/TetrisHelper.FPS);
+                
+                if(boardP2.timeNxtLine <= 0) {
+                    insertNewLine(boardP2);
+                    boardP2.nextLine = boardP2.makeNewRandomLine(0);
+                    boardP2.timeNxtLine = TetrisHelper.DEFAULT_NEXT_LINE_TIME;
+                }
+            }
+            
             boardP1.getGridDown();
             boardP1.spotMatches();
             boardP1.Combo+=1;
@@ -64,14 +87,16 @@ public class Game2Player {
         if(boardP1.timeNxtLine == 0) {
             insertNewLine(boardP1);
             boardP1.nextLine = boardP1.makeNewRandomLine(0);
-            boardP1.timeNxtLine = boardP1.DEFAULT_NEXT_LINE_TIME;
+            boardP1.timeNxtLine = TetrisHelper.DEFAULT_NEXT_LINE_TIME;
+            boardP2.yCursor += 1;
         }
         
         boardP2.timeNxtLine--;
         if(boardP2.timeNxtLine == 0) {
             insertNewLine(boardP2);
             boardP2.nextLine = boardP2.makeNewRandomLine(0);
-            boardP2.timeNxtLine = boardP2.DEFAULT_NEXT_LINE_TIME;
+            boardP2.timeNxtLine = TetrisHelper.DEFAULT_NEXT_LINE_TIME;
+            boardP2.yCursor += 1;
         }
     }
     

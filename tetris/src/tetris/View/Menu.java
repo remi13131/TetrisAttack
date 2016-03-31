@@ -130,7 +130,6 @@ public class Menu  extends JPanel implements ActionListener {
 
             int keycode = e.getKeyCode();
 
-            System.out.println(""+keycode);
             switch (keycode) {
                 case KeyEvent.VK_LEFT:
                     //ga.goLeft();

@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 public class Block {
     
     private ImageIcon blockImage;
+    private ImageIcon blockImageDead;
     int x;
     int y;
     int color;
@@ -25,13 +26,16 @@ public class Block {
         this.x=x;
         this.y=y;
         blockImage = ii;
+        blockImageDead = ii;
         Empty = true;
         color = -1;
      }
     
     public Block(String path, boolean empt, int Color, int x, int y){        
-        ImageIcon ii = new ImageIcon(getClass().getResource("/images/Blocks/"+path));
+        ImageIcon ii = new ImageIcon(getClass().getResource("/images/Blocks/"+path+".png"));
+        ImageIcon ii2 = new ImageIcon(getClass().getResource("/images/Blocks/"+path+"mort.png"));
         blockImage = ii;
+        blockImageDead = ii2;
         this.x=x;
         this.y=y;
         Empty = empt;
@@ -41,6 +45,10 @@ public class Block {
     public ImageIcon getBlockImage() {
         return blockImage;
     }
+
+    public ImageIcon getBlockImageDead() {
+        return blockImageDead;
+    }  
 
     public boolean isEmpty() {
         return Empty;

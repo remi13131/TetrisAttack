@@ -27,14 +27,13 @@ public class BlockHelper {
     
     public Block newRandomBlock(int lin, int col){
         int index = randomGenerator.nextInt(defaultBlocks.size());
-        System.out.println(defaultBlocks.size()+" "+index);
-        return new Block(defaultBlocks.get(index)+".png", false, index, col, lin);
+        return new Block(defaultBlocks.get(index), false, index, col, lin);
     }
     
     public Block newRandomBlockWithEmpty(int lin, int col){
         int index = randomGenerator.nextInt(defaultBlocks.size()+2);
         if(index >= defaultBlocks.size()) return new Block(col, lin);
-        else return new Block(defaultBlocks.get(index)+".png", false, index,col, lin);
+        else return new Block(defaultBlocks.get(index), false, index,col, lin);
     }
     
 }

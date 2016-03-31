@@ -20,7 +20,6 @@ public class Line {
         for(i=0; i<=nbCell; i++) {
             blocks.add(new Block(i, numLigne));
         }
-        System.out.println(""+blocks.size());
         Empty = true;
         y=numLigne;
         nbCells = nbCell;
