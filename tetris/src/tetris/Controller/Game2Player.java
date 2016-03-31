@@ -1,5 +1,6 @@
 package tetris.Controller;
 
+import tetris.Helper.TetrisHelper;
 import tetris.Model.*;
 
 /**
@@ -8,8 +9,6 @@ import tetris.Model.*;
  */
 
 public class Game2Player { 
-    
-    public final int DELAY = 25;
     
     public int numActions = 0;
     public int numSec = -4;
@@ -35,28 +34,28 @@ public class Game2Player {
 
     public void nextUpdate(){
         numActions += 1;
-        int nbActionParSeconde = 1000/DELAY;
-        if(numActions%nbActionParSeconde == 0 && !GO) { // Toutes les secondes (1 action = 25ms, donc 40*25 = 1000ms = 1sec)
+        if((numActions >= TetrisHelper.FPS) && !GO) {
             numSec += 1;
+            numActions=0;
             if(numSec>=0){
-                System.out.println("SECS : "+(numActions/nbActionParSeconde));
+                System.out.println("SECS : "+numSec+" "+numActions);
                 nextSec();
             }
         }
         if(isStarted()){
+            boardP1.getGridDown();
             boardP1.spotMatches();
             boardP1.Combo+=1;
             boardP1.updateMatchedTime();
             boardP1.killOldMatched();
             boardP1.defineEmptyLines();
-            boardP1.getGridDown();
             
+            boardP2.getGridDown();
             boardP2.spotMatches();
             boardP2.Combo+=1;
             boardP2.updateMatchedTime();
             boardP2.killOldMatched();
             boardP2.defineEmptyLines();
-            boardP2.getGridDown();
         }
     }
     

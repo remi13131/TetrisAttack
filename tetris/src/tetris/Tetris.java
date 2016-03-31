@@ -35,7 +35,12 @@ public class Tetris extends JFrame {
     public Tetris(){  
         super("Tetris Attack");
         pane = this.getContentPane();
-        this.initUI();
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                initUI();
+            }
+        });
     }
 
     private void initUI()
@@ -89,7 +94,7 @@ public class Tetris extends JFrame {
     }
     
     public static void main(String... args)
-    {
+    {       
         Tetris t = new Tetris();
         t.setVisible(true);
     }

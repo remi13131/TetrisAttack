@@ -84,7 +84,6 @@ public class Board {
         int pos = b.getX();
         int origY = b.getY();
         int y = b.getY();
-        //System.out.println("ppppp----"+y);
         while((y-1>=0) && getLineN(y-1).getBlockAtPos(pos).isEmpty()){ 
             y--;
             if(y != b.getY() && getLineN(y).getBlockAtPos(pos).isEmpty()) {
@@ -320,14 +319,17 @@ public class Board {
     public void updateMatchedTime(){
         int i;
         for(i=0; i<MatchedCells.size(); i++){
-            MatchedCells.get(i).setTimeMatched(MatchedCells.get(i).getTimeMatched()+0.025);
+            int tm = MatchedCells.get(i).getTimeMatched();
+            tm += (1000/TetrisHelper.FPS);
+            System.out.println("lalalalalalala "+tm);
+            MatchedCells.get(i).setTimeMatched(tm);
         }
     }
     
     public void killOldMatched(){
         int i;
         for(i=0; i<MatchedCells.size(); i++){
-            if(MatchedCells.get(i).getTimeMatched()>=3.0){
+            if(MatchedCells.get(i).getTimeMatched()>=TetrisHelper.TIME_MATCHED_SOLO){
                 getLineN(MatchedCells.get(i).getY()).setBlockAtPos(MatchedCells.get(i).getX(), new Block(MatchedCells.get(i).getX(), MatchedCells.get(i).getY()));
                 MatchedCells.remove(MatchedCells.get(i));
             }

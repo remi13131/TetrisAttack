@@ -1,6 +1,7 @@
 package tetris.Controller;
 
 import tetris.Model.*;
+import tetris.Helper.TetrisHelper;
 
 /**
  *
@@ -8,8 +9,6 @@ import tetris.Model.*;
  */
 
 public class GameSolo { 
-    
-    public final int DELAY = 25;
     
     public int numActions = 0;
     public int numSec = -4;
@@ -31,23 +30,22 @@ public class GameSolo {
 
     public void nextUpdate(){
         numActions += 1;
-        int nbActionParSeconde = 1000/DELAY;
-        if(numActions%nbActionParSeconde == 0) { // Toutes les secondes (1 action = 25ms, donc 40*25 = 1000ms = 1sec)
+        System.out.println("----------- SECS : "+numSec+" "+numActions+" "+(System.currentTimeMillis()%1000));
+        if((numActions >= TetrisHelper.FPS) && !GO) {
             numSec += 1;
+            numActions=0;
             if(numSec>=0){
-                System.out.println("SECS : "+(numActions/nbActionParSeconde));
+                System.out.println("SECS : "+numSec+" "+numActions);
                 nextSec();
-                //if(numSec == 10) board.getLineN(0).setBlockAtPos(0, new Block(0,0));
-                //if(numSec == 10) board.getLineN(1).setBlockAtPos(0, new Block("coeur.png", false));
             }
         }
         if(isStarted()){
+            board.getGridDown();
             board.spotMatches();
             board.Combo+=1;
             board.updateMatchedTime();
             board.killOldMatched();
             board.defineEmptyLines();
-            board.getGridDown();
         }
     }
     

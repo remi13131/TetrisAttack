@@ -14,6 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import tetris.Controller.Game2Player;
+import tetris.Helper.TetrisHelper;
 import tetris.Model.Line;
 import tetris.Tetris;
 
@@ -74,7 +75,7 @@ public class TwoPlayer extends JPanel implements ActionListener {
         
         ga = new Game2Player();
         
-        timer = new Timer(ga.DELAY, this);
+        timer = new Timer((1000/TetrisHelper.FPS), this);
         timer.start();
         
         this.setFocusable(true);
@@ -169,7 +170,8 @@ public class TwoPlayer extends JPanel implements ActionListener {
             if(blinkGameOver){
                 g.drawImage(GameOverImage, 0,0, this);
             }
-            drawPressEnter(g);
+            if(isPaused) drawPause(g);
+            else drawPressEnter(g);
         }
     } 
     
@@ -332,15 +334,14 @@ public class TwoPlayer extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        countBlinkTime += ga.DELAY;
+        countBlinkTime += (1000/TetrisHelper.FPS);
         if(countBlinkTime >= blinkGameOverTime){
                     countBlinkTime = 0;
                     blinkGameOver = !blinkGameOver;
         }
-        else {
-           TwoPlayer.this.requestFocusInWindow();
-           if(!ga.GO) ga.nextUpdate();
-        }
+        TwoPlayer.this.requestFocusInWindow();
+        if(!ga.GO) ga.nextUpdate();
+
         repaint();
     }
     
@@ -359,8 +360,6 @@ public class TwoPlayer extends JPanel implements ActionListener {
                 timer.stop();
                 goMenu();
             }
-            
-            System.out.println(""+keycode);
             
             if (keycode == 'p' || keycode == 'P' || (keycode == KeyEvent.VK_ESCAPE && !isPaused)) {
                 pause();

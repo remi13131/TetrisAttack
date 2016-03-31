@@ -19,6 +19,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import tetris.Helper.TetrisHelper;
 
 import tetris.Tetris;
 
@@ -78,7 +79,7 @@ public class Solo extends JPanel implements ActionListener {
         
         ga = new GameSolo();
         
-        timer = new Timer(ga.DELAY, this);
+        timer = new Timer((1000/TetrisHelper.FPS), this);
         timer.start();
         
         this.setFocusable(true);
@@ -176,7 +177,8 @@ public class Solo extends JPanel implements ActionListener {
             if(blinkGameOver){
                 g.drawImage(GameOverImage, 0,0, this);
             }
-            drawPressEnter(g);
+            if(isPaused) drawPause(g);
+            else drawPressEnter(g);
         }
     } 
     
@@ -199,18 +201,22 @@ public class Solo extends JPanel implements ActionListener {
                 g.drawImage(ga.board.getLineN(i).getBlockAtPos(j).getBlockImage().getImage(), coordX, coordY, this);
                 if(ga.board.getLineN(i).getBlockAtPos(j).isMatched()) g.drawImage(bgBlackCell, coordX, coordY, this);
                 if(debug){
-                    String s = "- X : "+ga.board.getLineN(i).getBlockAtPos(j).getX();
-                    String s1 = "- Y : "+ga.board.getLineN(i).getBlockAtPos(j).getY();
-                    String s2 = "- E : "+ga.board.getLineN(i).getBlockAtPos(j).isEmpty();
-                    String s3 = "- C : "+ga.board.getLineN(i).getBlockAtPos(j).getColor();
-                    String s5 = "- M : "+ga.board.getLineN(i).getBlockAtPos(j).isMatched();
-                    String s6 = "- TM : "+ga.board.getLineN(i).getBlockAtPos(j).getTimeMatched();
-                    g.drawString(s, coordX + 10, coordY+8);
-                    g.drawString(s1, coordX + 10, coordY+16);
-                    g.drawString(s2, coordX + 10, coordY+24);
-                    g.drawString(s3, coordX + 10, coordY+32);
-                    g.drawString(s5, coordX + 10, coordY+40);
-                    g.drawString(s6, coordX + 10, coordY+48);
+                    try{
+                        String s = "- X : "+ga.board.getLineN(i).getBlockAtPos(j).getX();
+                        String s1 = "- Y : "+ga.board.getLineN(i).getBlockAtPos(j).getY();
+                        String s2 = "- E : "+ga.board.getLineN(i).getBlockAtPos(j).isEmpty();
+                        String s3 = "- C : "+ga.board.getLineN(i).getBlockAtPos(j).getColor();
+                        String s5 = "- M : "+ga.board.getLineN(i).getBlockAtPos(j).isMatched();   
+                        String s6 = "- TM : "+ga.board.getLineN(i).getBlockAtPos(j).getTimeMatched();
+                        
+                        g.drawString(s, coordX + 10, coordY+8);
+                        g.drawString(s1, coordX + 10, coordY+16);
+                        g.drawString(s2, coordX + 10, coordY+24);
+                        g.drawString(s3, coordX + 10, coordY+32);
+                        g.drawString(s5, coordX + 10, coordY+40);
+                        g.drawString(s6, coordX + 10, coordY+48);
+                    }
+                    catch(Exception e){System.out.println(""+e.getMessage());}
                 }
                 coordX += CellSizeX;
             }
@@ -285,16 +291,16 @@ public class Solo extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        countBlinkTime += ga.DELAY;
+        countBlinkTime += (1000/TetrisHelper.FPS);
         if(countBlinkTime >= blinkGameOverTime){
                     countBlinkTime = 0;
                     black2p = ! black2p;
                     blinkGameOver = !blinkGameOver;
         }
-        else {
-           Solo.this.requestFocusInWindow();
-           if(!ga.GO) ga.nextUpdate();
-        }
+        
+        Solo.this.requestFocusInWindow();
+        if(!ga.GO) ga.nextUpdate();
+        
         repaint();
     }
     
@@ -313,8 +319,6 @@ public class Solo extends JPanel implements ActionListener {
                 timer.stop();
                 goMenu();
             }
-            
-            System.out.println(""+keycode);
             
             if (keycode == 'p' || keycode == 'P' || (keycode == KeyEvent.VK_ESCAPE && !isPaused)) {
                 pause();
