@@ -9,8 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import tetris.Helper.Sound;
-
-import newpackage.*;
+import tetris.Helper.MiniBrowser;
 /**
  *
  * @author Remi
@@ -48,12 +47,12 @@ public class Tetris extends JFrame {
     private void initUI()
     {        
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(1831,851);
+        this.setSize(1831,881);
         this.setResizable(false);
         
         //Create the panel that contains the "cards".
         cards = new JPanel(new RXCardLayout());
-        cards.setSize(1831,851);
+        cards.setSize(1831,881);
         
         cardLayout = (CardLayout)(cards.getLayout());
         
@@ -65,11 +64,17 @@ public class Tetris extends JFrame {
         pane.add(cards, BorderLayout.CENTER);
 
         setLocationRelativeTo(null);
-        
+    }
+
+    public void newHelp(){
         MiniBrowser mB  = new MiniBrowser();
         mB.show();
     }
-
+    
+    public void newCredits(){
+        
+    }
+    
     public void newSolo(){
         
         solo = null;   

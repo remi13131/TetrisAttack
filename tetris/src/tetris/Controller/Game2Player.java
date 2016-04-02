@@ -39,7 +39,6 @@ public class Game2Player {
             numActions=0;
             if(numSec>=0){
                 System.out.println("SECS : "+numSec+" "+numActions);
-                nextSec();
             }
         }
         if(isStarted()){
@@ -52,6 +51,7 @@ public class Game2Player {
                     insertNewLine(boardP1);
                     boardP1.nextLine = boardP1.makeNewRandomLine(0);
                     boardP1.timeNxtLine = TetrisHelper.DEFAULT_NEXT_LINE_TIME;
+                    boardP1.yCursor += 1;
                 }
             }
             
@@ -63,6 +63,7 @@ public class Game2Player {
                     insertNewLine(boardP2);
                     boardP2.nextLine = boardP2.makeNewRandomLine(0);
                     boardP2.timeNxtLine = TetrisHelper.DEFAULT_NEXT_LINE_TIME;
+                    boardP2.yCursor += 1;
                 }
             }
             
@@ -79,24 +80,6 @@ public class Game2Player {
             boardP2.updateMatchedTime();
             boardP2.killOldMatched();
             boardP2.defineEmptyLines();
-        }
-    }
-    
-    public void nextSec(){
-        boardP1.timeNxtLine--;
-        if(boardP1.timeNxtLine == 0) {
-            insertNewLine(boardP1);
-            boardP1.nextLine = boardP1.makeNewRandomLine(0);
-            boardP1.timeNxtLine = TetrisHelper.DEFAULT_NEXT_LINE_TIME;
-            boardP2.yCursor += 1;
-        }
-        
-        boardP2.timeNxtLine--;
-        if(boardP2.timeNxtLine == 0) {
-            insertNewLine(boardP2);
-            boardP2.nextLine = boardP2.makeNewRandomLine(0);
-            boardP2.timeNxtLine = TetrisHelper.DEFAULT_NEXT_LINE_TIME;
-            boardP2.yCursor += 1;
         }
     }
     

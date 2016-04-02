@@ -346,23 +346,22 @@ public class TwoPlayer extends JPanel implements ActionListener {
         }
         TwoPlayer.this.requestFocusInWindow();
         
-        if(!ga.GO) {                      
+        if(!ga.GO) {
             ga.nextUpdate();
-            if(ga.isStarted()){
-                double percentNextLine = (TetrisHelper.DEFAULT_NEXT_LINE_TIME - ga.boardP1.timeNxtLine);
-                percentNextLine = percentNextLine / TetrisHelper.DEFAULT_NEXT_LINE_TIME;
-                double value = percentNextLine * 57;
-                int valueRounded = (int)Math.round(value);
-                offsetYP1 = valueRounded-1;
-                
-                percentNextLine = (TetrisHelper.DEFAULT_NEXT_LINE_TIME - ga.boardP2.timeNxtLine);
-                percentNextLine = percentNextLine / TetrisHelper.DEFAULT_NEXT_LINE_TIME;
-                value = percentNextLine * 57;
-                valueRounded = (int)Math.round(value);
-                offsetYP2 = valueRounded-1; 
-                
-                System.out.println(""+percentNextLine+" "+value+" "+valueRounded);
-            }
+            double percentNextLine = (TetrisHelper.DEFAULT_NEXT_LINE_TIME - ga.boardP1.timeNxtLine);
+            percentNextLine = percentNextLine / TetrisHelper.DEFAULT_NEXT_LINE_TIME;
+            double value = percentNextLine * 57;
+            int valueRounded = (int)Math.round(value);
+            offsetYP1 = valueRounded-1;
+
+            percentNextLine = (TetrisHelper.DEFAULT_NEXT_LINE_TIME - ga.boardP2.timeNxtLine);
+            percentNextLine = percentNextLine / TetrisHelper.DEFAULT_NEXT_LINE_TIME;
+            value = percentNextLine * 57;
+            valueRounded = (int)Math.round(value);
+            offsetYP2 = valueRounded-1; 
+
+            System.out.println(""+percentNextLine+" "+value+" "+valueRounded);
+            
         }
 
         repaint();

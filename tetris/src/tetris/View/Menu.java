@@ -28,12 +28,15 @@ public class Menu  extends JPanel implements ActionListener {
     private Image menu1;
     private Image menu2;
     private Image menu3;
+    private Image menu4;
+    private Image menu5;
     
     private MenuController ga;
     private Timer timer;
     
     public boolean black = false;
-    public boolean blinkMenu = true;
+    public boolean blinkMenu = false;
+    public int timeBlink = 250;
     
     public boolean validate = false;
     
@@ -74,14 +77,18 @@ public class Menu  extends JPanel implements ActionListener {
         backgroundNoir = ii.getImage();
         ImageIcon ii2 = new ImageIcon(getClass().getResource("/images/Backgrounds/0.png"));
         backgroundInsertCoin = ii2.getImage();
-        ImageIcon ii3 = new ImageIcon(getClass().getResource("/images/Backgrounds/menu0.png"));
+        ImageIcon ii3 = new ImageIcon(getClass().getResource("/images/Backgrounds/menu00.png"));
         menu0 = ii3.getImage();
-        ImageIcon ii4 = new ImageIcon(getClass().getResource("/images/Backgrounds/menu1.png"));
+        ImageIcon ii4 = new ImageIcon(getClass().getResource("/images/Backgrounds/menu01.png"));
         menu1 = ii4.getImage();
-        ImageIcon ii5 = new ImageIcon(getClass().getResource("/images/Backgrounds/menu2.png"));
+        ImageIcon ii5 = new ImageIcon(getClass().getResource("/images/Backgrounds/menu02.png"));
         menu2 = ii5.getImage();
-        ImageIcon ii6 = new ImageIcon(getClass().getResource("/images/Backgrounds/menu3.png"));
+        ImageIcon ii6 = new ImageIcon(getClass().getResource("/images/Backgrounds/menu03.png"));
         menu3 = ii6.getImage();
+        ImageIcon ii7 = new ImageIcon(getClass().getResource("/images/Backgrounds/menu04.png"));
+        menu4 = ii7.getImage();
+        ImageIcon ii8 = new ImageIcon(getClass().getResource("/images/Backgrounds/menu05.png"));
+        menu5 = ii8.getImage();
     }
 
     @Override
@@ -104,6 +111,14 @@ public class Menu  extends JPanel implements ActionListener {
                 case 3 :    
                     g.drawImage(menu3, 0, 0, null);     
                 break;
+                    
+                case 4 :    
+                    g.drawImage(menu4, 0, 0, null);     
+                break;
+                                    
+                case 5 :    
+                    g.drawImage(menu5, 0, 0, null);     
+                break;
                                     
                 default : break;
             }
@@ -113,12 +128,15 @@ public class Menu  extends JPanel implements ActionListener {
     } 
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        if(black) black = false;
-        else black = true;
+    public void actionPerformed(ActionEvent e) {  
+        if(timeBlink <= 0){
+            if(black) black = false;
+            else black = true;
+            timeBlink = 250;
+        } else timeBlink-=ga.DELAY;
         
-        if(blinkMenu) blinkMenu = false;
-        else blinkMenu = true;
+        /*if(blinkMenu) blinkMenu = false;
+        else blinkMenu = true;*/
         
         Menu.this.requestFocusInWindow();
         
@@ -154,7 +172,15 @@ public class Menu  extends JPanel implements ActionListener {
                             tetris.newTwoPlayer();
                         break;
                             
-                        case 3 :
+                        case 3 : 
+                            tetris.newHelp();
+                        break;
+                            
+                        case 4 : 
+                            tetris.newCredits();
+                        break;
+                            
+                        case 5 :
                             System.exit(0);
                         break;
                     }

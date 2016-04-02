@@ -9,10 +9,10 @@ import java.util.ArrayList;
 
 public class MenuController {
     
-    public final int DELAY = 250;
+    public final int DELAY = 25;
     
     public int Choix = 1;
-    public int nbChoix = 3;
+    public int nbChoix = 5;
     
     public MenuController(){
     }

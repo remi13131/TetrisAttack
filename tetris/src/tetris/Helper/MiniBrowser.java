@@ -1,4 +1,10 @@
-package newpackage;
+package tetris.Helper;
+
+/**
+ *
+ * @author http://www.java-tips.org/java-se-tips-100019/15-javax-swing/1394-how-to-create-a-simple-browser-in-swing.html
+ * EDITED By Remi
+ */
 
 import java.awt.*;
 import java.awt.event.*;
@@ -101,7 +107,7 @@ public class MiniBrowser extends JFrame
         getContentPane().add(new JScrollPane(displayEditorPane),
                 BorderLayout.CENTER);
         
-        showPage(getClass().getResource("/html/lshw.html"), true);
+       showPage(getClass().getResource("/html/lshw.html"), true);
     }
      
     // Exit this program.
@@ -142,8 +148,8 @@ public class MiniBrowser extends JFrame
      
     // Show dialog box with error message.
     private void showError(String errorMessage) {
-        JOptionPane.showMessageDialog(this, errorMessage,
-                "Error", JOptionPane.ERROR_MESSAGE);
+        //JOptionPane.showMessageDialog(this, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+        System.out.println("MiniBrowser : "+errorMessage+" Error "+JOptionPane.ERROR_MESSAGE);
     }
      
     // Verify URL format.
@@ -201,7 +207,7 @@ public class MiniBrowser extends JFrame
             updateButtons();
         } catch (Exception e) {
             // Show error messsage.
-            //showError("Unable to load page");
+            showError("Unable to load page");
         } finally {
             // Return to default cursor.
             setCursor(Cursor.getDefaultCursor());
