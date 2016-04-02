@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import tetris.Helper.Sound;
 
+import newpackage.*;
 /**
  *
  * @author Remi
@@ -63,7 +64,10 @@ public class Tetris extends JFrame {
         
         pane.add(cards, BorderLayout.CENTER);
 
-        setLocationRelativeTo(null); 
+        setLocationRelativeTo(null);
+        
+        MiniBrowser mB  = new MiniBrowser();
+        mB.show();
     }
 
     public void newSolo(){
