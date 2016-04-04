@@ -36,24 +36,24 @@ public class GameSolo {
             System.out.println("SECS : "+numSec+" "+numActions);
         }
         if(isStarted()){
-            if(board.MatchedCells.size() == 0) {
-                
-                board.timeNxtLine -= (1000/TetrisHelper.FPS);
-                
+            if(board.getLineN(board.nbLin).isEmpty()){
+                if(board.MatchedCells.size() == 0) board.timeNxtLine -= (1000/TetrisHelper.FPS);
+                     
                 if(board.timeNxtLine <= 0) {
                     insertNewLine();
                     board.nextLine = board.makeNewRandomLine(0);
                     board.timeNxtLine = TetrisHelper.DEFAULT_NEXT_LINE_TIME;
                     board.yCursor += 1;
                 }
+
+                board.getGridDown();
+                board.spotMatches();
+                board.Combo+=1;
+                board.updateMatchedTime();
+                board.killOldMatched();
+                board.defineEmptyLines();
             }
-            
-            board.getGridDown();
-            board.spotMatches();
-            board.Combo+=1;
-            board.updateMatchedTime();
-            board.killOldMatched();
-            board.defineEmptyLines();
+            else GameOver();
         }
     }
     
@@ -84,6 +84,7 @@ public class GameSolo {
         int i;
         boolean trouve=false;
         int indexLigne=-1;
+        
         for(i=0; i<=board.nbLin; i++){
             if(board.getLineN(i).isEmpty()) {
                 trouve=true;
@@ -91,6 +92,7 @@ public class GameSolo {
                 break;
             }
         }
+        
         if(trouve && indexLigne != -1) {
             for(i=indexLigne; i>0; i--){
                 board.setLigneN(i, board.getLineN(i-1));
@@ -98,7 +100,6 @@ public class GameSolo {
             }
             board.setLigneN(0, board.getNextLine());
         }
-        else GameOver();
     }
     
     public void GameOver(){

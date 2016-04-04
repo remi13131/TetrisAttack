@@ -45,9 +45,11 @@ public class Solo extends JPanel implements ActionListener {
     private Image nxtLineHover;
     private Image bgBlackCell;
     private Image GameOverImage;
+    private Image HideNewLineImage;
+    
     
     public int XStartBoard = 314;
-    public int YStartBoard = 820;
+    public int YStartBoard = 763;
 
     private int XTime = 82;
     private int YTime = 100;
@@ -56,7 +58,7 @@ public class Solo extends JPanel implements ActionListener {
     private int YScore = 120;
     
     private int XPressEnter = 660; 
-    private int YPressEnter = 800;
+    private int YPressEnter = 743;
     
     private int CellSizeX = 57;
     private int CellSizeY = 57;
@@ -130,6 +132,9 @@ public class Solo extends JPanel implements ActionListener {
         
         ImageIcon ii6 = new ImageIcon(getClass().getResource("/images/Backgrounds/GameOverP1.png"));
         GameOverImage = ii6.getImage();
+
+        ImageIcon ii8 = new ImageIcon(getClass().getResource("/images/Backgrounds/1-HideNewLine.png"));
+        HideNewLineImage = ii8.getImage();
     }
 
     @Override
@@ -270,7 +275,7 @@ public class Solo extends JPanel implements ActionListener {
         int i;
         for(i=0; i<ga.board.getyCursor(); i++) coordY -= CellSizeY;
         for(i=0; i<ga.board.getxCursor(); i++) coordX += CellSizeX;
-        g.drawImage(cursor, coordX, coordY, this);
+        g.drawImage(cursor, coordX-2, coordY-2, this);
     }
     
     public void drawNextLine(Graphics g){
@@ -285,6 +290,7 @@ public class Solo extends JPanel implements ActionListener {
         g.drawImage(nxtLineHover, coordX, coordY, this);
         g.setColor(Color.WHITE);
         g.setFont(new Font("Monospaced", Font.BOLD, 16));
+        g.drawImage(HideNewLineImage, 0, 0, this);
     }
     
     private void pause()
@@ -297,6 +303,7 @@ public class Solo extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        repaint();
         countBlinkTime += (1000/TetrisHelper.FPS);
         if(countBlinkTime >= blinkGameOverTime){
                     countBlinkTime = 0;
@@ -305,22 +312,16 @@ public class Solo extends JPanel implements ActionListener {
         }
         
         Solo.this.requestFocusInWindow();
-        if(!ga.GO) {          
+        if(!ga.GO) {    
             ga.nextUpdate();
             if(ga.isStarted()){
                 double percentNextLine = (TetrisHelper.DEFAULT_NEXT_LINE_TIME - ga.board.timeNxtLine);
                 percentNextLine = percentNextLine / TetrisHelper.DEFAULT_NEXT_LINE_TIME;
                 double value = percentNextLine * 57;
                 int valueRounded = (int)Math.round(value);
-                offsetY = valueRounded+1; 
-                
-                System.out.println(""+percentNextLine+" "+value+" "+valueRounded);
+                offsetY = valueRounded+1;
             }
-            
-
         }
-        
-        repaint();
     }
     
     public void goMenu(){

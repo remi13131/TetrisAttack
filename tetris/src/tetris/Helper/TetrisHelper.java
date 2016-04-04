@@ -6,7 +6,7 @@ package tetris.Helper;
  */
 public class TetrisHelper {
     
-    public static final int FPS = 100;
+    public static final int FPS = 200;
     
     public static final int TIME_MATCHED_SOLO = 3000;
     

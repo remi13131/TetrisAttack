@@ -70,7 +70,7 @@ public enum Sound {
    }
    
    // Optional static method to pre-load all the sound files.
-   static void init() {
+   static public void init() {
       values(); // calls the constructor for all the elements
    }
 }

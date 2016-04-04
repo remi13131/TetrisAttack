@@ -20,16 +20,16 @@ public class MiniBrowser extends JFrame
     implements HyperlinkListener {
     
 // These are the buttons for iterating through the page list.
-    private JButton backButton, forwardButton;
+    private final JButton backButton, forwardButton;
      
     // Page location text field.
-    private JTextField locationTextField;
+    private final JTextField locationTextField;
      
     // Editor pane for displaying pages.
-    private JEditorPane displayEditorPane;
+    private final JEditorPane displayEditorPane;
      
     // Browser's list of pages that have been visited.
-    private ArrayList pageList = new ArrayList();
+    private final ArrayList<String> pageList = new ArrayList<String>();
      
     // Constructor for Mini Web Browser.
     public MiniBrowser() {
@@ -40,19 +40,15 @@ public class MiniBrowser extends JFrame
         setSize(640, 480);
          
         // Handle closing events.
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                actionExit();
-            }
-        });
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE );
          
         // Set up file menu.
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("File");
         fileMenu.setMnemonic(KeyEvent.VK_F);
-        JMenuItem fileExitMenuItem = new JMenuItem("Exit",
-                KeyEvent.VK_X);
+        JMenuItem fileExitMenuItem = new JMenuItem("Exit", KeyEvent.VK_X);
         fileExitMenuItem.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 actionExit();
             }
@@ -65,6 +61,7 @@ public class MiniBrowser extends JFrame
         JPanel buttonPanel = new JPanel();
         backButton = new JButton("< Back");
         backButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 actionBack();
             }
@@ -73,6 +70,7 @@ public class MiniBrowser extends JFrame
         buttonPanel.add(backButton);
         forwardButton = new JButton("Forward >");
         forwardButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 actionForward();
             }
@@ -81,6 +79,7 @@ public class MiniBrowser extends JFrame
         buttonPanel.add(forwardButton);
         locationTextField = new JTextField(35);
         locationTextField.addKeyListener(new KeyAdapter() {
+            @Override
             public void keyReleased(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     actionGo();
@@ -90,6 +89,7 @@ public class MiniBrowser extends JFrame
         buttonPanel.add(locationTextField);
         JButton goButton = new JButton("GO");
         goButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 actionGo();
             }
@@ -230,6 +230,7 @@ public class MiniBrowser extends JFrame
     }
      
     // Handle hyperlink's being clicked.
+    @Override
     public void hyperlinkUpdate(HyperlinkEvent event) {
         HyperlinkEvent.EventType eventType = event.getEventType();
         if (eventType == HyperlinkEvent.EventType.ACTIVATED) {
@@ -243,11 +244,5 @@ public class MiniBrowser extends JFrame
                 showPage(event.getURL(), true);
             }
         }
-    }
-     
-    // Run the Mini Browser.
-    public static void main(String[] args) {
-        MiniBrowser browser = new MiniBrowser();
-        browser.show();
     }
 }

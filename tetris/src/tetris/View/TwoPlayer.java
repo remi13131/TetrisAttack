@@ -39,9 +39,10 @@ public class TwoPlayer extends JPanel implements ActionListener {
     private Image nxtLineHover;
     private Image bgBlackCell;
     private Image GameOverImage;
+    private Image HideNewLineImage;
     
     public int XStartBoardP1 = 314;
-    public int YStartBoard = 820;
+    public int YStartBoard = 763;
     
     public int XStartBoardP2 = 1175;
 
@@ -54,7 +55,7 @@ public class TwoPlayer extends JPanel implements ActionListener {
     private int YScore = 120;
     
     private int XPressEnter = 660; 
-    private int YPressEnter = 800;
+    private int YPressEnter = 743;
     
     private int CellSizeX = 57;
     private int CellSizeY = 57;
@@ -123,6 +124,9 @@ public class TwoPlayer extends JPanel implements ActionListener {
         
         ImageIcon ii6 = new ImageIcon(getClass().getResource("/images/Backgrounds/GameOverP1.png"));
         GameOverImage = ii6.getImage();
+        
+        ImageIcon ii7 = new ImageIcon(getClass().getResource("/images/Backgrounds/2-HideNewLine.png"));
+        HideNewLineImage = ii7.getImage();
     }
 
     @Override
@@ -284,7 +288,7 @@ public class TwoPlayer extends JPanel implements ActionListener {
         int i;
         for(i=0; i<ga.boardP1.getyCursor(); i++) coordY -= CellSizeY;
         for(i=0; i<ga.boardP1.getxCursor(); i++) coordX += CellSizeX;
-        g.drawImage(cursor, coordX, coordY, this);
+        g.drawImage(cursor, coordX-2, coordY-2, this);
     }
         
     public void drawCursorP2(Graphics g){
@@ -293,12 +297,13 @@ public class TwoPlayer extends JPanel implements ActionListener {
         int i;
         for(i=0; i<ga.boardP2.getyCursor(); i++) coordY -= CellSizeY;
         for(i=0; i<ga.boardP2.getxCursor(); i++) coordX += CellSizeX;
-        g.drawImage(cursor, coordX, coordY, this);
+        g.drawImage(cursor, coordX-2, coordY-2, this);
     }
     
     public void drawNextLine(Graphics g){
         drawNextLineP1(g);
         drawNextLineP2(g);
+        g.drawImage(HideNewLineImage, 0, 0, this);
     }
     
     public void drawNextLineP1(Graphics g){

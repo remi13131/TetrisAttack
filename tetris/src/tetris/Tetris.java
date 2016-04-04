@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import tetris.Helper.RXCardLayout;
 import java.awt.Container;
+import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -35,6 +36,9 @@ public class Tetris extends JFrame {
     
     public Tetris(){  
         super("Tetris Attack");
+        
+        Sound.init();
+        
         pane = this.getContentPane();
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -42,17 +46,19 @@ public class Tetris extends JFrame {
                 initUI();
             }
         });
+        
+        Sound.LASALADE.play();
     }
 
     private void initUI()
     {        
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(1831,881);
+        this.setSize(1831,820);
         this.setResizable(false);
         
         //Create the panel that contains the "cards".
         cards = new JPanel(new RXCardLayout());
-        cards.setSize(1831,881);
+        cards.setSize(1831,814);
         
         cardLayout = (CardLayout)(cards.getLayout());
         
@@ -64,11 +70,13 @@ public class Tetris extends JFrame {
         pane.add(cards, BorderLayout.CENTER);
 
         setLocationRelativeTo(null);
+        
+        setVisible(true);
     }
 
     public void newHelp(){
         MiniBrowser mB  = new MiniBrowser();
-        mB.show();
+        mB.setVisible(true);
     }
     
     public void newCredits(){
@@ -105,11 +113,11 @@ public class Tetris extends JFrame {
     
     public static void main(String... args)
     {       
-        Tetris t = new Tetris();
-        t.setVisible(true);
-        
-        Sound.values();
-        
-        Sound.LASALADE.play();
+        EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                Tetris t = new Tetris();
+            }
+        });
     }
 }
