@@ -13,7 +13,8 @@ public class Game2Player {
     public int numActions = 0;
     public int numSec = -3;
     
-    public boolean GO = false;
+    public boolean GOP1 = false;
+    public boolean GOP2 = false;
     
     public boolean started = false;
     
@@ -34,53 +35,75 @@ public class Game2Player {
 
     public void nextUpdate(){
         numActions += 1;
-        if((numActions >= TetrisHelper.FPS) && !GO) {
+        if((numActions >= TetrisHelper.FPS) && !(GOP1||GOP2)) {
             numSec += 1;
             numActions=0;
             if(numSec>=0){
                 System.out.println("SECS : "+numSec+" "+numActions);
             }
         }
+        
         if(isStarted()){
+/*
+            nextUpdateP(boardP1);
+            nextUpdateP(boardP2);
+*/
             
-            if(boardP1.MatchedCells.size() == 0) {
-                
-                boardP1.timeNxtLine -= (1000/TetrisHelper.FPS);
-                
-                if(boardP1.timeNxtLine <= 0) {
-                    insertNewLine(boardP1);
-                    boardP1.nextLine = boardP1.makeNewRandomLine(0);
-                    boardP1.timeNxtLine = TetrisHelper.DEFAULT_NEXT_LINE_TIME;
-                    boardP1.yCursor += 1;
+            Thread t1, t2;
+            t1 = new Thread() { 
+                @Override
+                public void run() {
+                    nextUpdateP(boardP1);
                 }
+            };
+            
+            t2 = new Thread() { 
+                @Override
+                public void run() {
+                    nextUpdateP(boardP2);
+                }
+            };
+            
+            t1.start();
+            t2.start();
+            try{
+                t1.join();
+                t2.join();
+            } 
+            catch(InterruptedException e){
+                System.out.println(" IIIIIIIIII "+e.getMessage());
             }
             
-            if(boardP2.MatchedCells.size() == 0) {
-                
-                boardP2.timeNxtLine -= (1000/TetrisHelper.FPS);
-                
-                if(boardP2.timeNxtLine <= 0) {
-                    insertNewLine(boardP2);
-                    boardP2.nextLine = boardP2.makeNewRandomLine(0);
-                    boardP2.timeNxtLine = TetrisHelper.DEFAULT_NEXT_LINE_TIME;
-                    boardP2.yCursor += 1;
-                }
+            try{
+                t1.join();
+                t2.join();
+            } 
+            catch(InterruptedException e){
+                System.out.println(" IIIIIIIIII "+e.getMessage());
             }
-            
-            boardP1.getGridDown();
-            boardP1.spotMatches();
-            boardP1.Combo+=1;
-            boardP1.updateMatchedTime();
-            boardP1.killOldMatched();
-            boardP1.defineEmptyLines();
-            
-            boardP2.getGridDown();
-            boardP2.spotMatches();
-            boardP2.Combo+=1;
-            boardP2.updateMatchedTime();
-            boardP2.killOldMatched();
-            boardP2.defineEmptyLines();
-        }
+                
+        } else if(!boardP1.getLineN(boardP1.nbLin).isEmpty()) GameOverP1();
+        else if(!boardP2.getLineN(boardP2.nbLin).isEmpty()) GameOverP2();
+        else if(numSec >= 0) setStarted(true);
+    }
+    
+    public void nextUpdateP(Board b){
+        if(b.Matches.size() == 0) b.timeNxtLine -= (1000/TetrisHelper.FPS);
+        if(b.getLineN(b.nbLin).isEmpty()){
+            if(b.timeNxtLine <= 0) {
+                insertNewLine(b);
+                b.nextLine = b.makeNewRandomLine(0);
+                b.timeNxtLine = TetrisHelper.DEFAULT_NEXT_LINE_TIME;
+                if(b.yCursor < b.nbLin) b.yCursor += 1;
+            }
+        } else if(b.timeNxtLine <= 0) setStarted(false);
+
+        b.getGridDown();
+        b.spotMatches();
+        b.Combo+=1;
+        b.updateMatchedTime();
+        b.killOldMatched();
+        b.defineEmptyLines();
     }
     
     public void blockExchange(Board board){
@@ -90,20 +113,32 @@ public class Game2Player {
         board.blockExchange(b1, b2);
     }
     
-    public void goLeft(Board board){
-        if(board.getxCursor()>0) board.setxCursor(board.getxCursor() - 1);
+    public boolean goLeft(Board board){
+        if(board.getxCursor()>0){
+            board.setxCursor(board.getxCursor() - 1);
+            return true;
+        } else return false;
     }
     
-    public void goRight(Board board){
-        if(board.getxCursor() < board.nbCol - 1) board.setxCursor(board.getxCursor() + 1);
+    public boolean goRight(Board board){
+        if(board.getxCursor() < board.nbCol - 1){
+            board.setxCursor(board.getxCursor() + 1);
+            return true;
+        } else return false;
     }
     
-    public void goUp(Board board){
-         if(board.getyCursor() < board.nbLin) board.setyCursor(board.getyCursor() + 1);
+    public boolean goUp(Board board){
+         if(board.getyCursor() < board.nbLin){
+             board.setyCursor(board.getyCursor() + 1);
+            return true;
+        } else return false;
     }
     
-    public void goDown(Board board){
-        if(board.getyCursor()>0) board.setyCursor(board.getyCursor() - 1);
+    public boolean goDown(Board board){
+        if(board.getyCursor()>0){
+            board.setyCursor(board.getyCursor() - 1);
+            return true;
+        } else return false;
     }    
     
     public void insertNewLine(Board board){
@@ -124,12 +159,16 @@ public class Game2Player {
             }
             board.setLigneN(0, board.getNextLine());
         }
-        else GameOver();
     }
     
-    public void GameOver(){
-        System.out.println("Game Over.");
-        GO = true;
+    public void GameOverP1(){
+        System.out.println("Game Over. Player 2 Wins.");
+        GOP1 = true;
+    }
+    
+    public void GameOverP2(){
+        System.out.println("Game Over. Player 1 Wins.");
+        GOP2 = true;
     }
 
     public boolean isStarted() {

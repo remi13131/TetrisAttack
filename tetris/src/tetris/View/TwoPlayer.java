@@ -38,7 +38,8 @@ public class TwoPlayer extends JPanel implements ActionListener {
     private Image pauseBg;
     private Image nxtLineHover;
     private Image bgBlackCell;
-    private Image GameOverImage;
+    private Image GameOverImageP1;
+    private Image GameOverImageP2;
     private Image HideNewLineImage;
     
     public int XStartBoardP1 = 314;
@@ -123,7 +124,10 @@ public class TwoPlayer extends JPanel implements ActionListener {
         bgBlackCell = ii5.getImage();
         
         ImageIcon ii6 = new ImageIcon(getClass().getResource("/images/Backgrounds/GameOverP1.png"));
-        GameOverImage = ii6.getImage();
+        GameOverImageP1 = ii6.getImage();
+        
+        ImageIcon ii8 = new ImageIcon(getClass().getResource("/images/Backgrounds/GameOverP2.png"));
+        GameOverImageP2 = ii8.getImage();
         
         ImageIcon ii7 = new ImageIcon(getClass().getResource("/images/Backgrounds/2-HideNewLine.png"));
         HideNewLineImage = ii7.getImage();
@@ -155,8 +159,7 @@ public class TwoPlayer extends JPanel implements ActionListener {
                 default: break;
             }
         }
-        else if(!ga.GO){
-            ga.setStarted(true);
+        else if(!(ga.GOP1||ga.GOP2)){
             g.drawImage(background, 0, 0, null);
             drawBoardP1(g);
             drawBoardP2(g);
@@ -168,7 +171,6 @@ public class TwoPlayer extends JPanel implements ActionListener {
             else drawKeyPause(g);
         }
         else {
-            ga.setStarted(false);
             g.drawImage(background, 0, 0, null);
             drawBoardP1(g);
             drawBoardP2(g);
@@ -177,7 +179,8 @@ public class TwoPlayer extends JPanel implements ActionListener {
             drawCursor(g);
             drawNextLine(g);
             if(blinkGameOver){
-                g.drawImage(GameOverImage, 0,0, this);
+                if(ga.GOP1) g.drawImage(GameOverImageP1, 0,0, this);
+                if(ga.GOP2) g.drawImage(GameOverImageP2, 0,0, this);
             }
             if(isPaused) drawPause(g);
             else drawPressEnter(g);
@@ -194,7 +197,7 @@ public class TwoPlayer extends JPanel implements ActionListener {
             coordY -= CellSizeY;
             coordX = XStartBoardP1;
             for(j=0; j<=ga.boardP1.nbCol; j++){
-                if(!ga.GO) g.drawImage(ga.boardP1.getLineN(i).getBlockAtPos(j).getBlockImage().getImage(), coordX, coordY, this);
+                if(!(ga.GOP1||ga.GOP2)) g.drawImage(ga.boardP1.getLineN(i).getBlockAtPos(j).getBlockImage().getImage(), coordX, coordY, this);
                 else g.drawImage(ga.boardP1.getLineN(i).getBlockAtPos(j).getBlockImageDead().getImage(), coordX, coordY, this);
                 if(ga.boardP1.getLineN(i).getBlockAtPos(j).isMatched()) g.drawImage(bgBlackCell, coordX, coordY, this);
                 coordX += CellSizeX;
@@ -210,7 +213,7 @@ public class TwoPlayer extends JPanel implements ActionListener {
             coordY -= CellSizeY;
             coordX = XStartBoardP2;
             for(j=0; j<=ga.boardP2.nbCol; j++){
-                if(!ga.GO) g.drawImage(ga.boardP2.getLineN(i).getBlockAtPos(j).getBlockImage().getImage(), coordX, coordY, this);
+                if(!(ga.GOP1||ga.GOP2)) g.drawImage(ga.boardP2.getLineN(i).getBlockAtPos(j).getBlockImage().getImage(), coordX, coordY, this);
                 else g.drawImage(ga.boardP2.getLineN(i).getBlockAtPos(j).getBlockImageDead().getImage(), coordX, coordY, this);
                 if(ga.boardP2.getLineN(i).getBlockAtPos(j).isMatched()) g.drawImage(bgBlackCell, coordX, coordY, this);
                 coordX += CellSizeX;
@@ -343,7 +346,7 @@ public class TwoPlayer extends JPanel implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e) { 
         countBlinkTime += (1000/TetrisHelper.FPS);
         if(countBlinkTime >= blinkGameOverTime){
                     countBlinkTime = 0;
@@ -351,24 +354,23 @@ public class TwoPlayer extends JPanel implements ActionListener {
         }
         TwoPlayer.this.requestFocusInWindow();
         
-        if(!ga.GO) {
+        if(!(ga.GOP1||ga.GOP2)) {
             ga.nextUpdate();
-            double percentNextLine = (TetrisHelper.DEFAULT_NEXT_LINE_TIME - ga.boardP1.timeNxtLine);
-            percentNextLine = percentNextLine / TetrisHelper.DEFAULT_NEXT_LINE_TIME;
-            double value = percentNextLine * 57;
-            int valueRounded = (int)Math.round(value);
-            offsetYP1 = valueRounded-1;
+            if(ga.isStarted()){
+                double percentNextLine = (TetrisHelper.DEFAULT_NEXT_LINE_TIME - ga.boardP1.timeNxtLine);
+                percentNextLine = percentNextLine / TetrisHelper.DEFAULT_NEXT_LINE_TIME;
+                double value = percentNextLine * 57;
+                int valueRounded = (int)Math.round(value);
+                offsetYP1 = valueRounded+1; 
 
-            percentNextLine = (TetrisHelper.DEFAULT_NEXT_LINE_TIME - ga.boardP2.timeNxtLine);
-            percentNextLine = percentNextLine / TetrisHelper.DEFAULT_NEXT_LINE_TIME;
-            value = percentNextLine * 57;
-            valueRounded = (int)Math.round(value);
-            offsetYP2 = valueRounded-1; 
-
-            System.out.println(""+percentNextLine+" "+value+" "+valueRounded);
-            
+                percentNextLine = (TetrisHelper.DEFAULT_NEXT_LINE_TIME - ga.boardP2.timeNxtLine);
+                percentNextLine = percentNextLine / TetrisHelper.DEFAULT_NEXT_LINE_TIME;
+                value = percentNextLine * 57;
+                valueRounded = (int)Math.round(value);
+                offsetYP2 = valueRounded+1; 
+            }
         }
-
+        
         repaint();
     }
     
@@ -383,7 +385,7 @@ public class TwoPlayer extends JPanel implements ActionListener {
 
             int keycode = e.getKeyCode();
             
-            if(ga.GO && (keycode == KeyEvent.VK_ENTER)) {
+            if((ga.GOP1||ga.GOP2) && (keycode == KeyEvent.VK_ENTER)) {
                 timer.stop();
                 goMenu();
             }
@@ -402,27 +404,23 @@ public class TwoPlayer extends JPanel implements ActionListener {
                 }
             }
             
-            if(ga.isStarted() && !ga.GO){
+            if(ga.isStarted() && !(ga.GOP1||ga.GOP2)){
                 switch (keycode) {
                     
                     case KeyEvent.VK_Q:
-                        ga.goLeft(ga.boardP1);
-                        Sound.MOVE.play();
+                        if(ga.goLeft(ga.boardP1)) Sound.MOVE.play();
                     break;
 
                     case KeyEvent.VK_D:
-                        ga.goRight(ga.boardP1);
-                        Sound.MOVE.play();
+                        if(ga.goRight(ga.boardP1)) Sound.MOVE.play();
                     break;
 
                     case KeyEvent.VK_S:
-                        ga.goDown(ga.boardP1);
-                        Sound.MOVE.play();
+                        if(ga.goDown(ga.boardP1)) Sound.MOVE.play();
                     break;
 
                     case KeyEvent.VK_Z:
-                        ga.goUp(ga.boardP1);
-                        Sound.MOVE.play();
+                        if(ga.goUp(ga.boardP1)) Sound.MOVE.play();
                     break;
 
                     case KeyEvent.VK_SPACE:
@@ -431,23 +429,19 @@ public class TwoPlayer extends JPanel implements ActionListener {
                     break;
                     
                     case KeyEvent.VK_LEFT:
-                        ga.goLeft(ga.boardP2);
-                        Sound.MOVE.play();
+                        if(ga.goLeft(ga.boardP2)) Sound.MOVE.play();
                     break;
 
                     case KeyEvent.VK_RIGHT:
-                        ga.goRight(ga.boardP2);
-                        Sound.MOVE.play();
+                        if(ga.goRight(ga.boardP2)) Sound.MOVE.play();
                     break;
 
                     case KeyEvent.VK_DOWN:
-                        ga.goDown(ga.boardP2);
-                        Sound.MOVE.play();
+                        if(ga.goDown(ga.boardP2)) Sound.MOVE.play();
                     break;
 
                     case KeyEvent.VK_UP:
-                        ga.goUp(ga.boardP2);
-                        Sound.MOVE.play();
+                        if(ga.goUp(ga.boardP2)) Sound.MOVE.play();
                     break;
 
                     case KeyEvent.VK_ENTER:

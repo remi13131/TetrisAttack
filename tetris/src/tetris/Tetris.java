@@ -46,8 +46,6 @@ public class Tetris extends JFrame {
                 initUI();
             }
         });
-        
-        Sound.LASALADE.play();
     }
 
     private void initUI()
@@ -119,5 +117,6 @@ public class Tetris extends JFrame {
                 Tetris t = new Tetris();
             }
         });
+        //Sound.LASALADE.play();
     }
 }

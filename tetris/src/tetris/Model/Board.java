@@ -15,7 +15,8 @@ public class Board {
     
     ArrayList<Line> board;
     
-    public ArrayList<Block> MatchedCells;
+    //public ArrayList<Block> MatchedCells;
+    public ArrayList<Match> Matches;
     
     public Line nextLine;
     public int timeNxtLine = TetrisHelper.DEFAULT_NEXT_LINE_TIME;
@@ -23,7 +24,7 @@ public class Board {
     private BlockHelper bl = new BlockHelper();
     
     public int nbCol = 5;
-    public int nbLin = 11;
+    public int nbLin = 10;
     
     public int Score;
     public int ScoreToAdd;
@@ -34,7 +35,8 @@ public class Board {
     
     public Board(){
         board = new ArrayList<Line>();
-        MatchedCells = new ArrayList<Block>();
+        //MatchedCells = new ArrayList<Block>();
+        Matches = new ArrayList<Match>();
         Score = 0;
     }
     
@@ -206,18 +208,20 @@ public class Board {
         int countHorizontalMatch = 0;
         int countVerticalMatch = 0;
         
+        Match m;
+        int combo=1;
+        
         for(i=0; i<= nbLin; i++){
-            y=i;
             for(j=0; j<=nbCol; j++){
                 countHorizontalMatch = 1;
                 countVerticalMatch = 1;
                 
-                y=i;
-                x=j;
-                color = getLineN(y).getBlockAtPos(x).getColor();
+                color = getLineN(i).getBlockAtPos(j).getColor();
                 
                 if(color>-1){
                     //* regarder à droite de la cellule courante si la couleur est la même
+                    x=j;
+                    y=i;
                     x--;
                     while((x>=0) && (getLineN(y).getBlockAtPos(x).getColor()==color) && (!getLineN(y).getBlockAtPos(x).isMatched())) {
                         countHorizontalMatch++;
@@ -233,6 +237,7 @@ public class Board {
                     }
                     
                     x=j;
+                    y=i;
                     //* regarder en bas de la cellule courante si la couleur est la même
                     y--;
                     while((y>=0) && (getLineN(y).getBlockAtPos(x).getColor()==color) && (!getLineN(y).getBlockAtPos(x).isMatched())) {
@@ -248,63 +253,70 @@ public class Board {
                         y++;
                     }
                     
-                    if(countHorizontalMatch>=3) {
-                        
-                        System.out.println(i+" "+j+" CH "+ countHorizontalMatch);
+                    if((countHorizontalMatch>=3)||(countVerticalMatch>=3)){
                         hadMatches = true;
-                        Score += (10*(countHorizontalMatch-2));
+                        m = new Match();
                         
-                        y=i;
-                        x=j;
-                        
-                        getLineN(y).getBlockAtPos(x).setMatched(true);
-                        MatchedCells.add(getLineN(y).getBlockAtPos(x));
-                        
-                        //* regarder à droite de la cellule courante si la couleur est la même
-                        x--;
-                        while((x>=0) && (getLineN(y).getBlockAtPos(x).getColor()==color) && (!getLineN(y).getBlockAtPos(x).isMatched())) {
-                            getLineN(y).getBlockAtPos(x).setMatched(true);
-                            MatchedCells.add(getLineN(y).getBlockAtPos(x));
+                        if(countHorizontalMatch>=3) {
+                            System.out.println(i+" "+j+" CH "+ countHorizontalMatch);
+
+                            y=i;
+                            x=j;
+
+                            //* regarder à droite de la cellule courante si la couleur est la même
                             x--;
+                            while((x>=0) && (getLineN(y).getBlockAtPos(x).getColor()==color) && (!getLineN(y).getBlockAtPos(x).isMatched())) {
+                                getLineN(y).getBlockAtPos(x).setMatched(true);
+                                //MatchedCells.add(getLineN(y).getBlockAtPos(x));
+                                m.addMatchedCell(getLineN(y).getBlockAtPos(x));
+                                x--;
+                            }
+
+                            //* regarder à gauche de la cellule courante si la couleur est la même
+                            x=j;
+                            x++;
+                            while((x<=nbCol) && (getLineN(y).getBlockAtPos(x).getColor()==color) && (!getLineN(y).getBlockAtPos(x).isMatched())) {
+                                getLineN(y).getBlockAtPos(x).setMatched(true);
+                                m.addMatchedCell(getLineN(y).getBlockAtPos(x));
+                                x++;
+                            }
                         }
 
-                        //* regarder à gauche de la cellule courante si la couleur est la même
-                        x=j;
-                        x++;
-                        while((x<=nbCol) && (getLineN(y).getBlockAtPos(x).getColor()==color) && (!getLineN(y).getBlockAtPos(x).isMatched())) {
-                            getLineN(y).getBlockAtPos(x).setMatched(true);
-                            MatchedCells.add(getLineN(y).getBlockAtPos(x));
-                            x++;
+                        if(countVerticalMatch>=3) {
+                            System.out.println(i+" "+j+" CV "+ countVerticalMatch);
+
+                            y=i;
+                            x=j;
+
+                            //* regarder en bas de la cellule courante si la couleur est la même
+                            y--;
+                            while((y>=0) && (getLineN(y).getBlockAtPos(x).getColor()==color) && (!getLineN(y).getBlockAtPos(x).isMatched())) {
+                                getLineN(y).getBlockAtPos(x).setMatched(true);
+                                m.addMatchedCell(getLineN(y).getBlockAtPos(x));
+                                y--;
+                            }
+
+                            //* regarder en haut de la cellule courante si la couleur est la même
+                            y=i;
+                            y++;
+                            while((y<=nbLin) && (getLineN(y).getBlockAtPos(x).getColor()==color) && (!getLineN(y).getBlockAtPos(x).isMatched())) {
+                                getLineN(y).getBlockAtPos(x).setMatched(true);
+                                m.addMatchedCell(getLineN(y).getBlockAtPos(x));
+                                y++;
+                            }
                         }
-                    }
-                    
-                    if(countVerticalMatch>=3) {
-                        System.out.println(i+" "+j+" CV "+ countVerticalMatch);
-                        
-                        hadMatches = true;
-                        
-                        Score += (10*(countVerticalMatch-2));
                         
                         y=i;
                         x=j;
                         
                         getLineN(y).getBlockAtPos(x).setMatched(true);
-                        MatchedCells.add(getLineN(y).getBlockAtPos(x));
-                        //* regarder en bas de la cellule courante si la couleur est la même
-                        y--;
-                        while((y>=0) && (getLineN(y).getBlockAtPos(x).getColor()==color) && (!getLineN(y).getBlockAtPos(x).isMatched())) {
-                            getLineN(y).getBlockAtPos(x).setMatched(true);
-                            MatchedCells.add(getLineN(y).getBlockAtPos(x));
-                            y--;
-                        }
-
-                        //* regarder en haut de la cellule courante si la couleur est la même
-                        y=i;
-                        y++;
-                        while((y<=nbLin) && (getLineN(y).getBlockAtPos(x).getColor()==color) && (!getLineN(y).getBlockAtPos(x).isMatched())) {
-                            getLineN(y).getBlockAtPos(x).setMatched(true);
-                            MatchedCells.add(getLineN(y).getBlockAtPos(x));
-                            y++;
+                        m.addMatchedCell(getLineN(y).getBlockAtPos(x));
+                        
+                        if(m.count>=3){
+                            Matches.add(m);
+                            Score += (10*(m.count-3));
+                            System.out.println(" match "+combo+": "+m.count+" "+countHorizontalMatch+" "+countVerticalMatch);
+                            combo+=1;
                         }
                     }
                 }
@@ -316,19 +328,22 @@ public class Board {
     
     public void updateMatchedTime(){
         int i;
-        for(i=0; i<MatchedCells.size(); i++){
-            int tm = MatchedCells.get(i).getTimeMatched();
-            tm += (1000/TetrisHelper.FPS);
-            MatchedCells.get(i).setTimeMatched(tm);
+        for(i=0; i<Matches.size(); i++){
+            int tm = (1000/TetrisHelper.FPS);
+            tm += Matches.get(i).getTimeMatched();
+            Matches.get(i).setTimeMatched(tm);
         }
     }
     
     public void killOldMatched(){
         int i;
-        for(i=0; i<MatchedCells.size(); i++){
-            if(MatchedCells.get(i).getTimeMatched()>=TetrisHelper.TIME_MATCHED_SOLO){
-                getLineN(MatchedCells.get(i).getY()).setBlockAtPos(MatchedCells.get(i).getX(), new Block(MatchedCells.get(i).getX(), MatchedCells.get(i).getY()));
-                MatchedCells.remove(MatchedCells.get(i));
+        for(i=0; i<Matches.size(); i++){
+            //System.out.println("i "+i+" time:"+ Matches.get(i).getTimeMatched());
+            if(Matches.get(i).getTimeMatched()>=TetrisHelper.TIME_MATCHED_SOLO){
+                for(Block b : Matches.get(i).getMatchedCells()){
+                    getLineN(b.getY()).setBlockAtPos(b.getX(), new Block(b.getX(), b.getY()));
+                }
+                Matches.remove(Matches.get(i));
             }
         }
     }

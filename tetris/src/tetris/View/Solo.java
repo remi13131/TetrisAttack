@@ -164,7 +164,6 @@ public class Solo extends JPanel implements ActionListener {
             }
         }
         else if(!ga.GO){
-            ga.setStarted(true);
             if(black2p) g.drawImage(backgroundBlack, 0, 0, null);
             else g.drawImage(background, 0, 0, null);
             drawBoard(g);
@@ -176,7 +175,6 @@ public class Solo extends JPanel implements ActionListener {
             else drawKeyPause(g);
         }
         else {
-            ga.setStarted(false);
             if(black2p) g.drawImage(backgroundBlack, 0, 0, null);
             else g.drawImage(background, 0, 0, null);
             drawBoard(g);
@@ -312,7 +310,7 @@ public class Solo extends JPanel implements ActionListener {
         }
         
         Solo.this.requestFocusInWindow();
-        if(!ga.GO) {    
+        if(!ga.GO) {
             ga.nextUpdate();
             if(ga.isStarted()){
                 double percentNextLine = (TetrisHelper.DEFAULT_NEXT_LINE_TIME - ga.board.timeNxtLine);
@@ -357,23 +355,19 @@ public class Solo extends JPanel implements ActionListener {
             if(ga.isStarted() && !ga.GO){
                 switch (keycode) {
                     case KeyEvent.VK_LEFT:
-                        ga.goLeft();
-                        Sound.MOVE.play();
+                        if(ga.goLeft()) Sound.MOVE.play();
                     break;
 
                     case KeyEvent.VK_RIGHT:
-                        ga.goRight();
-                        Sound.MOVE.play();
+                        if(ga.goRight()) Sound.MOVE.play();
                     break;
 
                     case KeyEvent.VK_DOWN:
-                        ga.goDown();
-                        Sound.MOVE.play();
+                        if(ga.goDown()) Sound.MOVE.play();
                     break;
 
                     case KeyEvent.VK_UP:
-                        ga.goUp();
-                        Sound.MOVE.play();
+                        if(ga.goUp()) Sound.MOVE.play();
                     break;
 
                     case KeyEvent.VK_SPACE:

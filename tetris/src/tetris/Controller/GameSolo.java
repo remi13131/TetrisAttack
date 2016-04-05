@@ -36,25 +36,25 @@ public class GameSolo {
             System.out.println("SECS : "+numSec+" "+numActions);
         }
         if(isStarted()){
+            if(board.Matches.size() == 0) board.timeNxtLine -= (1000/TetrisHelper.FPS);
             if(board.getLineN(board.nbLin).isEmpty()){
-                if(board.MatchedCells.size() == 0) board.timeNxtLine -= (1000/TetrisHelper.FPS);
-                     
                 if(board.timeNxtLine <= 0) {
                     insertNewLine();
                     board.nextLine = board.makeNewRandomLine(0);
                     board.timeNxtLine = TetrisHelper.DEFAULT_NEXT_LINE_TIME;
-                    board.yCursor += 1;
+                    if(board.yCursor < board.nbLin) board.yCursor += 1;
                 }
-
-                board.getGridDown();
-                board.spotMatches();
-                board.Combo+=1;
-                board.updateMatchedTime();
-                board.killOldMatched();
-                board.defineEmptyLines();
-            }
-            else GameOver();
-        }
+            } else if(board.timeNxtLine <= 0) setStarted(false);
+            
+            board.getGridDown();
+            board.spotMatches();
+            board.Combo+=1;
+            board.updateMatchedTime();
+            board.killOldMatched();
+            board.defineEmptyLines();
+            
+        } else if(!board.getLineN(board.nbLin).isEmpty()) GameOver();
+        else if(numSec >= 0) setStarted(true);
     }
     
     public void blockExchange(){
@@ -64,20 +64,32 @@ public class GameSolo {
         board.blockExchange(b1, b2);
     }
     
-    public void goLeft(){
-        if(board.getxCursor()>0) board.setxCursor(board.getxCursor() - 1);
+    public boolean goLeft(){
+        if(board.getxCursor()>0){
+            board.setxCursor(board.getxCursor() - 1);
+            return true;
+        } else return false;
     }
     
-    public void goRight(){
-        if(board.getxCursor() < board.nbCol - 1) board.setxCursor(board.getxCursor() + 1);
+    public boolean goRight(){
+        if(board.getxCursor() < board.nbCol - 1){
+            board.setxCursor(board.getxCursor() + 1);
+            return true;
+        } else return false;
     }
     
-    public void goUp(){
-         if(board.getyCursor() < board.nbLin) board.setyCursor(board.getyCursor() + 1);
+    public boolean goUp(){
+         if(board.getyCursor() < board.nbLin){
+             board.setyCursor(board.getyCursor() + 1);
+            return true;
+        } else return false;
     }
     
-    public void goDown(){
-        if(board.getyCursor()>0) board.setyCursor(board.getyCursor() - 1);
+    public boolean goDown(){
+        if(board.getyCursor()>0){
+            board.setyCursor(board.getyCursor() - 1);
+            return true;
+        } else return false;
     }    
     
     public void insertNewLine(){
@@ -96,7 +108,6 @@ public class GameSolo {
         if(trouve && indexLigne != -1) {
             for(i=indexLigne; i>0; i--){
                 board.setLigneN(i, board.getLineN(i-1));
-                board.getLineN(i);
             }
             board.setLigneN(0, board.getNextLine());
         }

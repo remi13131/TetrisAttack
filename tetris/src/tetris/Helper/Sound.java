@@ -21,8 +21,7 @@ import javax.sound.sampled.*;
  */
 public enum Sound {
    CHANGE_BLOCK("sounds/changeblock.wav"), //Changing block
-   MOVE("sounds/move.wav"), // move cursor
-   LASALADE("sounds/Amnezia_la_salade_de_nessbeal.wav"); //LA SALADE DE NESSBEAL
+   MOVE("sounds/move.wav"); // move cursor
    
    // Nested class for specifying volume
    public static enum Volume {
