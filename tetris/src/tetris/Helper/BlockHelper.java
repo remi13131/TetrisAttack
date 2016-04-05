@@ -36,4 +36,14 @@ public class BlockHelper {
         else return new Block(defaultBlocks.get(index), false, index,col, lin);
     }
     
+    public int newRandomBlockColor(){
+        return randomGenerator.nextInt(defaultBlocks.size());
+    }
+    
+    public int newRandomColorWithEmpty(){
+        int index = randomGenerator.nextInt(defaultBlocks.size()+2);
+        if(index >= defaultBlocks.size()) return -1;
+        else return index;
+    }
+    
 }

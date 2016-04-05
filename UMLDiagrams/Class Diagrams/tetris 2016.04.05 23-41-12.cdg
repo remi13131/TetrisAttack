@@ -1,0 +1,669 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="tetris">
+  <ClassDiagramComponents>
+    <Class name="Game2Player" package="tetris.Controller" visibility="public" xPosition="992.0" yPosition="1435.0">
+      <Fields>
+        <Field name="numActions" type="int" visibility="public"/>
+        <Field name="numSec" type="int" visibility="public"/>
+        <Field name="GOP1" type="boolean" visibility="public"/>
+        <Field name="GOP2" type="boolean" visibility="public"/>
+        <Field name="started" type="boolean" visibility="public"/>
+        <Field name="boardP1" type="Board" visibility="public"/>
+        <Field name="boardP2" type="Board" visibility="public"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="initGame" returnType="void" visibility="private"/>
+        <Method name="nextUpdate" returnType="void" visibility="public"/>
+        <Method name="nextUpdateP" returnType="void" visibility="public">
+          <Argument type="Board" name="b"/>
+        </Method>
+        <Method name="blockExchange" returnType="void" visibility="public">
+          <Argument type="Board" name="board"/>
+        </Method>
+        <Method name="goLeft" returnType="boolean" visibility="public">
+          <Argument type="Board" name="board"/>
+        </Method>
+        <Method name="goRight" returnType="boolean" visibility="public">
+          <Argument type="Board" name="board"/>
+        </Method>
+        <Method name="goUp" returnType="boolean" visibility="public">
+          <Argument type="Board" name="board"/>
+        </Method>
+        <Method name="goDown" returnType="boolean" visibility="public">
+          <Argument type="Board" name="board"/>
+        </Method>
+        <Method name="insertNewLine" returnType="void" visibility="public">
+          <Argument type="Board" name="board"/>
+        </Method>
+        <Method name="GameOverP1" returnType="void" visibility="public"/>
+        <Method name="GameOverP2" returnType="void" visibility="public"/>
+        <Method name="isStarted" returnType="boolean" visibility="public"/>
+        <Method name="setStarted" returnType="void" visibility="public">
+          <Argument type="boolean" name="started"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="GameSolo" package="tetris.Controller" visibility="public" xPosition="992.0" yPosition="308.0">
+      <Fields>
+        <Field name="numActions" type="int" visibility="public"/>
+        <Field name="numSec" type="int" visibility="public"/>
+        <Field name="GO" type="boolean" visibility="public"/>
+        <Field name="started" type="boolean" visibility="public"/>
+        <Field name="board" type="Board" visibility="public"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="initGame" returnType="void" visibility="private"/>
+        <Method name="nextUpdate" returnType="void" visibility="public"/>
+        <Method name="blockExchange" returnType="void" visibility="public"/>
+        <Method name="goLeft" returnType="boolean" visibility="public"/>
+        <Method name="goRight" returnType="boolean" visibility="public"/>
+        <Method name="goUp" returnType="boolean" visibility="public"/>
+        <Method name="goDown" returnType="boolean" visibility="public"/>
+        <Method name="insertNewLine" returnType="void" visibility="public"/>
+        <Method name="GameOver" returnType="void" visibility="public"/>
+        <Method name="isStarted" returnType="boolean" visibility="public"/>
+        <Method name="setStarted" returnType="void" visibility="public">
+          <Argument type="boolean" name="started"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="MenuController" package="tetris.Controller" visibility="public" xPosition="415.0" yPosition="88.0">
+      <Fields>
+        <Field name="DELAY" type="int" visibility="public" isFinal="true"/>
+        <Field name="Choix" type="int" visibility="public"/>
+        <Field name="nbChoix" type="int" visibility="public"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="setChoix" returnType="void" visibility="public">
+          <Argument type="int" name="i"/>
+        </Method>
+        <Method name="getChoix" returnType="int" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="BlockHelper" package="tetris.Helper" visibility="public" xPosition="1269.0" yPosition="20.0">
+      <Fields>
+        <Field name="randomGenerator" type="Random" visibility="private"/>
+        <Field name="defaultBlocks" type="List&lt;String&gt;" visibility="public"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="newRandomBlock" returnType="Block" visibility="public">
+          <Argument type="int" name="lin"/>
+          <Argument type="int" name="col"/>
+        </Method>
+        <Method name="newRandomBlockWithEmpty" returnType="Block" visibility="public">
+          <Argument type="int" name="lin"/>
+          <Argument type="int" name="col"/>
+        </Method>
+        <Method name="newRandomBlockColor" returnType="int" visibility="public"/>
+        <Method name="newRandomColorWithEmpty" returnType="int" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="MiniBrowser" package="tetris.Helper" visibility="public" xPosition="49.0" yPosition="1435.0">
+      <Fields>
+        <Field name="backButton" type="JButton" visibility="private" isFinal="true"/>
+        <Field name="locationTextField" type="JTextField" visibility="private" isFinal="true"/>
+        <Field name="displayEditorPane" type="JEditorPane" visibility="private" isFinal="true"/>
+        <Field name="pageList" type="ArrayList&lt;String&gt;" visibility="private" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="actionExit" returnType="void" visibility="private"/>
+        <Method name="actionBack" returnType="void" visibility="private"/>
+        <Method name="actionForward" returnType="void" visibility="private"/>
+        <Method name="actionGo" returnType="void" visibility="private"/>
+        <Method name="showError" returnType="void" visibility="private">
+          <Argument type="String" name="errorMessage"/>
+        </Method>
+        <Method name="verifyUrl" returnType="URL" visibility="private">
+          <Argument type="String" name="url"/>
+        </Method>
+        <Method name="showPage" returnType="void" visibility="private">
+          <Argument type="URL" name="pageUrl"/>
+          <Argument type="boolean" name="addToList"/>
+        </Method>
+        <Method name="updateButtons" returnType="void" visibility="private"/>
+        <Method name="hyperlinkUpdate" returnType="void" visibility="public">
+          <Argument type="HyperlinkEvent" name="event"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="RXCardLayout" package="tetris.Helper" visibility="public" xPosition="49.0" yPosition="1832.0">
+      <Fields>
+        <Field name="cards" type="ArrayList&lt;JComponent&gt;" visibility="private"/>
+        <Field name="firstCard" type="JComponent" visibility="private"/>
+        <Field name="lastCard" type="JComponent" visibility="private"/>
+        <Field name="currentCard" type="JComponent" visibility="private"/>
+        <Field name="isRequestFocusOnCard" type="boolean" visibility="private"/>
+        <Field name="nextAction" type="Action" visibility="private"/>
+        <Field name="previousAction" type="Action" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+        <Constructor visibility="public">
+          <Argument type="int" name="hgap"/>
+          <Argument type="int" name="vgap"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="addLayoutComponent" returnType="void" visibility="public">
+          <Argument type="Component" name="comp"/>
+          <Argument type="Object" name="constraints"/>
+        </Method>
+        <Method name="removeLayoutComponent" returnType="void" visibility="public">
+          <Argument type="Component" name="comp"/>
+        </Method>
+        <Method name="getCurrentCard" returnType="JComponent" visibility="public"/>
+        <Method name="getNextAction" returnType="Action" visibility="public"/>
+        <Method name="getNextAction" returnType="Action" visibility="public">
+          <Argument type="String" name="name"/>
+        </Method>
+        <Method name="getPreviousAction" returnType="Action" visibility="public"/>
+        <Method name="getPreviousAction" returnType="Action" visibility="public">
+          <Argument type="String" name="name"/>
+        </Method>
+        <Method name="isNextCardAvailable" returnType="boolean" visibility="public"/>
+        <Method name="isPreviousCardAvailable" returnType="boolean" visibility="public"/>
+        <Method name="isRequestFocusOnCard" returnType="boolean" visibility="public"/>
+        <Method name="setRequestFocusOnCard" returnType="void" visibility="public">
+          <Argument type="boolean" name="isRequestFocusOnCard"/>
+        </Method>
+        <Method name="hierarchyChanged" returnType="void" visibility="public">
+          <Argument type="HierarchyEvent" name="e"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="TetrisHelper" package="tetris.Helper" visibility="public" xPosition="49.0" yPosition="1252.0">
+      <Fields>
+        <Field name="FPS" type="int" visibility="public" isStatic="true" isFinal="true"/>
+        <Field name="TIME_MATCHED_SOLO" type="int" visibility="public" isStatic="true" isFinal="true"/>
+        <Field name="DEFAULT_NEXT_LINE_TIME" type="int" visibility="public" isStatic="true" isFinal="true"/>
+      </Fields>
+      <Constructors/>
+      <Methods/>
+    </Class>
+    <Class name="Block" package="tetris.Model" visibility="public" xPosition="2018.0" yPosition="152.0">
+      <Fields>
+        <Field name="blockImage" type="ImageIcon" visibility="private"/>
+        <Field name="blockImageDead" type="ImageIcon" visibility="private"/>
+        <Field name="x" type="int" visibility="package"/>
+        <Field name="y" type="int" visibility="package"/>
+        <Field name="color" type="int" visibility="package"/>
+        <Field name="Empty" type="boolean" visibility="package"/>
+        <Field name="Matched" type="boolean" visibility="package"/>
+        <Field name="TimeMatched" type="int" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="int" name="x"/>
+          <Argument type="int" name="y"/>
+        </Constructor>
+        <Constructor visibility="public">
+          <Argument type="String" name="path"/>
+          <Argument type="boolean" name="empt"/>
+          <Argument type="int" name="Color"/>
+          <Argument type="int" name="x"/>
+          <Argument type="int" name="y"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getBlockImage" returnType="ImageIcon" visibility="public"/>
+        <Method name="getBlockImageDead" returnType="ImageIcon" visibility="public"/>
+        <Method name="isEmpty" returnType="boolean" visibility="public"/>
+        <Method name="setEmpty" returnType="void" visibility="public">
+          <Argument type="boolean" name="isEmpty"/>
+        </Method>
+        <Method name="getX" returnType="int" visibility="public"/>
+        <Method name="setX" returnType="void" visibility="public">
+          <Argument type="int" name="x"/>
+        </Method>
+        <Method name="getY" returnType="int" visibility="public"/>
+        <Method name="setY" returnType="void" visibility="public">
+          <Argument type="int" name="y"/>
+        </Method>
+        <Method name="getColor" returnType="int" visibility="public"/>
+        <Method name="isMatched" returnType="boolean" visibility="public"/>
+        <Method name="setMatched" returnType="void" visibility="public">
+          <Argument type="boolean" name="Matched"/>
+        </Method>
+        <Method name="getTimeMatched" returnType="int" visibility="public"/>
+        <Method name="setTimeMatched" returnType="void" visibility="public">
+          <Argument type="int" name="TimeMatched"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Board" package="tetris.Model" visibility="public" xPosition="1313.0" yPosition="651.0">
+      <Fields>
+        <Field name="thinking" type="boolean" visibility="public"/>
+        <Field name="board" type="ArrayList&lt;Line&gt;" visibility="package"/>
+        <Field name="grid" type="ArrayList&lt;ArrayList&lt;Integer&gt;&gt;" visibility="package"/>
+        <Field name="Matches" type="ArrayList&lt;Match&gt;" visibility="public"/>
+        <Field name="nextLine" type="Line" visibility="public"/>
+        <Field name="timeNxtLine" type="int" visibility="public"/>
+        <Field name="bl" type="BlockHelper" visibility="private"/>
+        <Field name="nbCol" type="int" visibility="public"/>
+        <Field name="nbLin" type="int" visibility="public"/>
+        <Field name="Score" type="int" visibility="public"/>
+        <Field name="ScoreToAdd" type="int" visibility="public"/>
+        <Field name="Combo" type="int" visibility="public"/>
+        <Field name="xCursor" type="int" visibility="public"/>
+        <Field name="yCursor" type="int" visibility="public"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="initGrid" returnType="void" visibility="public"/>
+        <Method name="initGrid" returnType="void" visibility="public">
+          <Argument type="ArrayList&lt;ArrayList&lt;Integer&gt;&gt;" name="grid"/>
+        </Method>
+        <Method name="setBoard" returnType="void" visibility="public">
+          <Argument type="ArrayList&lt;ArrayList&lt;Integer&gt;&gt;" name="grid"/>
+        </Method>
+        <Method name="genGrid" returnType="ArrayList&lt;ArrayList&lt;Integer&gt;&gt;" visibility="public"/>
+        <Method name="makeNewRandomLineWithEmptyBlocks" returnType="Line" visibility="public">
+          <Argument type="int" name="numLigne"/>
+        </Method>
+        <Method name="makeNewRandomLine" returnType="Line" visibility="public">
+          <Argument type="int" name="numLigne"/>
+        </Method>
+        <Method name="blockExchange" returnType="void" visibility="public">
+          <Argument type="Block" name="b1"/>
+          <Argument type="Block" name="b2"/>
+        </Method>
+        <Method name="getBlockDownIterative" returnType="void" visibility="public">
+          <Argument type="Block" name="b"/>
+        </Method>
+        <Method name="getBlockDown" returnType="void" visibility="public">
+          <Argument type="Block" name="b"/>
+        </Method>
+        <Method name="getGridDown" returnType="void" visibility="public"/>
+        <Method name="getGridDown" returnType="ArrayList&lt;ArrayList&lt;Integer&gt;&gt;" visibility="public">
+          <Argument type="ArrayList&lt;ArrayList&lt;Integer&gt;&gt;" name="list"/>
+        </Method>
+        <Method name="defineEmptyLines" returnType="void" visibility="public"/>
+        <Method name="hasMatches" returnType="boolean" visibility="public"/>
+        <Method name="hasMatches" returnType="boolean" visibility="public">
+          <Argument type="ArrayList&lt;ArrayList&lt;Integer&gt;&gt;" name="list"/>
+        </Method>
+        <Method name="spotMatches" returnType="boolean" visibility="public"/>
+        <Method name="updateMatchedTime" returnType="void" visibility="public"/>
+        <Method name="killOldMatched" returnType="void" visibility="public"/>
+        <Method name="getxCursor" returnType="int" visibility="public"/>
+        <Method name="getyCursor" returnType="int" visibility="public"/>
+        <Method name="setxCursor" returnType="void" visibility="public">
+          <Argument type="int" name="xCursor"/>
+        </Method>
+        <Method name="setyCursor" returnType="void" visibility="public">
+          <Argument type="int" name="yCursor"/>
+        </Method>
+        <Method name="getNextLine" returnType="Line" visibility="public"/>
+        <Method name="getLineN" returnType="Line" visibility="public">
+          <Argument type="int" name="nLine"/>
+        </Method>
+        <Method name="setLigneN" returnType="void" visibility="public">
+          <Argument type="int" name="index"/>
+          <Argument type="Line" name="l"/>
+        </Method>
+        <Method name="getScore" returnType="int" visibility="public"/>
+        <Method name="setScore" returnType="void" visibility="public">
+          <Argument type="int" name="Score"/>
+        </Method>
+        <Method name="getGrid" returnType="ArrayList&lt;ArrayList&lt;Integer&gt;&gt;" visibility="public"/>
+        <Method name="isThinking" returnType="boolean" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Line" package="tetris.Model" visibility="public" xPosition="1451.0" yPosition="266.0">
+      <Fields>
+        <Field name="blocks" type="ArrayList&lt;Block&gt;" visibility="package"/>
+        <Field name="Empty" type="boolean" visibility="package"/>
+        <Field name="y" type="int" visibility="package"/>
+        <Field name="nbCells" type="int" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="int" name="nbCell"/>
+          <Argument type="int" name="numLigne"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getBlocks" returnType="ArrayList&lt;Block&gt;" visibility="public"/>
+        <Method name="getBlockAtPos" returnType="Block" visibility="public">
+          <Argument type="int" name="pos"/>
+        </Method>
+        <Method name="setBlockAtPos" returnType="void" visibility="public">
+          <Argument type="int" name="pos"/>
+          <Argument type="Block" name="b"/>
+        </Method>
+        <Method name="updateLineNumber" returnType="void" visibility="public">
+          <Argument type="int" name="newNumLigne"/>
+        </Method>
+        <Method name="isEmpty" returnType="boolean" visibility="public"/>
+        <Method name="setEmpty" returnType="void" visibility="public">
+          <Argument type="boolean" name="Empty"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Match" package="tetris.Model" visibility="public" xPosition="2018.0" yPosition="1126.0">
+      <Fields>
+        <Field name="MatchedCells" type="ArrayList&lt;Block&gt;" visibility="package"/>
+        <Field name="timeMatched" type="int" visibility="package"/>
+        <Field name="count" type="int" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="addMatchedCell" returnType="void" visibility="public">
+          <Argument type="Block" name="b"/>
+        </Method>
+        <Method name="getMatchedCells" returnType="ArrayList&lt;Block&gt;" visibility="public"/>
+        <Method name="getTimeMatched" returnType="int" visibility="public"/>
+        <Method name="setTimeMatched" returnType="void" visibility="public">
+          <Argument type="int" name="timeMatched"/>
+        </Method>
+        <Method name="getCount" returnType="int" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Tetris" package="tetris" visibility="public" xPosition="49.0" yPosition="615.0">
+      <Fields>
+        <Field name="serialVersionUID" type="long" visibility="private" isStatic="true" isFinal="true"/>
+        <Field name="MENUPANEL" type="String" visibility="public" isStatic="true" isFinal="true"/>
+        <Field name="SOLOPANEL" type="String" visibility="public" isStatic="true" isFinal="true"/>
+        <Field name="TWOPLAYERPANEL" type="String" visibility="public" isStatic="true" isFinal="true"/>
+        <Field name="cardLayout" type="CardLayout" visibility="package"/>
+        <Field name="cards" type="JPanel" visibility="package"/>
+        <Field name="pane" type="Container" visibility="package"/>
+        <Field name="solo" type="Solo" visibility="package"/>
+        <Field name="twoP" type="TwoPlayer" visibility="package"/>
+        <Field name="menu" type="Menu" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="initUI" returnType="void" visibility="private"/>
+        <Method name="newHelp" returnType="void" visibility="public"/>
+        <Method name="newCredits" returnType="void" visibility="public"/>
+        <Method name="newSolo" returnType="void" visibility="public"/>
+        <Method name="newTwoPlayer" returnType="void" visibility="public"/>
+        <Method name="goMenu" returnType="void" visibility="public">
+          <Argument type="Solo" name="j"/>
+        </Method>
+        <Method name="goMenu" returnType="void" visibility="public">
+          <Argument type="TwoPlayer" name="j"/>
+        </Method>
+        <Method name="main" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String" name="args"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Menu" package="tetris.View" visibility="public" xPosition="49.0" yPosition="20.0">
+      <Fields>
+        <Field name="backgroundNoir" type="Image" visibility="private"/>
+        <Field name="backgroundInsertCoin" type="Image" visibility="private"/>
+        <Field name="menu0" type="Image" visibility="private"/>
+        <Field name="menu1" type="Image" visibility="private"/>
+        <Field name="menu2" type="Image" visibility="private"/>
+        <Field name="menu3" type="Image" visibility="private"/>
+        <Field name="menu4" type="Image" visibility="private"/>
+        <Field name="menu5" type="Image" visibility="private"/>
+        <Field name="ga" type="MenuController" visibility="private"/>
+        <Field name="timer" type="Timer" visibility="private"/>
+        <Field name="black" type="boolean" visibility="public"/>
+        <Field name="blinkMenu" type="boolean" visibility="public"/>
+        <Field name="timeBlink" type="int" visibility="public"/>
+        <Field name="validate" type="boolean" visibility="public"/>
+        <Field name="cards" type="JPanel" visibility="public"/>
+        <Field name="solo" type="Solo" visibility="public"/>
+        <Field name="tetris" type="Tetris" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Tetris" name="t"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="initGraphics" returnType="void" visibility="private"/>
+        <Method name="loadImage" returnType="void" visibility="private"/>
+        <Method name="paintComponent" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="actionPerformed" returnType="void" visibility="public">
+          <Argument type="ActionEvent" name="e"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Solo" package="tetris.View" visibility="public" xPosition="677.0" yPosition="20.0">
+      <Fields>
+        <Field name="debug" type="boolean" visibility="private"/>
+        <Field name="cards" type="JPanel" visibility="public"/>
+        <Field name="background" type="Image" visibility="private"/>
+        <Field name="backgroundBlack" type="Image" visibility="private"/>
+        <Field name="ready" type="Image" visibility="private"/>
+        <Field name="set" type="Image" visibility="private"/>
+        <Field name="go" type="Image" visibility="private"/>
+        <Field name="cursor" type="Image" visibility="private"/>
+        <Field name="pauseBg" type="Image" visibility="private"/>
+        <Field name="nxtLineHover" type="Image" visibility="private"/>
+        <Field name="bgBlackCell" type="Image" visibility="private"/>
+        <Field name="GameOverImage" type="Image" visibility="private"/>
+        <Field name="HideNewLineImage" type="Image" visibility="private"/>
+        <Field name="XStartBoard" type="int" visibility="public"/>
+        <Field name="YStartBoard" type="int" visibility="public"/>
+        <Field name="XTime" type="int" visibility="private"/>
+        <Field name="YTime" type="int" visibility="private"/>
+        <Field name="XScore" type="int" visibility="private"/>
+        <Field name="YScore" type="int" visibility="private"/>
+        <Field name="XPressEnter" type="int" visibility="private"/>
+        <Field name="YPressEnter" type="int" visibility="private"/>
+        <Field name="CellSizeX" type="int" visibility="private"/>
+        <Field name="CellSizeY" type="int" visibility="private"/>
+        <Field name="offsetY" type="int" visibility="private"/>
+        <Field name="offsetYD" type="double" visibility="private"/>
+        <Field name="timer" type="Timer" visibility="private"/>
+        <Field name="ga" type="GameSolo" visibility="private"/>
+        <Field name="isPaused" type="boolean" visibility="package"/>
+        <Field name="blinkGameOver" type="boolean" visibility="package"/>
+        <Field name="blinkGameOverTime" type="int" visibility="package"/>
+        <Field name="countBlinkTime" type="int" visibility="package"/>
+        <Field name="black2p" type="boolean" visibility="package"/>
+        <Field name="tetris" type="Tetris" visibility="public"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Tetris" name="t"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="initGraphics" returnType="void" visibility="private"/>
+        <Method name="loadImage" returnType="void" visibility="private"/>
+        <Method name="paintComponent" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="drawBoard" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="drawPause" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="drawKeyPause" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="drawPressEnter" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="drawTime" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="drawScore" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="drawCursor" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="drawNextLine" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="pause" returnType="void" visibility="private"/>
+        <Method name="actionPerformed" returnType="void" visibility="public">
+          <Argument type="ActionEvent" name="e"/>
+        </Method>
+        <Method name="goMenu" returnType="void" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="TwoPlayer" package="tetris.View" visibility="public" xPosition="677.0" yPosition="1074.0">
+      <Fields>
+        <Field name="debug" type="boolean" visibility="private"/>
+        <Field name="cards" type="JPanel" visibility="public"/>
+        <Field name="background" type="Image" visibility="private"/>
+        <Field name="ready" type="Image" visibility="private"/>
+        <Field name="set" type="Image" visibility="private"/>
+        <Field name="go" type="Image" visibility="private"/>
+        <Field name="cursor" type="Image" visibility="private"/>
+        <Field name="pauseBg" type="Image" visibility="private"/>
+        <Field name="nxtLineHover" type="Image" visibility="private"/>
+        <Field name="bgBlackCell" type="Image" visibility="private"/>
+        <Field name="GameOverImageP1" type="Image" visibility="private"/>
+        <Field name="GameOverImageP2" type="Image" visibility="private"/>
+        <Field name="HideNewLineImage" type="Image" visibility="private"/>
+        <Field name="XStartBoardP1" type="int" visibility="public"/>
+        <Field name="YStartBoard" type="int" visibility="public"/>
+        <Field name="XStartBoardP2" type="int" visibility="public"/>
+        <Field name="XTimeP1" type="int" visibility="private"/>
+        <Field name="XTimeP2" type="int" visibility="private"/>
+        <Field name="YTime" type="int" visibility="private"/>
+        <Field name="XScoreP1" type="int" visibility="private"/>
+        <Field name="XScoreP2" type="int" visibility="private"/>
+        <Field name="YScore" type="int" visibility="private"/>
+        <Field name="XPressEnter" type="int" visibility="private"/>
+        <Field name="YPressEnter" type="int" visibility="private"/>
+        <Field name="CellSizeX" type="int" visibility="private"/>
+        <Field name="CellSizeY" type="int" visibility="private"/>
+        <Field name="offsetYP1" type="int" visibility="private"/>
+        <Field name="offsetYP2" type="int" visibility="private"/>
+        <Field name="timer" type="Timer" visibility="private"/>
+        <Field name="ga" type="Game2Player" visibility="private"/>
+        <Field name="isPaused" type="boolean" visibility="package"/>
+        <Field name="blinkGameOver" type="boolean" visibility="package"/>
+        <Field name="blinkGameOverTime" type="int" visibility="package"/>
+        <Field name="countBlinkTime" type="int" visibility="package"/>
+        <Field name="tetris" type="Tetris" visibility="public"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Tetris" name="t"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="initGraphics" returnType="void" visibility="private"/>
+        <Method name="loadImage" returnType="void" visibility="private"/>
+        <Method name="paintComponent" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="drawBoardP1" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="drawBoardP2" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="drawPause" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="drawKeyPause" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="drawPressEnter" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="drawTime" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="drawTimeP1" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="drawTimeP2" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="drawScore" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="drawScoreP1" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="drawScoreP2" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="drawCursor" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="drawCursorP1" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="drawCursorP2" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="drawNextLine" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="drawNextLineP1" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="drawNextLineP2" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="pause" returnType="void" visibility="private"/>
+        <Method name="actionPerformed" returnType="void" visibility="public">
+          <Argument type="ActionEvent" name="e"/>
+        </Method>
+        <Method name="goMenu" returnType="void" visibility="public"/>
+      </Methods>
+    </Class>
+    <Enum name="Sound" package="tetris.Helper" visibility="public" xPosition="49.0" yPosition="1097.0">
+      <Literals>
+        <Literal name="CHANGE_BLOCK"/>
+        <Literal name="MOVE"/>
+      </Literals>
+    </Enum>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations>
+    <HasRelation name="boardP1" source="tetris.Controller.Game2Player" target="tetris.Model.Board" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="boardP2" source="tetris.Controller.Game2Player" target="tetris.Model.Board" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="twoP" source="tetris.Tetris" target="tetris.View.TwoPlayer" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="ga" source="tetris.View.Solo" target="tetris.Controller.GameSolo" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="tetris.Tetris" target="tetris.View.TwoPlayer" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="ga" source="tetris.View.TwoPlayer" target="tetris.Controller.Game2Player" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="solo" source="tetris.Tetris" target="tetris.View.Solo" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="tetris.Helper.BlockHelper" target="tetris.Model.Block" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="tetris.Model.Match" target="tetris.Model.Block" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="board" source="tetris.Controller.GameSolo" target="tetris.Model.Board" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="Matches" source="tetris.Model.Board" target="tetris.Model.Match" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;Match&gt;"/>
+    <UseRelation source="tetris.Model.Line" target="tetris.Model.Block" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="blocks" source="tetris.Model.Line" target="tetris.Model.Block" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;Block&gt;"/>
+    <UseRelation source="tetris.Model.Board" target="tetris.Model.Line" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="tetris.Controller.Game2Player" target="tetris.Model.Board" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="nextLine" source="tetris.Model.Board" target="tetris.Model.Line" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="tetris" source="tetris.View.Solo" target="tetris.Tetris" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="bl" source="tetris.Model.Board" target="tetris.Helper.BlockHelper" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="ga" source="tetris.View.Menu" target="tetris.Controller.MenuController" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="board" source="tetris.Model.Board" target="tetris.Model.Line" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;Line&gt;"/>
+    <HasRelation name="tetris" source="tetris.View.Menu" target="tetris.Tetris" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="tetris.Model.Board" target="tetris.Model.Block" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="tetris.Tetris" target="tetris.View.Solo" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="MatchedCells" source="tetris.Model.Match" target="tetris.Model.Block" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;Block&gt;"/>
+    <HasRelation name="tetris" source="tetris.View.TwoPlayer" target="tetris.Tetris" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="menu" source="tetris.Tetris" target="tetris.View.Menu" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+  </ClassDiagramRelations>
+</ClassDiagram>

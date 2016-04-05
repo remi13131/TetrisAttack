@@ -41,7 +41,6 @@ public class Menu  extends JPanel implements ActionListener {
     public boolean validate = false;
     
     public JPanel cards;
-    public Solo solo = null;
     
     Tetris tetris;
     

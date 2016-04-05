@@ -14,6 +14,7 @@ public class Board {
     public boolean thinking = false;
     
     ArrayList<Line> board;
+    ArrayList<ArrayList<Integer>> grid;
     
     //public ArrayList<Block> MatchedCells;
     public ArrayList<Match> Matches;
@@ -44,14 +45,61 @@ public class Board {
         int i, j;
         xCursor=2;
         yCursor=2;
-        for(i=0; i<=nbLin; i++) board.add(new Line(nbCol, i));
+        
+        grid = genGrid();
+        setBoard(grid);
+        
+        nextLine = makeNewRandomLine(0);
+    }
+    
+    public void initGrid(ArrayList<ArrayList<Integer>> grid){
+        int i, j;
+        xCursor=2;
+        yCursor=2;
+        setBoard(grid);
+        nextLine = makeNewRandomLine(0);
+    }
+    
+    public void setBoard(ArrayList<ArrayList<Integer>> grid){
+        int i, j;
+        Line l;
+        for(i=0; i<=nbLin; i++){
+            l = new Line(nbCol, i);
+            for(j=0; j<=nbCol; j++){
+                if(grid.get(i).get(j)==-1) l.setBlockAtPos(j, new Block(j, i));
+                else l.setBlockAtPos(j, new Block(bl.defaultBlocks.get(grid.get(i).get(j)), false, grid.get(i).get(j),j, i));
+            }
+            board.add(l);
+        }
+    }
+    
+    public ArrayList<ArrayList<Integer>> genGrid(){
+        int i, j;
+        ArrayList<ArrayList<Integer>> ar = new ArrayList<ArrayList<Integer>>();
+        ArrayList<Integer> ai = new ArrayList<Integer>();
         do{
-            for(i=0; i<5; i++) setLigneN(i, makeNewRandomLineWithEmptyBlocks(i));
-            setLigneN(5, makeNewRandomLine(i));
-            nextLine = makeNewRandomLine(0);
-            getGridDown();
-        } while(hasMatches());
-    }              
+            ar = new ArrayList<ArrayList<Integer>>();
+            for(i=0; i<5; i++) {
+                ai = new ArrayList<Integer>();
+                for(j=0; j<=nbCol; j++) ai.add(bl.newRandomColorWithEmpty());
+                ar.add(ai);
+            }
+            
+            ai = new ArrayList<Integer>();
+            for(j=0; j<=nbCol; j++) ai.add(bl.newRandomBlockColor());    
+            ar.add(ai);
+            
+            for(i=6; i<=nbLin; i++) {
+                ai = new ArrayList<Integer>();
+                for(j=0; j<=nbCol; j++) ai.add(-1);
+                ar.add(ai);
+            }
+            
+            System.out.println(""+ar.toString());
+            ar = getGridDown(ar);
+        } while(hasMatches(ar));
+        return ar;
+    }
     
     public Line makeNewRandomLineWithEmptyBlocks(int numLigne){
         Line l = new Line(nbCol, numLigne);
@@ -102,11 +150,8 @@ public class Board {
 
         if((y-1>=0) && getLineN(y-1).getBlockAtPos(pos).isEmpty()){ 
             y--;
-            if(y != b.getY() && getLineN(y).getBlockAtPos(pos).isEmpty()) {
-                getLineN(y).setBlockAtPos(pos, b);
-                getLineN(y+1).setBlockAtPos(pos, new Block(pos, y+1));
-            }
-            
+            getLineN(y).setBlockAtPos(pos, b);
+            getLineN(y+1).setBlockAtPos(pos, new Block(pos, y+1));            
             getBlockDown(b);
         }
     }
@@ -116,6 +161,31 @@ public class Board {
         for(j=0; j<=nbCol; j++){
             for(i=0; i<=nbLin; i++) getBlockDown(getLineN(i).getBlockAtPos(j));
         }
+    }
+    
+    public ArrayList<ArrayList<Integer>> getGridDown(ArrayList<ArrayList<Integer>> list){
+        ArrayList<ArrayList<Integer>> newList = new ArrayList<ArrayList<Integer>>(list);
+        int i, j;
+        int x, y;
+        int num;
+        //System.out.println("new HOO HOO"+newList.toString());
+        for(j=0; j<nbCol; j++){
+            for(i=0; i<nbLin; i++) {
+                x=j;
+                y=i;
+                //System.out.println(""+y+" "+x+" ppppppppp");
+                num = newList.get(y).get(x);
+                while((y-1>=0) && (newList.get(y-1).get(x) == -1)){ 
+                    y--;
+                    newList.get(y).set(x, num);
+                    newList.get(y+1).set(x, -1);
+                }
+            }
+        }
+        
+        System.out.println(""+newList.toString());
+        
+        return newList;
     }
     
     public void defineEmptyLines(){
@@ -184,6 +254,68 @@ public class Board {
                     y=i;
                     y++;
                     while((y<=nbLin) && (getLineN(y).getBlockAtPos(x).getColor()==color) && (!getLineN(y).getBlockAtPos(x).isMatched())) {
+                        countVerticalMatch++;
+                        y++;
+                    }
+                    
+                    if((countHorizontalMatch>=3) || (countVerticalMatch>=3)) hasMatches = true;
+                }
+            }
+        }        
+
+        return hasMatches;
+    }
+    
+    public boolean hasMatches(ArrayList<ArrayList<Integer>> list){
+        
+        boolean hasMatches = false;
+        
+        int i, j;
+        int x=0, y;
+        
+        int color;
+        
+        int countHorizontalMatch = 0;
+        int countVerticalMatch = 0;
+        
+        for(i=0; i<= nbLin; i++){
+            y=i;
+            for(j=0; j<=nbCol; j++){
+                countHorizontalMatch = 1;
+                countVerticalMatch = 1;
+                
+                y=i;
+                x=j;
+                color = list.get(y).get(x);
+                
+                if(color>-1){
+                    //* regarder à droite de la cellule courante si la couleur est la même
+                    x--;
+                    while((x>=0) && (list.get(y).get(x)==color)) {
+                        countHorizontalMatch++;
+                        x--;
+                    }
+
+                    //* regarder à gauche de la cellule courante si la couleur est la même
+                    x=j;
+                    x++;
+                    while((x<=nbCol) && (list.get(y).get(x)==color)) {
+                        countHorizontalMatch++;
+                        x++;
+                    }
+                    
+                    x=j;
+                    //* regarder en bas de la cellule courante si la couleur est la même
+                    y--;
+                    while((y>=0) && (list.get(y).get(x)==color)) {
+                        countVerticalMatch++;
+                        y--;
+                    }
+
+                    //* regarder en haut de la cellule courante si la couleur est la même
+                    y=i;
+                    y++;
+                    while((y<=nbLin) && (list.get(y).get(x)==color)) {
                         countVerticalMatch++;
                         y++;
                     }
@@ -385,6 +517,10 @@ public class Board {
         this.Score = Score;
     }
 
+    public ArrayList<ArrayList<Integer>> getGrid() {
+        return grid;
+    }
+    
     public boolean isThinking() {
         return thinking;
     }

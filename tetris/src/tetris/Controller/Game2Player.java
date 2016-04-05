@@ -30,7 +30,7 @@ public class Game2Player {
         boardP1.initGrid();
         
         boardP2 = new Board();
-        boardP2.initGrid();
+        boardP2.initGrid(boardP1.getGrid());
     }
 
     public void nextUpdate(){
@@ -66,13 +66,6 @@ public class Game2Player {
             
             t1.start();
             t2.start();
-            try{
-                t1.join();
-                t2.join();
-            } 
-            catch(InterruptedException e){
-                System.out.println(" IIIIIIIIII "+e.getMessage());
-            }
             
             try{
                 t1.join();
