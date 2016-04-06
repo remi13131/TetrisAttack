@@ -2,6 +2,7 @@ package tetris.View;
 
 import java.awt.CardLayout;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -94,36 +95,39 @@ public class Menu  extends JPanel implements ActionListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        if(black) g.drawImage(backgroundNoir, 0, 0, null); 
-        else g.drawImage(backgroundInsertCoin, 0, 0, null);
+        Graphics2D g2d = (Graphics2D) g.create();
+        g2d.scale(tetris.scaleX, tetris.scaleY);
+        
+        if(black) g2d.drawImage(backgroundNoir, 0, 0, null); 
+        else g2d.drawImage(backgroundInsertCoin, 0, 0, null);
         
         if(blinkMenu == false) {
             switch(ga.getChoix()){
                 case 1 :    
-                    g.drawImage(menu1, 0, 0, null);     
+                    g2d.drawImage(menu1, 0, 0, null);     
                 break;
                     
                 case 2 :    
-                    g.drawImage(menu2, 0, 0, null);     
+                    g2d.drawImage(menu2, 0, 0, null);     
                 break;
                                     
                 case 3 :    
-                    g.drawImage(menu3, 0, 0, null);     
+                    g2d.drawImage(menu3, 0, 0, null);     
                 break;
                     
                 case 4 :    
-                    g.drawImage(menu4, 0, 0, null);     
+                    g2d.drawImage(menu4, 0, 0, null);     
                 break;
                                     
                 case 5 :    
-                    g.drawImage(menu5, 0, 0, null);     
+                    g2d.drawImage(menu5, 0, 0, null);     
                 break;
                                     
                 default : break;
             }
             
         }
-        else g.drawImage(menu0, 0, 0, null);
+        else g2d.drawImage(menu0, 0, 0, null);
     } 
 
     @Override

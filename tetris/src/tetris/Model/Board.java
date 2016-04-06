@@ -169,8 +169,8 @@ public class Board {
         int x, y;
         int num;
         //System.out.println("new HOO HOO"+newList.toString());
-        for(j=0; j<nbCol; j++){
-            for(i=0; i<nbLin; i++) {
+        for(j=0; j<=nbCol; j++){
+            for(i=0; i<=nbLin; i++) {
                 x=j;
                 y=i;
                 //System.out.println(""+y+" "+x+" ppppppppp");

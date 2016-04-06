@@ -7,6 +7,7 @@ import tetris.Model.*;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 
 import java.awt.event.ActionEvent;
@@ -46,7 +47,6 @@ public class Solo extends JPanel implements ActionListener {
     private Image bgBlackCell;
     private Image GameOverImage;
     private Image HideNewLineImage;
-    
     
     public int XStartBoard = 314;
     public int YStartBoard = 763;
@@ -140,53 +140,57 @@ public class Solo extends JPanel implements ActionListener {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        
+        Graphics2D g2d = (Graphics2D) g.create();
+        g2d.scale(tetris.scaleX, tetris.scaleY);
+        
         if(ga.numSec < 0){
-            if(black2p) g.drawImage(backgroundBlack, 0, 0, null);
-            else g.drawImage(background, 0, 0, null);
-            drawBoard(g);
-            drawTime(g);
-            drawScore(g);
-            drawCursor(g);
-            drawNextLine(g);
-            if(isPaused) drawPause(g);
-            else drawKeyPause(g);
+            if(black2p) g2d.drawImage(backgroundBlack, 0, 0, null);
+            else g2d.drawImage(background, 0, 0, null);
+            drawBoard(g2d);
+            drawTime(g2d);
+            drawScore(g2d);
+            drawCursor(g2d);
+            drawNextLine(g2d);
+            if(isPaused) drawPause(g2d);
+            else drawKeyPause(g2d);
             switch(ga.numSec){
                 case -3:
-                    g.drawImage(ready, 0, 0, null);
+                    g2d.drawImage(ready, 0, 0, null);
                 break;
                 case -2: 
-                    g.drawImage(set, 0, 0, null);
+                    g2d.drawImage(set, 0, 0, null);
                 break;
                 case -1: 
-                    g.drawImage(go, 0, 0, null);
+                    g2d.drawImage(go, 0, 0, null);
                 break;
                 default: break;
             }
         }
         else if(!ga.GO){
-            if(black2p) g.drawImage(backgroundBlack, 0, 0, null);
-            else g.drawImage(background, 0, 0, null);
-            drawBoard(g);
-            drawTime(g);
-            drawScore(g);
-            drawCursor(g);
-            drawNextLine(g);
-            if(isPaused) drawPause(g);
-            else drawKeyPause(g);
+            if(black2p) g2d.drawImage(backgroundBlack, 0, 0, null);
+            else g2d.drawImage(background, 0, 0, null);
+            drawBoard(g2d);
+            drawTime(g2d);
+            drawScore(g2d);
+            drawCursor(g2d);
+            drawNextLine(g2d);
+            if(isPaused) drawPause(g2d);
+            else drawKeyPause(g2d);
         }
         else {
-            if(black2p) g.drawImage(backgroundBlack, 0, 0, null);
-            else g.drawImage(background, 0, 0, null);
-            drawBoard(g);
-            drawTime(g);
-            drawScore(g);
-            drawCursor(g);
-            drawNextLine(g);
+            if(black2p) g2d.drawImage(backgroundBlack, 0, 0, null);
+            else g2d.drawImage(background, 0, 0, null);
+            drawBoard(g2d);
+            drawTime(g2d);
+            drawScore(g2d);
+            drawCursor(g2d);
+            drawNextLine(g2d);
             if(blinkGameOver){
-                g.drawImage(GameOverImage, 0,0, this);
+                g2d.drawImage(GameOverImage, 0,0, this);
             }
-            if(isPaused) drawPause(g);
-            else drawPressEnter(g);
+            if(isPaused) drawPause(g2d);
+            else drawPressEnter(g2d);
         }
     } 
     

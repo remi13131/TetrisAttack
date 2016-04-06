@@ -3,14 +3,20 @@ package tetris;
 import tetris.View.*;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Component;
 import tetris.Helper.RXCardLayout;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import tetris.Helper.Sound;
 import tetris.Helper.MiniBrowser;
+import tetris.Helper.TetrisHelper;
 /**
  *
  * @author Remi
@@ -18,7 +24,7 @@ import tetris.Helper.MiniBrowser;
 
 
 
-public class Tetris extends JFrame {
+public class Tetris extends JFrame implements ComponentListener {
     
     private static final long serialVersionUID = 1L;
 
@@ -34,30 +40,34 @@ public class Tetris extends JFrame {
     TwoPlayer twoP;
     Menu menu;
     
+    public double scaleX = 0.7;
+    public double scaleY = 0.7;
+    
     public Tetris(){  
         super("Tetris Attack");
         
         Sound.init();
         
         pane = this.getContentPane();
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                initUI();
-            }
-        });
+        initUI();
     }
 
     private void initUI()
-    {        
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(1831,820);
-        this.setResizable(false);
+    {   
+        int w = TetrisHelper.width; 
+        int h = TetrisHelper.height;
+        
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);        
+        this.setSize(w,h);
+        pane.setPreferredSize(new Dimension(w,h));
+        this.pack();
+        this.setResizable(true);
+        this.addComponentListener(this);
         
         //Create the panel that contains the "cards".
         cards = new JPanel(new RXCardLayout());
-        cards.setSize(1831,814);
-        
+        //cards.setSize(w,h);
+        //cards.setPreferredSize(new Dimension(w,h));
         cardLayout = (CardLayout)(cards.getLayout());
         
         Menu m = new Menu(this);
@@ -118,5 +128,29 @@ public class Tetris extends JFrame {
             }
         });
         //Sound.LASALADE.play();
+    }
+
+    @Override
+    public void componentResized(ComponentEvent e) {
+        int offsetY = this.getInsets().top;
+        double scaleX = ((double)this.getWidth())/((double)TetrisHelper.width);
+        double scaleY = ((double)this.getHeight()-offsetY)/((double)(TetrisHelper.height));
+        this.scaleX = scaleX;
+        this.scaleY = scaleY;
+    }
+
+    @Override
+    public void componentMoved(ComponentEvent e) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void componentShown(ComponentEvent e) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void componentHidden(ComponentEvent e) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

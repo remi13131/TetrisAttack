@@ -6,6 +6,10 @@ package tetris.Helper;
  */
 public class TetrisHelper {
     
+    public static final int width = 1831;
+    
+    public static final int height = 794;
+    
     public static final int FPS = 67;
     
     public static final int TIME_MATCHED_SOLO = 3000;
