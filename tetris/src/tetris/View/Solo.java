@@ -20,7 +20,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-import tetris.Helper.Sound;
+import tetris.Helper.lib.Sound;
 import tetris.Helper.TetrisHelper;
 
 import tetris.Tetris;
@@ -108,33 +108,21 @@ public class Solo extends JPanel implements ActionListener {
     }
     
     private void loadImage() { 
-        ImageIcon ii = new ImageIcon(getClass().getResource("/images/Backgrounds/1.png"));
-        background = ii.getImage();
+        background = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/1.png")).getImage();
+        backgroundBlack = new ImageIcon(getClass().getResource("/images/Backgrounds/1bis.png")).getImage();
         
-        ImageIcon ii7 = new ImageIcon(getClass().getResource("/images/Backgrounds/1bis.png"));
-        backgroundBlack = ii7.getImage();
+        ready = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/ready.png")).getImage();
+        set = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/set.png")).getImage();
+        go = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/go.png")).getImage();
         
-        ii = new ImageIcon(getClass().getResource("/images/Backgrounds/ready.png"));
-        ready = ii.getImage();
-        ii = new ImageIcon(getClass().getResource("/images/Backgrounds/set.png"));
-        set = ii.getImage();
-        ii = new ImageIcon(getClass().getResource("/images/Backgrounds/go.png"));
-        go = ii.getImage();
+        cursor = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/cursor.png")).getImage();
+        pauseBg = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/Pause.png")).getImage();
+        nxtLineHover = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/nextLineBlack.png")).getImage();
+        bgBlackCell = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/bgBlackCell.png")).getImage();
         
-        ImageIcon ii2 = new ImageIcon(getClass().getResource("/images/Backgrounds/cursor.png"));
-        cursor = ii2.getImage();
-        ImageIcon ii3 = new ImageIcon(getClass().getResource("/images/Backgrounds/Pause.png"));
-        pauseBg = ii3.getImage();
-        ImageIcon ii4 = new ImageIcon(getClass().getResource("/images/Backgrounds/nextLineBlack.png"));
-        nxtLineHover = ii4.getImage();
-        ImageIcon ii5 = new ImageIcon(getClass().getResource("/images/Backgrounds/bgBlackCell.png"));
-        bgBlackCell = ii5.getImage();
-        
-        ImageIcon ii6 = new ImageIcon(getClass().getResource("/images/Backgrounds/GameOverP1.png"));
-        GameOverImage = ii6.getImage();
+        GameOverImage = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/GameOverP1.png")).getImage();
 
-        ImageIcon ii8 = new ImageIcon(getClass().getResource("/images/Backgrounds/1-HideNewLine.png"));
-        HideNewLineImage = ii8.getImage();
+        HideNewLineImage = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/1-HideNewLine.png")).getImage();
     }
 
     @Override
@@ -210,27 +198,28 @@ public class Solo extends JPanel implements ActionListener {
                 g.drawString(s4, coordX - 100, coordY+20);
             }
             for(j=0; j<=ga.board.nbCol; j++){
-                if(!ga.GO && !ga.board.getLineN(i).getBlockAtPos(j).isMatched())
-                    g.drawImage(ga.board.getLineN(i).getBlockAtPos(j).getBlockImage().getImage(), coordX, coordY, this);
-                else g.drawImage(ga.board.getLineN(i).getBlockAtPos(j).getBlockImageDead().getImage(), coordX, coordY, this);
-                if(ga.board.getLineN(i).getBlockAtPos(j).isMatched()) g.drawImage(bgBlackCell, coordX, coordY, this);
-                if(debug){
-                    try{
-                        String s = "- X : "+ga.board.getLineN(i).getBlockAtPos(j).getX();
-                        String s1 = "- Y : "+ga.board.getLineN(i).getBlockAtPos(j).getY();
-                        String s2 = "- E : "+ga.board.getLineN(i).getBlockAtPos(j).isEmpty();
-                        String s3 = "- C : "+ga.board.getLineN(i).getBlockAtPos(j).getColor();
-                        String s5 = "- M : "+ga.board.getLineN(i).getBlockAtPos(j).isMatched();   
-                        String s6 = "- TM : "+ga.board.getLineN(i).getBlockAtPos(j).getTimeMatched();
-                        
-                        g.drawString(s, coordX + 10, coordY+8);
-                        g.drawString(s1, coordX + 10, coordY+16);
-                        g.drawString(s2, coordX + 10, coordY+24);
-                        g.drawString(s3, coordX + 10, coordY+32);
-                        g.drawString(s5, coordX + 10, coordY+40);
-                        g.drawString(s6, coordX + 10, coordY+48);
+                if(ga.board.getLineN(i).getBlockAtPos(j).getColor() != -1){
+                    if(!ga.GO && !ga.board.getLineN(i).getBlockAtPos(j).isMatched())
+                        g.drawImage(ga.board.bl.blockImages.get(ga.board.getLineN(i).getBlockAtPos(j).getColor()), coordX, coordY, this);
+                    else g.drawImage(ga.board.bl.deadBlockImages.get(ga.board.getLineN(i).getBlockAtPos(j).getColor()), coordX, coordY, this);
+                
+                    if(ga.board.getLineN(i).getBlockAtPos(j).isMatched()) g.drawImage(bgBlackCell, coordX, coordY, this);
+                    if(debug){
+                            String s = "- X : "+ga.board.getLineN(i).getBlockAtPos(j).getX();
+                            String s1 = "- Y : "+ga.board.getLineN(i).getBlockAtPos(j).getY();
+                            String s2 = "- E : "+ga.board.getLineN(i).getBlockAtPos(j).isEmpty();
+                            String s3 = "- C : "+ga.board.getLineN(i).getBlockAtPos(j).getColor();
+                            String s5 = "- M : "+ga.board.getLineN(i).getBlockAtPos(j).isMatched();  
+                            String s6 = "";
+                            if(ga.board.Matches.size() > 0) s6 = "- TM : "+ga.board.Matches.get(0).getTimeMatched();
+
+                            g.drawString(s, coordX + 10, coordY+8);
+                            g.drawString(s1, coordX + 10, coordY+16);
+                            g.drawString(s2, coordX + 10, coordY+24);
+                            g.drawString(s3, coordX + 10, coordY+32);
+                            g.drawString(s5, coordX + 10, coordY+40);
+                            g.drawString(s6, coordX + 10, coordY+48);
                     }
-                    catch(Exception e){System.out.println(""+e.getMessage());}
                 }
                 coordX += CellSizeX;
             }
@@ -285,7 +274,7 @@ public class Solo extends JPanel implements ActionListener {
         int coordX = XStartBoard;
         int coordY = YStartBoard-offsetY;
         for(j=0; j<=ga.board.nbCol; j++){
-            g.drawImage(ga.board.getNextLine().getBlockAtPos(j).getBlockImage().getImage(), coordX, coordY, this);
+            g.drawImage(ga.board.bl.blockImages.get(ga.board.getNextLine().getBlockAtPos(j).getColor()), coordX, coordY, this);
             coordX += CellSizeX;
         }
         coordX = XStartBoard;
@@ -300,12 +289,10 @@ public class Solo extends JPanel implements ActionListener {
         isPaused = !isPaused;
         if (isPaused) timer.stop();
         else timer.start();
-        repaint();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        repaint();
         countBlinkTime += (1000/TetrisHelper.FPS);
         if(countBlinkTime >= blinkGameOverTime){
                     countBlinkTime = 0;
@@ -324,6 +311,8 @@ public class Solo extends JPanel implements ActionListener {
                 offsetY = valueRounded+1;
             }
         }
+        
+        paintImmediately(this.getBounds());//repaint();
     }
     
     public void goMenu(){

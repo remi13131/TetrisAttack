@@ -1,4 +1,4 @@
-package tetris.Helper;
+package tetris.Helper.lib;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -7,6 +7,10 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 /**
+ *
+ * @author https://tips4java.wordpress.com/2008/10/31/card-layout-focus/
+ * EDITED By Remi
+ * @see <a href="https://tips4java.wordpress.com/2008/10/31/card-layout-focus/"> https://tips4java.wordpress.com/2008/10/31/card-layout-focus/ </a>
  * The <code>RXCardLayout</code> provides some extensions to the
  * CardLayout class. In particular adding support for:
  *

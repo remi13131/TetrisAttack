@@ -12,43 +12,27 @@ import javax.swing.ImageIcon;
 
 public class Block {
     
-    private ImageIcon blockImage;
-    private ImageIcon blockImageDead;
     int x;
     int y;
     int color;
     boolean Empty;
     boolean Matched=false;
-    int TimeMatched=0;
+    boolean isDead=false;
+    boolean isBlinking=false;
     
      public Block(int x, int y){
-        ImageIcon ii = new ImageIcon(getClass().getResource("/images/Blocks/defaultTransparent.png"));
         this.x=x;
         this.y=y;
-        blockImage = ii;
-        blockImageDead = ii;
         Empty = true;
         color = -1;
      }
     
-    public Block(String path, boolean empt, int Color, int x, int y){        
-        ImageIcon ii = new ImageIcon(getClass().getResource("/images/Blocks/"+path+".png"));
-        ImageIcon ii2 = new ImageIcon(getClass().getResource("/images/Blocks/"+path+"mort.png"));
-        blockImage = ii;
-        blockImageDead = ii2;
+    public Block(boolean empt, int Color, int x, int y){ 
         this.x=x;
         this.y=y;
         Empty = empt;
         this.color = Color;
     }
-
-    public ImageIcon getBlockImage() {
-        return blockImage;
-    }
-
-    public ImageIcon getBlockImageDead() {
-        return blockImageDead;
-    }  
 
     public boolean isEmpty() {
         return Empty;
@@ -84,16 +68,5 @@ public class Block {
 
     public void setMatched(boolean Matched) {
         this.Matched = Matched;
-    }
-
-    public int getTimeMatched() {
-        return TimeMatched;
-    }
-
-    public void setTimeMatched(int TimeMatched) {
-        this.TimeMatched = TimeMatched;
-    }
-    
-    
-    
+    }  
 }

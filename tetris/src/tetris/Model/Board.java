@@ -22,7 +22,7 @@ public class Board {
     public Line nextLine;
     public int timeNxtLine = TetrisHelper.DEFAULT_NEXT_LINE_TIME;
     
-    private BlockHelper bl = new BlockHelper();
+    public BlockHelper bl = new BlockHelper();
     
     public int nbCol = 5;
     public int nbLin = 10;
@@ -67,7 +67,7 @@ public class Board {
             l = new Line(nbCol, i);
             for(j=0; j<=nbCol; j++){
                 if(grid.get(i).get(j)==-1) l.setBlockAtPos(j, new Block(j, i));
-                else l.setBlockAtPos(j, new Block(bl.defaultBlocks.get(grid.get(i).get(j)), false, grid.get(i).get(j),j, i));
+                else l.setBlockAtPos(j, new Block(false, grid.get(i).get(j),j, i));
             }
             board.add(l);
         }
@@ -95,8 +95,8 @@ public class Board {
                 ar.add(ai);
             }
             
-            System.out.println(""+ar.toString());
             ar = getGridDown(ar);
+        
         } while(hasMatches(ar));
         return ar;
     }
@@ -168,12 +168,10 @@ public class Board {
         int i, j;
         int x, y;
         int num;
-        //System.out.println("new HOO HOO"+newList.toString());
         for(j=0; j<=nbCol; j++){
             for(i=0; i<=nbLin; i++) {
                 x=j;
                 y=i;
-                //System.out.println(""+y+" "+x+" ppppppppp");
                 num = newList.get(y).get(x);
                 while((y-1>=0) && (newList.get(y-1).get(x) == -1)){ 
                     y--;
@@ -182,8 +180,6 @@ public class Board {
                 }
             }
         }
-        
-        System.out.println(""+newList.toString());
         
         return newList;
     }

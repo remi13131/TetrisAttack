@@ -14,7 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import tetris.Controller.MenuController;
-import tetris.Helper.Sound;
+import tetris.Helper.lib.Sound;
 import tetris.Tetris;
 
 /**
@@ -73,21 +73,21 @@ public class Menu  extends JPanel implements ActionListener {
     }
     
     private void loadImage() { 
-        ImageIcon ii = new ImageIcon(getClass().getResource("/images/Backgrounds/0bis.png"));
+        ImageIcon ii = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/0bis.png"));
         backgroundNoir = ii.getImage();
-        ImageIcon ii2 = new ImageIcon(getClass().getResource("/images/Backgrounds/0.png"));
+        ImageIcon ii2 = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/0.png"));
         backgroundInsertCoin = ii2.getImage();
-        ImageIcon ii3 = new ImageIcon(getClass().getResource("/images/Backgrounds/menu00.png"));
+        ImageIcon ii3 = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/menu00.png"));
         menu0 = ii3.getImage();
-        ImageIcon ii4 = new ImageIcon(getClass().getResource("/images/Backgrounds/menu01.png"));
+        ImageIcon ii4 = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/menu01.png"));
         menu1 = ii4.getImage();
-        ImageIcon ii5 = new ImageIcon(getClass().getResource("/images/Backgrounds/menu02.png"));
+        ImageIcon ii5 = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/menu02.png"));
         menu2 = ii5.getImage();
-        ImageIcon ii6 = new ImageIcon(getClass().getResource("/images/Backgrounds/menu03.png"));
+        ImageIcon ii6 = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/menu03.png"));
         menu3 = ii6.getImage();
-        ImageIcon ii7 = new ImageIcon(getClass().getResource("/images/Backgrounds/menu04.png"));
+        ImageIcon ii7 = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/menu04.png"));
         menu4 = ii7.getImage();
-        ImageIcon ii8 = new ImageIcon(getClass().getResource("/images/Backgrounds/menu05.png"));
+        ImageIcon ii8 = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/menu05.png"));
         menu5 = ii8.getImage();
     }
 

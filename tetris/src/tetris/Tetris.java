@@ -4,7 +4,7 @@ import tetris.View.*;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Component;
-import tetris.Helper.RXCardLayout;
+import tetris.Helper.lib.RXCardLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -14,8 +14,8 @@ import java.awt.event.ComponentListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import tetris.Helper.Sound;
-import tetris.Helper.MiniBrowser;
+import tetris.Helper.lib.Sound;
+import tetris.Helper.lib.MiniBrowser;
 import tetris.Helper.TetrisHelper;
 /**
  *
@@ -54,8 +54,8 @@ public class Tetris extends JFrame implements ComponentListener {
 
     private void initUI()
     {   
-        int w = TetrisHelper.width; 
-        int h = TetrisHelper.height;
+        int w = (int)(TetrisHelper.width * scaleX); 
+        int h = (int)(TetrisHelper.height * scaleY);
         
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);        
         this.setSize(w,h);

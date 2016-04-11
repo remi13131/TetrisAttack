@@ -1,10 +1,4 @@
-package tetris.Helper;
-
-/**
- *
- * @author http://www.java-tips.org/java-se-tips-100019/15-javax-swing/1394-how-to-create-a-simple-browser-in-swing.html
- * EDITED By Remi
- */
+package tetris.Helper.lib;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -14,6 +8,13 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.html.*;
  
+/**
+ *
+ * @author http://www.java-tips.org/java-se-tips-100019/15-javax-swing/1394-how-to-create-a-simple-browser-in-swing.html
+ * EDITED By Remi
+ * @see <a href="http://www.java-tips.org/java-se-tips-100019/15-javax-swing/1394-how-to-create-a-simple-browser-in-swing.html"> http://www.java-tips.org/java-se-tips-100019/15-javax-swing/1394-how-to-create-a-simple-browser-in-swing.html </a>
+ */
+
 // The Simple Web Browser.
 public class MiniBrowser extends JFrame
          

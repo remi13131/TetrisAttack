@@ -15,7 +15,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import tetris.Controller.Game2Player;
-import tetris.Helper.Sound;
+import tetris.Helper.lib.Sound;
 import tetris.Helper.TetrisHelper;
 import tetris.Model.Line;
 import tetris.Tetris;
@@ -108,29 +108,29 @@ public class TwoPlayer extends JPanel implements ActionListener {
         ImageIcon ii = new ImageIcon(getClass().getResource("/images/Backgrounds/2.png"));
         background = ii.getImage();
         
-        ii = new ImageIcon(getClass().getResource("/images/Backgrounds/ready2P.png"));
+        ii = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/ready2P.png"));
         ready = ii.getImage();
-        ii = new ImageIcon(getClass().getResource("/images/Backgrounds/set2P.png"));
+        ii = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/set2P.png"));
         set = ii.getImage();
-        ii = new ImageIcon(getClass().getResource("/images/Backgrounds/go2P.png"));
+        ii = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/go2P.png"));
         go = ii.getImage();
         
-        ImageIcon ii2 = new ImageIcon(getClass().getResource("/images/Backgrounds/cursor.png"));
+        ImageIcon ii2 = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/cursor.png"));
         cursor = ii2.getImage();
-        ImageIcon ii3 = new ImageIcon(getClass().getResource("/images/Backgrounds/Pause.png"));
+        ImageIcon ii3 = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/Pause.png"));
         pauseBg = ii3.getImage();
-        ImageIcon ii4 = new ImageIcon(getClass().getResource("/images/Backgrounds/nextLineBlack.png"));
+        ImageIcon ii4 = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/nextLineBlack.png"));
         nxtLineHover = ii4.getImage();
-        ImageIcon ii5 = new ImageIcon(getClass().getResource("/images/Backgrounds/bgBlackCell.png"));
+        ImageIcon ii5 = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/bgBlackCell.png"));
         bgBlackCell = ii5.getImage();
         
-        ImageIcon ii6 = new ImageIcon(getClass().getResource("/images/Backgrounds/GameOverP1.png"));
+        ImageIcon ii6 = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/GameOverP1.png"));
         GameOverImageP1 = ii6.getImage();
         
-        ImageIcon ii8 = new ImageIcon(getClass().getResource("/images/Backgrounds/GameOverP2.png"));
+        ImageIcon ii8 = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/GameOverP2.png"));
         GameOverImageP2 = ii8.getImage();
         
-        ImageIcon ii7 = new ImageIcon(getClass().getResource("/images/Backgrounds/2-HideNewLine.png"));
+        ImageIcon ii7 = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/2-HideNewLine.png"));
         HideNewLineImage = ii7.getImage();
     }
 
@@ -202,9 +202,11 @@ public class TwoPlayer extends JPanel implements ActionListener {
             coordY -= CellSizeY;
             coordX = XStartBoardP1;
             for(j=0; j<=ga.boardP1.nbCol; j++){
-                if(!(ga.GOP1||ga.GOP2)) g.drawImage(ga.boardP1.getLineN(i).getBlockAtPos(j).getBlockImage().getImage(), coordX, coordY, this);
-                else g.drawImage(ga.boardP1.getLineN(i).getBlockAtPos(j).getBlockImageDead().getImage(), coordX, coordY, this);
-                if(ga.boardP1.getLineN(i).getBlockAtPos(j).isMatched()) g.drawImage(bgBlackCell, coordX, coordY, this);
+                if(ga.boardP1.getLineN(i).getBlockAtPos(j).getColor() != -1){
+                    if(!ga.GOP1) g.drawImage(ga.boardP1.bl.blockImages.get(ga.boardP1.getLineN(i).getBlockAtPos(j).getColor()), coordX, coordY, this);
+                    else g.drawImage(ga.boardP1.bl.deadBlockImages.get(ga.boardP1.getLineN(i).getBlockAtPos(j).getColor()), coordX, coordY, this);
+                    if(ga.boardP1.getLineN(i).getBlockAtPos(j).isMatched()) g.drawImage(bgBlackCell, coordX, coordY, this);
+                }
                 coordX += CellSizeX;
             }
         }
@@ -218,9 +220,11 @@ public class TwoPlayer extends JPanel implements ActionListener {
             coordY -= CellSizeY;
             coordX = XStartBoardP2;
             for(j=0; j<=ga.boardP2.nbCol; j++){
-                if(!(ga.GOP1||ga.GOP2)) g.drawImage(ga.boardP2.getLineN(i).getBlockAtPos(j).getBlockImage().getImage(), coordX, coordY, this);
-                else g.drawImage(ga.boardP2.getLineN(i).getBlockAtPos(j).getBlockImageDead().getImage(), coordX, coordY, this);
-                if(ga.boardP2.getLineN(i).getBlockAtPos(j).isMatched()) g.drawImage(bgBlackCell, coordX, coordY, this);
+                    if(ga.boardP2.getLineN(i).getBlockAtPos(j).getColor() != -1){
+                    if(!ga.GOP2) g.drawImage(ga.boardP2.bl.blockImages.get(ga.boardP2.getLineN(i).getBlockAtPos(j).getColor()), coordX, coordY, this);
+                    else g.drawImage(ga.boardP2.bl.deadBlockImages.get(ga.boardP2.getLineN(i).getBlockAtPos(j).getColor()), coordX, coordY, this);
+                    if(ga.boardP2.getLineN(i).getBlockAtPos(j).isMatched()) g.drawImage(bgBlackCell, coordX, coordY, this);
+                }
                 coordX += CellSizeX;
             }
         }
@@ -319,7 +323,7 @@ public class TwoPlayer extends JPanel implements ActionListener {
         int coordX = XStartBoardP1;
         int coordY = YStartBoard-offsetYP1;
         for(j=0; j<=ga.boardP1.nbCol; j++){
-            g.drawImage(ga.boardP1.getNextLine().getBlockAtPos(j).getBlockImage().getImage(), coordX, coordY, this);
+            g.drawImage(ga.boardP1.bl.blockImages.get(ga.boardP1.getNextLine().getBlockAtPos(j).getColor()), coordX, coordY, this);
             coordX += CellSizeX;
         }
         coordX = XStartBoardP1;
@@ -333,7 +337,7 @@ public class TwoPlayer extends JPanel implements ActionListener {
         int coordX = XStartBoardP2;
         int coordY = YStartBoard-offsetYP2;
         for(j=0; j<=ga.boardP2.nbCol; j++){
-            g.drawImage(ga.boardP2.getNextLine().getBlockAtPos(j).getBlockImage().getImage(), coordX, coordY, this);
+            g.drawImage(ga.boardP2.bl.blockImages.get(ga.boardP2.getNextLine().getBlockAtPos(j).getColor()), coordX, coordY, this);
             coordX += CellSizeX;
         }
         coordX = XStartBoardP2;
@@ -347,7 +351,6 @@ public class TwoPlayer extends JPanel implements ActionListener {
         isPaused = !isPaused;
         if (isPaused) timer.stop();
         else timer.start();
-        repaint();
     }
 
     @Override
@@ -375,8 +378,7 @@ public class TwoPlayer extends JPanel implements ActionListener {
                 offsetYP2 = valueRounded+1; 
             }
         }
-        
-        repaint();
+        paintImmediately(this.getBounds());//repaint();
     }
     
     public void goMenu(){

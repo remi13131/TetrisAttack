@@ -1,16 +1,15 @@
-package tetris.Helper;
-
-/**
- *
- * @author https://www3.ntu.edu.sg/home/ehchua/programming/java/J8c_PlayingSound.html
- * EDITED By Remi
- */
+package tetris.Helper.lib;
 
 import java.io.*;
 import java.net.URL;
 import javax.sound.sampled.*;
    
 /**
+ *
+ * @author https://www3.ntu.edu.sg/home/ehchua/programming/java/J8c_PlayingSound.html
+ * EDITED By Remi
+ * @see <a href="https://www3.ntu.edu.sg/home/ehchua/programming/java/J8c_PlayingSound.html"> https://www3.ntu.edu.sg/home/ehchua/programming/java/J8c_PlayingSound.html </a>
+ *
  * This enum encapsulates all the sound effects of a game, so as to separate the sound playing
  * codes from the game codes.
  * 1. Define all your sound effect names and the associated wave file.
@@ -20,8 +19,8 @@ import javax.sound.sampled.*;
  * 4. You can use the static variable SoundEffect.volume to mute the sound.
  */
 public enum Sound {
-   CHANGE_BLOCK("sounds/changeblock.wav"), //Changing block
-   MOVE("sounds/move.wav"); // move cursor
+   CHANGE_BLOCK("ressources/Sounds/changeblock.wav"), //Changing block
+   MOVE("ressources/Sounds/move.wav"); // move cursor
    
    // Nested class for specifying volume
    public static enum Volume {
