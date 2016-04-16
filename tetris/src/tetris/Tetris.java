@@ -22,8 +22,6 @@ import tetris.Helper.TetrisHelper;
  * @author Remi
  */
 
-
-
 public class Tetris extends JFrame implements ComponentListener {
     
     private static final long serialVersionUID = 1L;
@@ -33,11 +31,12 @@ public class Tetris extends JFrame implements ComponentListener {
     public final static String TWOPLAYERPANEL = "Solo Game";
     
     CardLayout cardLayout;   
-    JPanel cards; //a panel that uses CardLayout
+    JPanel cards; //a panel that uses CardLayout 
     Container pane;
     
     Solo solo;
     TwoPlayer twoP;
+    SoloVsAI sva;
     Menu menu;
     
     public double scaleX = 0.7;
@@ -83,12 +82,13 @@ public class Tetris extends JFrame implements ComponentListener {
     }
 
     public void newHelp(){
-        MiniBrowser mB  = new MiniBrowser();
+        MiniBrowser mB  = new MiniBrowser("/ressources/HTML/Help/index.html");
         mB.setVisible(true);
     }
     
     public void newCredits(){
-        
+        MiniBrowser mB  = new MiniBrowser("/ressources/HTML/Credit/index.html");
+        mB.setVisible(true);
     }
     
     public void newSolo(){
@@ -101,7 +101,6 @@ public class Tetris extends JFrame implements ComponentListener {
     }
     
     public void newTwoPlayer(){
-        
         twoP = null;   
         twoP = new TwoPlayer(this);
         
@@ -109,13 +108,16 @@ public class Tetris extends JFrame implements ComponentListener {
         cardLayout.show(cards, Tetris.TWOPLAYERPANEL);
     }
     
-    public void goMenu(Solo j){
-        cards.remove(j);
-        cardLayout.show(cards, MENUPANEL);
+    public void newSoloVsAI(){
+        sva = null;   
+        sva = new SoloVsAI(this);
+        
+        cards.add(sva, Tetris.TWOPLAYERPANEL);
+        cardLayout.show(cards, Tetris.TWOPLAYERPANEL);
     }
     
-    public void goMenu(TwoPlayer j){
-        cards.remove(j);
+    public void goMenu(Object j){
+        cards.remove((JPanel)j);
         cardLayout.show(cards, MENUPANEL);
     }
     
@@ -127,7 +129,7 @@ public class Tetris extends JFrame implements ComponentListener {
                 Tetris t = new Tetris();
             }
         });
-        //Sound.LASALADE.play();
+
     }
 
     @Override

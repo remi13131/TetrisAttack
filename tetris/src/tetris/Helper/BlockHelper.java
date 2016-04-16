@@ -16,14 +16,14 @@ public class BlockHelper {
 
     private Random randomGenerator = new Random();
     
-    public ArrayList<String> defaultBlocks = new ArrayList<String>() {
+    static public ArrayList<String> defaultBlocks = new ArrayList<String>() {
         {
-            add("coeur");
-            add("triangle");
-            add("rond");
-            add("etoile");
-            add("triangleinverse");
-            add("losange");
+            add("coeur"); //numCouleur = 0
+            add("triangle"); //numCouleur = 1
+            add("rond"); //numCouleur = 2
+            add("etoile"); //numCouleur = 3
+            add("triangleinverse"); //numCouleur = 4
+            add("losange"); //numCouleur = 5
         }
     };
     

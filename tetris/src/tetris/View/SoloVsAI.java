@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package tetris.View;
 
 import java.awt.Color;
@@ -15,8 +20,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import tetris.Controller.Game2Player;
-import tetris.Helper.lib.Sound;
+import tetris.Controller.GameSoloVsAI;
 import tetris.Helper.TetrisHelper;
+import tetris.Helper.lib.Sound;
 import tetris.Model.Line;
 import tetris.Tetris;
 
@@ -24,9 +30,8 @@ import tetris.Tetris;
  *
  * @author Remi
  */
+public class SoloVsAI extends JPanel implements ActionListener {
 
-public class TwoPlayer extends JPanel implements ActionListener {  
-    
     private boolean debug = false;
     
     public JPanel cards;
@@ -67,7 +72,7 @@ public class TwoPlayer extends JPanel implements ActionListener {
     
     private Timer timer;
     
-    private Game2Player ga;
+    private GameSoloVsAI ga;
     
     boolean isPaused;
     
@@ -77,11 +82,11 @@ public class TwoPlayer extends JPanel implements ActionListener {
     
     public Tetris tetris;
     
-    public TwoPlayer(Tetris t){
+    public SoloVsAI(Tetris t){
         
         tetris = t;
         
-        ga = new Game2Player();
+        ga = new GameSoloVsAI();
         
         timer = new Timer((1000/TetrisHelper.FPS), this);
         timer.start();
@@ -92,7 +97,7 @@ public class TwoPlayer extends JPanel implements ActionListener {
         this.addComponentListener( new ComponentAdapter() {
             @Override
             public void componentShown( ComponentEvent e ) {
-                TwoPlayer.this.requestFocusInWindow();
+                SoloVsAI.this.requestFocusInWindow();
             }
         });
         
@@ -216,14 +221,14 @@ public class TwoPlayer extends JPanel implements ActionListener {
         Line l;
         int i, j, coordX, coordY;
         coordY = YStartBoard-offsetYP2;
-        for(i=0; i<=ga.boardP2.nbLin; i++){
+        for(i=0; i<=ga.AIBoard.nbLin; i++){
             coordY -= CellSizeY;
             coordX = XStartBoardP2;
-            for(j=0; j<=ga.boardP2.nbCol; j++){
-                    if(ga.boardP2.getLineN(i).getBlockAtPos(j).getColor() != -1){
-                    if(!ga.GOP2) g.drawImage(ga.boardP2.bl.blockImages.get(ga.boardP2.getLineN(i).getBlockAtPos(j).getColor()), coordX, coordY, this);
-                    else g.drawImage(ga.boardP2.bl.deadBlockImages.get(ga.boardP2.getLineN(i).getBlockAtPos(j).getColor()), coordX, coordY, this);
-                    if(ga.boardP2.getLineN(i).getBlockAtPos(j).isMatched()) g.drawImage(bgBlackCell, coordX, coordY, this);
+            for(j=0; j<=ga.AIBoard.nbCol; j++){
+                    if(ga.AIBoard.getLineN(i).getBlockAtPos(j).getColor() != -1){
+                    if(!ga.GOP2) g.drawImage(ga.AIBoard.bl.blockImages.get(ga.AIBoard.getLineN(i).getBlockAtPos(j).getColor()), coordX, coordY, this);
+                    else g.drawImage(ga.AIBoard.bl.deadBlockImages.get(ga.AIBoard.getLineN(i).getBlockAtPos(j).getColor()), coordX, coordY, this);
+                    if(ga.AIBoard.getLineN(i).getBlockAtPos(j).isMatched()) g.drawImage(bgBlackCell, coordX, coordY, this);
                 }
                 coordX += CellSizeX;
             }
@@ -286,7 +291,7 @@ public class TwoPlayer extends JPanel implements ActionListener {
         g.setColor(Color.WHITE);
         g.setFont(new Font("Monospaced", Font.BOLD, 16));
         g.drawString("Score :", XScoreP2, YScore);
-        g.drawString(ga.boardP2.getScore()+" Points", XScoreP2, YScore+20);
+        g.drawString(ga.AIBoard.getScore()+" Points", XScoreP2, YScore+20);
     }
     
     public void drawCursor(Graphics g){
@@ -307,8 +312,8 @@ public class TwoPlayer extends JPanel implements ActionListener {
         int coordX = XStartBoardP2;
         int coordY = YStartBoard-CellSizeY-offsetYP2;
         int i;
-        for(i=0; i<ga.boardP2.getyCursor(); i++) coordY -= CellSizeY;
-        for(i=0; i<ga.boardP2.getxCursor(); i++) coordX += CellSizeX;
+        for(i=0; i<ga.AIBoard.getyCursor(); i++) coordY -= CellSizeY;
+        for(i=0; i<ga.AIBoard.getxCursor(); i++) coordX += CellSizeX;
         g.drawImage(cursor, coordX-2, coordY-2, this);
     }
     
@@ -336,8 +341,8 @@ public class TwoPlayer extends JPanel implements ActionListener {
         int j;
         int coordX = XStartBoardP2;
         int coordY = YStartBoard-offsetYP2;
-        for(j=0; j<=ga.boardP2.nbCol; j++){
-            g.drawImage(ga.boardP2.bl.blockImages.get(ga.boardP2.getNextLine().getBlockAtPos(j).getColor()), coordX, coordY, this);
+        for(j=0; j<=ga.AIBoard.nbCol; j++){
+            g.drawImage(ga.AIBoard.bl.blockImages.get(ga.AIBoard.getNextLine().getBlockAtPos(j).getColor()), coordX, coordY, this);
             coordX += CellSizeX;
         }
         coordX = XStartBoardP2;
@@ -354,7 +359,7 @@ public class TwoPlayer extends JPanel implements ActionListener {
                         countBlinkTime = 0;
                         blinkGameOver = !blinkGameOver;
             }
-            TwoPlayer.this.requestFocusInWindow();
+            SoloVsAI.this.requestFocusInWindow();
 
             if(!(ga.GOP1||ga.GOP2)) {
                 ga.nextUpdate();
@@ -365,7 +370,7 @@ public class TwoPlayer extends JPanel implements ActionListener {
                     int valueRounded = (int)Math.round(value);
                     offsetYP1 = valueRounded+1; 
 
-                    percentNextLine = (TetrisHelper.DEFAULT_NEXT_LINE_TIME - ga.boardP2.timeNxtLine);
+                    percentNextLine = (TetrisHelper.DEFAULT_NEXT_LINE_TIME - ga.AIBoard.timeNxtLine);
                     percentNextLine = percentNextLine / TetrisHelper.DEFAULT_NEXT_LINE_TIME;
                     value = percentNextLine * 57;
                     valueRounded = (int)Math.round(value);
@@ -409,19 +414,19 @@ public class TwoPlayer extends JPanel implements ActionListener {
             if(ga.isStarted() && !(ga.GOP1||ga.GOP2)){
                 switch (keycode) {
                     
-                    case KeyEvent.VK_Q:
+                    case KeyEvent.VK_LEFT:
                         if(ga.goLeft(ga.boardP1)) Sound.MOVE.play();
                     break;
 
-                    case KeyEvent.VK_D:
+                    case KeyEvent.VK_RIGHT:
                         if(ga.goRight(ga.boardP1)) Sound.MOVE.play();
                     break;
 
-                    case KeyEvent.VK_S:
+                    case KeyEvent.VK_DOWN:
                         if(ga.goDown(ga.boardP1)) Sound.MOVE.play();
                     break;
 
-                    case KeyEvent.VK_Z:
+                    case KeyEvent.VK_UP:
                         if(ga.goUp(ga.boardP1)) Sound.MOVE.play();
                     break;
 
@@ -430,33 +435,8 @@ public class TwoPlayer extends JPanel implements ActionListener {
                         Sound.CHANGE_BLOCK.play();
                     break;
                         
-                    case KeyEvent.VK_CONTROL:
+                    case KeyEvent.VK_TAB:
                         if(ga.boardP1.getLineN(10).isEmpty()) ga.boardP1.timeNxtLine = 0;
-                    break;
-                    
-                    case KeyEvent.VK_LEFT:
-                        if(ga.goLeft(ga.boardP2)) Sound.MOVE.play();
-                    break;
-
-                    case KeyEvent.VK_RIGHT:
-                        if(ga.goRight(ga.boardP2)) Sound.MOVE.play();
-                    break;
-
-                    case KeyEvent.VK_DOWN:
-                        if(ga.goDown(ga.boardP2)) Sound.MOVE.play();
-                    break;
-
-                    case KeyEvent.VK_UP:
-                        if(ga.goUp(ga.boardP2)) Sound.MOVE.play();
-                    break;
-
-                    case KeyEvent.VK_ENTER:
-                        ga.blockExchange(ga.boardP2);
-                        Sound.CHANGE_BLOCK.play();
-                    break;
-                        
-                    case KeyEvent.VK_BACK_SPACE:
-                        if(ga.boardP2.getLineN(10).isEmpty()) ga.boardP2.timeNxtLine = 0;
                     break;
                         
                     default: break;

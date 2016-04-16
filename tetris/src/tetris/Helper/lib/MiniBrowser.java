@@ -19,24 +19,24 @@ import javax.swing.text.html.*;
 public class MiniBrowser extends JFrame
          
     implements HyperlinkListener {
-    
-// These are the buttons for iterating through the page list.
-    private final JButton backButton, forwardButton;
-     
-    // Page location text field.
-    private final JTextField locationTextField;
      
     // Editor pane for displaying pages.
     private final JEditorPane displayEditorPane;
      
+    private final JButton backButton;
+            
+    String index = "";
+    
     // Browser's list of pages that have been visited.
     private final ArrayList<String> pageList = new ArrayList<String>();
      
     // Constructor for Mini Web Browser.
-    public MiniBrowser() {
+    public MiniBrowser(String url) {
         // Set application title.
         super("Mini Browser");
          
+        index = url;
+        
         // Set window size.
         setSize(640, 480);
          
@@ -58,7 +58,6 @@ public class MiniBrowser extends JFrame
         menuBar.add(fileMenu);
         setJMenuBar(menuBar);
          
-        // Set up button panel.
         JPanel buttonPanel = new JPanel();
         backButton = new JButton("< Back");
         backButton.addActionListener(new ActionListener() {
@@ -67,36 +66,8 @@ public class MiniBrowser extends JFrame
                 actionBack();
             }
         });
-        backButton.setEnabled(false);
         buttonPanel.add(backButton);
-        forwardButton = new JButton("Forward >");
-        forwardButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                actionForward();
-            }
-        });
-        forwardButton.setEnabled(false);
-        buttonPanel.add(forwardButton);
-        locationTextField = new JTextField(35);
-        locationTextField.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    actionGo();
-                }
-            }
-        });
-        buttonPanel.add(locationTextField);
-        JButton goButton = new JButton("GO");
-        goButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                actionGo();
-            }
-        });
-        buttonPanel.add(goButton);
-         
+        
         // Set up page display.
         displayEditorPane = new JEditorPane();
         displayEditorPane.setContentType("text/html");
@@ -105,47 +76,15 @@ public class MiniBrowser extends JFrame
          
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(buttonPanel, BorderLayout.NORTH);
-        getContentPane().add(new JScrollPane(displayEditorPane),
-                BorderLayout.CENTER);
+        getContentPane().add(new JScrollPane(displayEditorPane),BorderLayout.CENTER);
         
-       showPage(getClass().getResource("/html/lshw.html"), true);
+       showPage(getClass().getResource(url), true);
     }
      
     // Exit this program.
     private void actionExit() {
         this.dispose();
-    }
-     
-    // Go back to the page viewed before the current page.
-    private void actionBack() {
-        URL currentUrl = displayEditorPane.getPage();
- 
-        int pageIndex = pageList.indexOf(currentUrl.toString());
-        try {
-            showPage(
-                    new URL((String) pageList.get(pageIndex - 1)), false);
-        } catch (Exception e) {}
-    }
-     
-    // Go forward to the page viewed after the current page.
-    private void actionForward() {
-        URL currentUrl = displayEditorPane.getPage();
-        int pageIndex = pageList.indexOf(currentUrl.toString());
-        try {
-            showPage(
-                    new URL((String) pageList.get(pageIndex + 1)), false);
-        } catch (Exception e) {}
-    }
-     
-    // Load and show the page specified in the location text field.
-    private void actionGo() {
-        URL verifiedUrl = verifyUrl(locationTextField.getText());
-        if (verifiedUrl != null) {
-            showPage(verifiedUrl, true);
-        } else {
-            showError("Invalid URL");
-        }
-    }
+    }   
      
     // Show dialog box with error message.
     private void showError(String errorMessage) {
@@ -189,23 +128,19 @@ public class MiniBrowser extends JFrame
             // Add page to list if specified.
             if (addToList) {
                 int listSize = pageList.size();
-                if (listSize > 0) {
-                    int pageIndex =
-                            pageList.indexOf(currentUrl.toString());
-                    if (pageIndex < listSize - 1) {
-                        for (int i = listSize - 1; i > pageIndex; i--) {
-                            pageList.remove(i);
-                        }
-                    }
+                if (listSize <= 0) {
+                  return;
+                }
+                int pageIndex = pageList.indexOf(currentUrl.toString());
+                if (pageIndex >= listSize - 1) {
+                  return;
+                }
+                for (int i = listSize - 1; i > pageIndex; i--) {
+                  pageList.remove(i);
                 }
                 pageList.add(newUrl.toString());
             }
-             
-            // Update location text field with URL of current page.
-            locationTextField.setText(newUrl.toString());
-             
-            // Update buttons based on the page being displayed.
-            updateButtons();
+            
         } catch (Exception e) {
             // Show error messsage.
             showError("Unable to load page");
@@ -214,22 +149,12 @@ public class MiniBrowser extends JFrame
             setCursor(Cursor.getDefaultCursor());
         }
     }
-     
-  /* Update back and forward buttons based on
-     the page being displayed. */
-    private void updateButtons() {
-        if (pageList.size() < 2) {
-            backButton.setEnabled(false);
-            forwardButton.setEnabled(false);
-        } else {
-            URL currentUrl = displayEditorPane.getPage();
-            int pageIndex = pageList.indexOf(currentUrl.toString());
-            backButton.setEnabled(pageIndex > 0);
-            forwardButton.setEnabled(
-                    pageIndex < (pageList.size() - 1));
-        }
+    
+    // Go back to the page viewed before the current page.
+    private void actionBack() {
+        showPage(getClass().getResource(index), true);
     }
-     
+    
     // Handle hyperlink's being clicked.
     @Override
     public void hyperlinkUpdate(HyperlinkEvent event) {

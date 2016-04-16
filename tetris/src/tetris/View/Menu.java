@@ -31,6 +31,9 @@ public class Menu  extends JPanel implements ActionListener {
     private Image menu3;
     private Image menu4;
     private Image menu5;
+    private Image menu11;
+    private Image menu12;
+    private Image menu13;
     
     private MenuController ga;
     private Timer timer;
@@ -73,22 +76,17 @@ public class Menu  extends JPanel implements ActionListener {
     }
     
     private void loadImage() { 
-        ImageIcon ii = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/0bis.png"));
-        backgroundNoir = ii.getImage();
-        ImageIcon ii2 = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/0.png"));
-        backgroundInsertCoin = ii2.getImage();
-        ImageIcon ii3 = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/menu00.png"));
-        menu0 = ii3.getImage();
-        ImageIcon ii4 = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/menu01.png"));
-        menu1 = ii4.getImage();
-        ImageIcon ii5 = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/menu02.png"));
-        menu2 = ii5.getImage();
-        ImageIcon ii6 = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/menu03.png"));
-        menu3 = ii6.getImage();
-        ImageIcon ii7 = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/menu04.png"));
-        menu4 = ii7.getImage();
-        ImageIcon ii8 = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/menu05.png"));
-        menu5 = ii8.getImage();
+        backgroundNoir = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/0bis.png")).getImage();
+        backgroundInsertCoin = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/0.png")).getImage();
+        menu0 = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/menu00.png")).getImage();
+        menu1 = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/menu01.png")).getImage();
+        menu2 = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/menu02.png")).getImage();
+        menu3 = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/menu03.png")).getImage();
+        menu4 = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/menu04.png")).getImage();
+        menu5 = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/menu05.png")).getImage();
+        menu11 = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/menu11.png")).getImage();
+        menu12 = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/menu12.png")).getImage();
+        menu13 = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/menu13.png")).getImage();
     }
 
     @Override
@@ -122,6 +120,18 @@ public class Menu  extends JPanel implements ActionListener {
                 case 5 :    
                     g2d.drawImage(menu5, 0, 0, null);     
                 break;
+                    
+                case 11 :
+                    g2d.drawImage(menu11, 0, 0, null);
+                break;
+                    
+                case 12 :
+                    g2d.drawImage(menu12, 0, 0, null);
+                break;
+                                        
+                case 13 :
+                    g2d.drawImage(menu13, 0, 0, null);
+                break;
                                     
                 default : break;
             }
@@ -138,9 +148,6 @@ public class Menu  extends JPanel implements ActionListener {
             timeBlink = 250;
         } else timeBlink-=ga.DELAY;
         
-        /*if(blinkMenu) blinkMenu = false;
-        else blinkMenu = true;*/
-        
         Menu.this.requestFocusInWindow();
         
         repaint();
@@ -155,12 +162,14 @@ public class Menu  extends JPanel implements ActionListener {
 
             switch (keycode) {                   
                 case KeyEvent.VK_DOWN:
-                    ga.setChoix(ga.getChoix() + 1);
+                    if(ga.getChoix()+1<11) ga.setChoix(ga.getChoix() + 1);
+                    else ga.setChoix2(ga.getChoix() + 1);
                     Sound.MOVE.play();
                 break;
                     
                 case KeyEvent.VK_UP:
-                    ga.setChoix(ga.getChoix() - 1);
+                    if(ga.getChoix()<11) ga.setChoix(ga.getChoix() - 1);
+                    else ga.setChoix2(ga.getChoix() - 1);
                     Sound.MOVE.play();
                 break;
                     
@@ -168,7 +177,7 @@ public class Menu  extends JPanel implements ActionListener {
                     Sound.CHANGE_BLOCK.play();
                     switch(ga.getChoix()){
                         case 1 : 
-                            tetris.newSolo();
+                            ga.setChoix2(11);
                         break;
                             
                         case 2 : 
@@ -185,6 +194,22 @@ public class Menu  extends JPanel implements ActionListener {
                             
                         case 5 :
                             System.exit(0);
+                        break;
+                            
+                        case 6 :
+                            tetris.newSoloVsAI();
+                        break;
+                            
+                        case 11 : 
+                            tetris.newSolo();
+                        break;
+                            
+                        case 12 : 
+                            tetris.newSoloVsAI();
+                        break;
+                            
+                        case 13:
+                            ga.setChoix(1);
                         break;
                     }
                     

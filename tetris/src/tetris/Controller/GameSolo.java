@@ -58,10 +58,7 @@ public class GameSolo {
     }
     
     public void blockExchange(){
-        Block b1 = board.getLineN(board.yCursor).getBlockAtPos(board.xCursor);
-        Block b2 = board.getLineN(board.yCursor).getBlockAtPos(board.xCursor+1);
-        if(b1.isMatched() || b2.isMatched()) return;
-        board.blockExchange(b1, b2);
+        board.blockExchange();
     }
     
     public boolean goLeft(){

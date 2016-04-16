@@ -10,11 +10,9 @@ import java.util.ArrayList;
  */
 
 public class Board {
-
-    public boolean thinking = false;
     
-    ArrayList<Line> board;
-    ArrayList<ArrayList<Integer>> grid;
+    public ArrayList<Line> board;
+    public ArrayList<ArrayList<Integer>> grid;
     
     //public ArrayList<Block> MatchedCells;
     public ArrayList<Match> Matches;
@@ -35,6 +33,8 @@ public class Board {
     public int yCursor;
     
     public Board(){
+        xCursor=2;
+        yCursor=2;
         board = new ArrayList<Line>();
         //MatchedCells = new ArrayList<Block>();
         Matches = new ArrayList<Match>();
@@ -42,7 +42,6 @@ public class Board {
     }
     
     public void initGrid(){
-        int i, j;
         xCursor=2;
         yCursor=2;
         
@@ -53,10 +52,17 @@ public class Board {
     }
     
     public void initGrid(ArrayList<ArrayList<Integer>> grid){
-        int i, j;
+        int i;
         xCursor=2;
         yCursor=2;
-        setBoard(grid);
+        ArrayList<ArrayList<Integer>> gridCopy = new ArrayList<ArrayList<Integer>>();
+        ArrayList<Integer> line = new ArrayList<Integer>(grid.get(0));
+        for(i=0; i<=nbLin; i++) {
+            line = new ArrayList<Integer>(grid.get(i));
+            gridCopy.add(line);
+        }
+        this.grid=gridCopy;
+        setBoard(gridCopy);
         nextLine = makeNewRandomLine(0);
     }
     
@@ -115,30 +121,17 @@ public class Board {
         return l;
     }
     
-    public void blockExchange(Block b1, Block b2){
-        int b1x=b1.getX();
-        int b1y=b1.getY();
-        int b2x=b2.getX();
-        int b2y=b2.getY();
-        getLineN(b1y).setBlockAtPos(b1x, b2);
-        getLineN(b2y).setBlockAtPos(b2x, b1);
-    }
+
     
-    //#######################
-    //### ANCIENNE METHODE 
-    //#######################
-    public void getBlockDownIterative(Block b){
-        if(b.isEmpty()) return;
-        int pos = b.getX();
-        int origY = b.getY();
-        int y = b.getY();
-        while((y-1>=0) && getLineN(y-1).getBlockAtPos(pos).isEmpty()){ 
-            y--;
-            if(y != b.getY() && getLineN(y).getBlockAtPos(pos).isEmpty()) {
-                getLineN(y).setBlockAtPos(pos, b);
-                getLineN(y+1).setBlockAtPos(pos, new Block(pos, y+1));
-            }
-        }
+    public void blockExchange(){
+        Block b1 = getLineN(yCursor).getBlockAtPos(xCursor);
+        Block b2 = getLineN(yCursor).getBlockAtPos(xCursor+1);
+        if(b1.isMatched() || b2.isMatched()) return;
+        
+        getLineN(yCursor).setBlockAtPos(xCursor, b2);
+        getLineN(yCursor).setBlockAtPos(xCursor+1, b1);
+        grid.get(yCursor).set(xCursor, b2.color);
+        grid.get(yCursor).set(xCursor+1, b1.color);
     }
     
     public void getBlockDown(Block b){
@@ -151,7 +144,9 @@ public class Board {
         if((y-1>=0) && getLineN(y-1).getBlockAtPos(pos).isEmpty()){ 
             y--;
             getLineN(y).setBlockAtPos(pos, b);
-            getLineN(y+1).setBlockAtPos(pos, new Block(pos, y+1));            
+            getLineN(y+1).setBlockAtPos(pos, new Block(pos, y+1));
+            grid.get(y).set(pos, b.color);
+            grid.get(y+1).set(pos, -1);
             getBlockDown(b);
         }
     }
@@ -466,10 +461,10 @@ public class Board {
     public void killOldMatched(){
         int i;
         for(i=0; i<Matches.size(); i++){
-            //System.out.println("i "+i+" time:"+ Matches.get(i).getTimeMatched());
             if(Matches.get(i).getTimeMatched()>=TetrisHelper.TIME_MATCHED_SOLO){
                 for(Block b : Matches.get(i).getMatchedCells()){
                     getLineN(b.getY()).setBlockAtPos(b.getX(), new Block(b.getX(), b.getY()));
+                    grid.get(b.getY()).set(b.getX(), -1);
                 }
                 Matches.remove(Matches.get(i));
             }
@@ -502,9 +497,31 @@ public class Board {
     
     public void setLigneN(int index, Line l){
         board.set(index, l);
+        ArrayList<Integer> a = new ArrayList<Integer>();
+        int i;
+        for(i=0; i<=nbCol; i++) a.add(l.getBlockAtPos(i).getColor());
+        grid.set(index, a);
         l.updateLineNumber(index);
     }
 
+    public void insertNewLine(){
+        int i;
+        boolean trouve=false;
+        int indexLigne=-1;
+        for(i=0; i<=nbLin; i++){
+            if(getLineN(i).isEmpty()) {
+                trouve=true;
+                indexLigne = i;
+                break;
+            }
+        }
+        if(trouve && indexLigne != -1) {
+            for(i=indexLigne; i>0; i--) 
+                setLigneN(i, getLineN(i-1));
+            setLigneN(0, getNextLine());
+        }
+    }
+    
     public int getScore() {
         return Score;
     }
@@ -517,7 +534,4 @@ public class Board {
         return grid;
     }
     
-    public boolean isThinking() {
-        return thinking;
-    }
 }

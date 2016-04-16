@@ -1,14 +1,17 @@
 package tetris.Controller;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import tetris.Helper.TetrisHelper;
-import tetris.Model.*;
+import tetris.Model.Block;
+import tetris.Model.Board;
+import tetris.Model.AIBoard;
 
 /**
  *
  * @author Remi
  */
-
-public class Game2Player { 
+public class GameSoloVsAI {
     
     public int numActions = 0;
     public int numSec = -3;
@@ -19,9 +22,9 @@ public class Game2Player {
     public boolean started = false;
     
     public Board boardP1;
-    public Board boardP2;
+    public AIBoard AIBoard;
     
-    public Game2Player(){
+    public GameSoloVsAI(){
         initGame();
     }
     
@@ -29,11 +32,13 @@ public class Game2Player {
         boardP1 = new Board();
         boardP1.initGrid();
         
-        boardP2 = new Board();
-        boardP2.initGrid(boardP1.getGrid());
+        AIBoard = new AIBoard();
+        AIBoard.initGrid(boardP1.getGrid());
     }
 
     public void nextUpdate(){
+        System.out.println(""+AIBoard.ListMove);
+        
         numActions += 1;
         if((numActions >= TetrisHelper.FPS) && !(GOP1||GOP2)) {
             numSec += 1;
@@ -45,27 +50,26 @@ public class Game2Player {
         
         if(isStarted()){
 /*
+            Méthode "l'un après l'autre"
             nextUpdateP(boardP1);
             nextUpdateP(boardP2);
 */
-           
-            Thread t1, t2;
-           
-                        
-            t2 = new Thread() { 
-                @Override
-                public void run() {
-                    nextUpdateP(boardP2);
-                }
-            };
             
+            //Méthode Thread retenue pour une exécution parralèle
+            Thread t1, t2;
             t1 = new Thread() { 
                 @Override
                 public void run() {
                     nextUpdateP(boardP1);
                 }
             };
-
+            
+            t2 = new Thread() { 
+                @Override
+                public void run() {
+                    nextUpdateP(AIBoard);
+                }
+            };
             
             t1.start();
             t2.start();
@@ -79,7 +83,7 @@ public class Game2Player {
             }
                 
         } else if(!boardP1.getLineN(boardP1.nbLin).isEmpty()) GameOverP1();
-        else if(!boardP2.getLineN(boardP2.nbLin).isEmpty()) GameOverP2();
+        else if(!AIBoard.getLineN(AIBoard.nbLin).isEmpty()) GameOverP2();
         else if(numSec >= 0) setStarted(true);
     }
     
@@ -100,6 +104,42 @@ public class Game2Player {
         b.updateMatchedTime();
         b.killOldMatched();
         b.defineEmptyLines();
+    }
+    
+    public void nextUpdateP(AIBoard b){
+            //On fait "penser" l'AI en arrière-plan dans Thread séparé
+            Thread t1;
+            t1 = new Thread() { 
+                @Override
+                public void run() {
+                    b.think();
+                    b.doTheNextMove();
+                }
+            };
+            t1.start();
+        
+        if(b.Matches.size() == 0) b.timeNxtLine -= (1000/TetrisHelper.FPS);
+        if(b.getLineN(b.nbLin).isEmpty()){
+            if(b.timeNxtLine <= 0) {
+                b.insertNewLine();
+                b.nextLine = b.makeNewRandomLine(0);
+                b.timeNxtLine = TetrisHelper.DEFAULT_NEXT_LINE_TIME;
+                if(b.yCursor < b.nbLin) b.yCursor += 1;
+            }
+        } else if(b.timeNxtLine <= 0) setStarted(false);
+
+        b.getGridDown();
+        b.spotMatches();
+        b.Combo+=1;
+        b.updateMatchedTime();
+        b.killOldMatched();
+        b.defineEmptyLines();
+        /*
+        try {
+            t1.join();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(GameSoloVsAI.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
     }
     
     public void blockExchange(Board board){
@@ -132,7 +172,7 @@ public class Game2Player {
             board.setyCursor(board.getyCursor() - 1);
             return true;
         } else return false;
-    }    
+    }
     
     public void GameOverP1(){
         System.out.println("Game Over. Player 2 Wins.");

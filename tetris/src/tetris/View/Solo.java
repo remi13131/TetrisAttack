@@ -109,7 +109,7 @@ public class Solo extends JPanel implements ActionListener {
     
     private void loadImage() { 
         background = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/1.png")).getImage();
-        backgroundBlack = new ImageIcon(getClass().getResource("/images/Backgrounds/1bis.png")).getImage();
+        backgroundBlack = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/1bis.png")).getImage();
         
         ready = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/ready.png")).getImage();
         set = new ImageIcon(getClass().getResource("/ressources/images/Backgrounds/set.png")).getImage();
@@ -283,32 +283,26 @@ public class Solo extends JPanel implements ActionListener {
         g.setFont(new Font("Monospaced", Font.BOLD, 16));
         g.drawImage(HideNewLineImage, 0, 0, this);
     }
-    
-    private void pause()
-    {
-        isPaused = !isPaused;
-        if (isPaused) timer.stop();
-        else timer.start();
-    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        countBlinkTime += (1000/TetrisHelper.FPS);
-        if(countBlinkTime >= blinkGameOverTime){
-                    countBlinkTime = 0;
-                    black2p = ! black2p;
-                    blinkGameOver = !blinkGameOver;
-        }
-        
-        Solo.this.requestFocusInWindow();
-        if(!ga.GO) {
-            ga.nextUpdate();
-            if(ga.isStarted()){
-                double percentNextLine = (TetrisHelper.DEFAULT_NEXT_LINE_TIME - ga.board.timeNxtLine);
-                percentNextLine = percentNextLine / TetrisHelper.DEFAULT_NEXT_LINE_TIME;
-                double value = percentNextLine * 57;
-                int valueRounded = (int)Math.round(value);
-                offsetY = valueRounded+1;
+        if(!isPaused){
+            countBlinkTime += (1000/TetrisHelper.FPS);
+            if(countBlinkTime >= blinkGameOverTime){
+                        countBlinkTime = 0;
+                        black2p = ! black2p;
+                        blinkGameOver = !blinkGameOver;
+            }
+
+            if(!ga.GO) {
+                ga.nextUpdate();
+                if(ga.isStarted()){
+                    double percentNextLine = (TetrisHelper.DEFAULT_NEXT_LINE_TIME - ga.board.timeNxtLine);
+                    percentNextLine = percentNextLine / TetrisHelper.DEFAULT_NEXT_LINE_TIME;
+                    double value = percentNextLine * 57;
+                    int valueRounded = (int)Math.round(value);
+                    offsetY = valueRounded+1;
+                }
             }
         }
         
@@ -332,7 +326,7 @@ public class Solo extends JPanel implements ActionListener {
             }
             
             if (keycode == 'p' || keycode == 'P' || (keycode == KeyEvent.VK_ESCAPE && !isPaused)) {
-                pause();
+                isPaused = !isPaused;
                 return;
             }
 
@@ -367,6 +361,12 @@ public class Solo extends JPanel implements ActionListener {
                         ga.blockExchange();
                         Sound.CHANGE_BLOCK.play();
                     break;
+                        
+                    case KeyEvent.VK_CONTROL:
+                        if(ga.board.getLineN(10).isEmpty()) ga.board.timeNxtLine = 0;
+                    break;
+                        
+                    default: break;
                 }
             }
         }
