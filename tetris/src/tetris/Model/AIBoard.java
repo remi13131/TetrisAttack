@@ -106,7 +106,7 @@ public class AIBoard extends Board {
                         int cl;
                         int ln;
                         
-                        System.out.println("111111111 "+longCombo+" col "+col+" lin "+curLin+" "+lin);
+                        System.out.println("7777777777 "+longCombo+" col "+col+" lin "+curLin+" "+lin);
                         
                         if(longCombo> 3 && longCombo > curCombo && trouCouleur!=-1){
                             for(cl=0; cl<nbCol; cl++){

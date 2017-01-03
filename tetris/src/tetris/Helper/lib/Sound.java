@@ -20,7 +20,8 @@ import javax.sound.sampled.*;
  */
 public enum Sound {
    CHANGE_BLOCK("ressources/Sounds/changeblock.wav"), //Changing block
-   MOVE("ressources/Sounds/move.wav"); // move cursor
+   MOVE("ressources/Sounds/move.wav"), // move cursor
+   TETRIS("ressources/Sounds/Tetris.wav");
    
    // Nested class for specifying volume
    public static enum Volume {

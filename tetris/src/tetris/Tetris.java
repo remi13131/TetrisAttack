@@ -92,7 +92,7 @@ public class Tetris extends JFrame implements ComponentListener {
     }
     
     public void newSolo(){
-        
+        Sound.TETRIS.play();
         solo = null;   
         solo = new Solo(this);
         
@@ -101,6 +101,7 @@ public class Tetris extends JFrame implements ComponentListener {
     }
     
     public void newTwoPlayer(){
+        Sound.TETRIS.play();
         twoP = null;   
         twoP = new TwoPlayer(this);
         
@@ -109,6 +110,7 @@ public class Tetris extends JFrame implements ComponentListener {
     }
     
     public void newSoloVsAI(){
+        Sound.TETRIS.play();
         sva = null;   
         sva = new SoloVsAI(this);
         
@@ -117,6 +119,7 @@ public class Tetris extends JFrame implements ComponentListener {
     }
     
     public void goMenu(Object j){
+        Sound.TETRIS.play();
         cards.remove((JPanel)j);
         cardLayout.show(cards, MENUPANEL);
     }
@@ -129,7 +132,8 @@ public class Tetris extends JFrame implements ComponentListener {
                 Tetris t = new Tetris();
             }
         });
-
+        
+        Sound.TETRIS.play();
     }
 
     @Override
