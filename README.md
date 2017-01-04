@@ -1,4 +1,4 @@
-# TetrisAttack
+# TetrisAttack - Nintendo All right reserved.
 
-This project has been made for educational purposes. No commercial use. Personal portfolio.
-(see course subject from Jean Perrin University in Lens, France in root folder)
+This project has been made for educational purposes during my Bachelor's Degree french equivalent in Jean Perrin University, Lens, France, from september 2015 to june 2016.
+Please find course's original requirements in file "projetCOO.pdf" in root folder.
